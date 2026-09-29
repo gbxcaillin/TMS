@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Advice tools · Brightday Portal</title>
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@400;500;600;700&family=Ubuntu+Mono:wght@400;700&display=swap">
+<style>
+/* Same shell as the CRM (navy rail, square edges, uppercase labels) so the tools read as one portal. */
+:root{
+  --accent:#F50D74;--accent-hover:#D90B66;--accent-ink:#990A4E;--accent-tint:#FDE7F1;--accent-tint-2:#FBCDE1;
+  --rail:#123559;--rail-2:#1B4470;--rail-text:#A9BAD0;
+  --bg:#F4F6FA;--surface:#FFFFFF;--surface-2:#EDF1F6;--surface-3:#E3E9F1;--line:#DFE5EE;--line-2:#C7D1DE;
+  --ink:#123559;--ink-2:#3D5573;--ink-3:#6F819A;
+  --good:#17754C;--on-good:#FFFFFF;--good-tint:#E3F4EC;--warn:#8A5A00;--warn-tint:#FCF1D9;--bad:#B3261E;--bad-tint:#FBE6E4;--info:#1D5F9E;--info-tint:#E4EEF9;
+  --overlay:rgba(18,53,89,.45);
+  --font-head:'Ubuntu',system-ui,sans-serif;--font-body:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;--font-mono:'Ubuntu Mono',ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --accent:#FF2F86;--accent-hover:#FF5A9E;--accent-ink:#FF84B8;--accent-tint:#3A1330;--accent-tint-2:#4C1A3F;
+  --rail:#0B1D31;--rail-2:#13304F;
+  --bg:#0A1726;--surface:#102339;--surface-2:#15304D;--surface-3:#1B3A5C;--line:#1F3A58;--line-2:#2C4D72;
+  --ink:#E9EFF7;--ink-2:#C2D0E2;--ink-3:#8FA3BC;
+  --good:#5FD09C;--on-good:#0A1726;--good-tint:#10352A;--warn:#F0C060;--warn-tint:#3A2D10;--bad:#FF8A80;--bad-tint:#3D1A1A;--info:#8CC0F5;--info-tint:#132F4D;
+  --overlay:rgba(0,0,0,.6);color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --accent:#FF2F86;--accent-hover:#FF5A9E;--accent-ink:#FF84B8;--accent-tint:#3A1330;--accent-tint-2:#4C1A3F;
+  --rail:#0B1D31;--rail-2:#13304F;
+  --bg:#0A1726;--surface:#102339;--surface-2:#15304D;--surface-3:#1B3A5C;--line:#1F3A58;--line-2:#2C4D72;
+  --ink:#E9EFF7;--ink-2:#C2D0E2;--ink-3:#8FA3BC;
+  --good:#5FD09C;--on-good:#0A1726;--good-tint:#10352A;--warn:#F0C060;--warn-tint:#3A2D10;--bad:#FF8A80;--bad-tint:#3D1A1A;--info:#8CC0F5;--info-tint:#132F4D;
+  --overlay:rgba(0,0,0,.6);color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--font-head);font-weight:400;line-height:1.15;text-wrap:balance}
+h1{font-size:30px}h2{font-size:20px}h3{font-size:16px;font-weight:500}
+input,button,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none}
+a{color:var(--accent-ink);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.label{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.mono{font-family:var(--font-mono)}
+.muted{color:var(--ink-3)}
+
+/* Shell */
+.shell{display:grid;grid-template-columns:224px minmax(0,1fr);min-height:100%}
+.rail{background:var(--rail);color:#fff;display:flex;flex-direction:column;gap:18px;padding:18px 10px;position:sticky;top:0;height:100vh}
+.rail .lockup{padding:4px 10px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.rail .lockup img{width:48px;height:48px;display:block}
+.rail nav{display:flex;flex-direction:column;gap:1px}
+.rail .group{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rail-text);opacity:.7;padding:12px 10px 6px}
+.rail a.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;color:var(--rail-text);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-left:2px solid transparent}
+.rail a.nav:hover{color:#fff;text-decoration:none;background:var(--rail-2)}
+.rail a.nav.active{color:#fff;background:var(--rail-2);border-left-color:var(--accent)}
+.rail a.nav svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.4;flex:none}
+.rail .foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-top:1px solid rgba(255,255,255,.08)}
+.rail .foot .who{min-width:0;line-height:1.3}.rail .foot .who b{display:block;font-size:13px;font-weight:600}.rail .foot .who span{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--rail-text)}
+.av{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;flex:none}
+.main{min-width:0;display:flex;flex-direction:column}
+.top{height:52px;display:flex;align-items:center;gap:12px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top .crumb{font-family:var(--font-head);font-size:18px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .crumb a{color:var(--ink-3)}.top .crumb .sep{color:var(--ink-3);margin:0 8px}
+.top .sp{flex:1}
+.page{padding:24px clamp(16px,3vw,32px) 48px;display:flex;flex-direction:column;gap:20px;max-width:1280px;width:100%}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.page-head .sub{color:var(--ink-2);margin-top:6px;max-width:72ch}
+@media(max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static;height:auto;flex-direction:row;align-items:center;padding:10px 12px;gap:10px;flex-wrap:wrap}
+  .rail .lockup{border:0;padding:0}.rail .lockup img{width:32px;height:32px}
+  .rail nav{flex-direction:row;overflow-x:auto;flex:1;min-width:0}.rail .group{display:none}
+  .rail a.nav{white-space:nowrap;border-left:0;border-bottom:2px solid transparent}.rail a.nav.active{border-bottom-color:var(--accent)}
+  .rail .foot{display:none}
+  .top{padding:0 16px}
+}
+
+/* Parts */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 14px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;border-radius:2px}
+.btn:hover{background:var(--surface-2);text-decoration:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn-good{background:var(--good);border-color:var(--good);color:var(--on-good)}.btn-good:hover{filter:brightness(1.08);background:var(--good)}
+.btn-quiet{border-color:transparent;background:transparent}
+.btn-sm{height:28px;padding:0 10px;font-size:10.5px}
+.card{background:var(--surface);border:1px solid var(--line);min-width:0}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.card-body{padding:16px 18px}
+.chip{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 8px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.chip.good{background:var(--good-tint);color:var(--good)}.chip.warn{background:var(--warn-tint);color:var(--warn)}.chip.bad{background:var(--bad-tint);color:var(--bad)}.chip.info{background:var(--info-tint);color:var(--info)}.chip.brand{background:var(--accent-tint);color:var(--accent-ink)}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.live .dot{animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{50%{opacity:.25}}
+
+/* Tool grid */
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:14px}
+.tool{display:flex;flex-direction:column;gap:10px;padding:18px;color:inherit;border:1px solid var(--line);background:var(--surface);position:relative}
+.tool:hover{border-color:var(--accent);text-decoration:none}
+.tool .ico{width:36px;height:36px;display:grid;place-items:center;background:var(--accent-tint);color:var(--accent-ink)}
+.tool .ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5}
+.tool h3{font-size:17px}
+.tool p{color:var(--ink-2);font-size:13px}
+.tool .outs{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;padding-top:6px}
+.tool .outs span{font-size:11.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 7px}
+
+/* Tables */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer}tbody tr:hover{background:var(--surface-2)}
+td.num{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.empty{padding:28px 18px;text-align:center;color:var(--ink-3)}
+
+/* Form */
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:18px}
+.form .span{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.field label .req{color:var(--accent-ink)}
+.input,.select,.textarea{width:100%;min-width:0;height:36px;padding:0 10px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:0}
+.textarea{height:auto;min-height:96px;padding:8px 10px;resize:vertical;line-height:1.45}
+.input:focus,.select:focus,.textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.drop{border:1px dashed var(--line-2);background:var(--surface-2);padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+.drop.over{border-color:var(--accent);background:var(--accent-tint)}
+.drop .files{display:flex;flex-wrap:wrap;gap:6px}
+.drop .file{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);padding:2px 4px 2px 8px;font-size:12.5px;max-width:100%}
+.drop .file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drop .file button{width:20px;height:20px;color:var(--ink-3)}
+.hint{font-size:12.5px;color:var(--ink-3)}
+.error{border:1px solid var(--bad);background:var(--bad-tint);color:var(--bad);padding:10px 14px}
+.note{border-left:3px solid var(--accent);background:var(--surface);padding:12px 16px;color:var(--ink-2)}
+
+/* Run */
+.run-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:1000px){.run-grid{grid-template-columns:minmax(0,1fr)}}
+.feed{list-style:none;padding:6px 0;max-height:62vh;overflow:auto}
+.feed li{display:grid;grid-template-columns:62px 14px minmax(0,1fr);gap:8px;padding:5px 18px;font-size:13px}
+.feed time{color:var(--ink-3);font-family:var(--font-mono);font-size:12px;padding-top:1px}
+.feed .d{width:7px;height:7px;border-radius:50%;background:var(--line-2);margin-top:7px}
+.feed .k-tool .d{background:var(--info)}.feed .k-text .d{background:var(--accent)}.feed .k-error .d{background:var(--bad)}.feed .k-end .d{background:var(--good)}
+.feed .k-tool .m,.feed .k-status .m{color:var(--ink-2)}
+.feed .m{white-space:pre-wrap;overflow-wrap:anywhere}
+.summary{white-space:pre-wrap;line-height:1.6;overflow-wrap:anywhere}
+.summary mark{background:var(--warn-tint);color:var(--warn);padding:0 2px}
+.doc{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.doc:first-child{border-top:0}
+.doc .ext{width:38px;height:38px;display:grid;place-items:center;background:var(--surface-2);font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--ink-2);flex:none}
+.doc .b{flex:1;min-width:180px}
+.doc .n{font-weight:600;overflow-wrap:anywhere}
+.doc .acts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.doc form{flex-basis:100%;display:flex;flex-direction:column;gap:8px}
+dl.kv{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 16px;font-size:13px}
+dl.kv dt{color:var(--ink-3)}dl.kv dd{overflow-wrap:anywhere}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--rail);color:#fff;padding:10px 16px;font-size:13px;z-index:50;max-width:calc(100vw - 32px)}
+.skel{height:14px;background:var(--surface-2)}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail">
+    <a class="lockup" href="/#/dashboard" aria-label="Brightday Portal"><img src="/icons/icon-512.png" alt="Brightday" width="48" height="48"></a>
+    <nav>
+      <div class="group">Portal</div>
+      <a class="nav" href="/#/dashboard"><svg viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="5.5" height="5.5"/><rect x="9" y="1.5" width="5.5" height="5.5"/><rect x="1.5" y="9" width="5.5" height="5.5"/><rect x="9" y="9" width="5.5" height="5.5"/></svg>Dashboard</a>
+      <a class="nav" href="/#/clients"><svg viewBox="0 0 16 16"><path d="M2 14V6l6-4 6 4v8"/><path d="M6 14v-4h4v4"/></svg>Clients</a>
+      <a class="nav" href="/#/tasks"><svg viewBox="0 0 16 16"><path d="M2 4.5l1.5 1.5L6 3.5M2 9.5l1.5 1.5L6 8.5"/><path d="M8 4.5h6M8 9.5h6"/></svg>Tasks</a>
+      <a class="nav" href="/#/calendar"><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3"/></svg>Calendar</a>
+      <a class="nav" href="/#/email"><svg viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10"/><path d="M1.5 4l6.5 4.5L14.5 4"/></svg>Email</a>
+      <a class="nav" href="/#/chat"><svg viewBox="0 0 16 16"><path d="M2 3h12v8H6l-3 3v-3H2z"/></svg>Chat</a>
+      <div class="group">Advice</div>
+      <a class="nav active" href="#/"><svg viewBox="0 0 16 16"><path d="M3 1.5h6.5L13 5v9.5H3z"/><path d="M9.5 1.5V5H13"/><path d="M5.5 9l1.5 1.5 3-3"/></svg>Advice tools</a>
+    </nav>
+    <div class="foot" id="me" hidden></div>
+  </aside>
+  <div class="main">
+    <header class="top"><div class="crumb" id="crumb">Advice tools</div><div class="sp"></div><span class="chip warn" id="demo-chip" hidden>Demo agent</span><button class="btn btn-sm btn-quiet" id="theme" type="button" aria-label="Switch light or dark">Theme</button></header>
+    <main id="content" class="page" aria-live="polite"></main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script>
+'use strict';
+const API='api/';
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S={me:null,canApprove:false,tools:[],skills:[],demo:false,clients:null,stop:null};
+const ICONS={'fee-comparison':'<path d="M2 13h12"/><path d="M4 11V6M8 11V3M12 11V8"/>','product-comparison':'<rect x="1.5" y="3" width="5.5" height="10"/><rect x="9" y="3" width="5.5" height="10"/><path d="M3 6h2.5M3 8.5h2.5M10.5 6H13M10.5 8.5H13"/>','tax-optimisation':'<path d="M3 13L13 3"/><circle cx="4.5" cy="4.5" r="1.8"/><circle cx="11.5" cy="11.5" r="1.8"/>','annual-review':'<rect x="2" y="3" width="12" height="11"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3"/><path d="M5 10l2 2 4-4"/>','soa-roa':'<path d="M3 1.5h6.5L13 5v9.5H3z"/><path d="M9.5 1.5V5H13"/><path d="M5.5 8.5h5M5.5 11h3.5"/>'};
+const STATUS={queued:['Queued','info'],running:['Running','brand live'],review:['Adviser review','warn'],done:['Done','good'],failed:['Failed','bad'],cancelled:['Cancelled','']};
+const DOC={draft:['Draft','warn'],approved:['Approved','good'],rejected:['Sent back','bad'],final:['Ready','good']};
+const chip=([l,c])=>`<span class="chip ${c}"><span class="dot"></span>${esc(l)}</span>`;
+const when=iso=>iso?new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}):'—';
+const clock=iso=>new Date(iso).toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+const usd=n=>n==null?'—':'US$'+Number(n).toFixed(2);
+const initials=n=>String(n||'').split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('');
+function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,3200)}
+
+async function api(path,opts={}){
+  const headers={'x-requested-with':'brightday'};let body=opts.body;
+  if(body&&!(body instanceof FormData)){headers['content-type']='application/json';body=JSON.stringify(body)}
+  const r=await fetch(API+path,{method:opts.method||(body?'POST':'GET'),headers,body,credentials:'same-origin'});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok){const e=new Error(j.error||('Request failed ('+r.status+')'));e.status=r.status;throw e}
+  return j;
+}
+
+/* ---------- theme: the same switch and stored choice as the CRM ---------- */
+try{const th=localStorage.getItem('brightday-theme');if(th)document.documentElement.setAttribute('data-theme',th)}catch(e){}
+$('#theme').onclick=()=>{const r=document.documentElement;const cur=r.getAttribute('data-theme');const dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;const next=dark?'light':'dark';r.setAttribute('data-theme',next);try{localStorage.setItem('brightday-theme',next)}catch(e){}};
+
+/* ---------- views ---------- */
+function crumb(parts){$('#crumb').innerHTML=parts.map((p,i)=>i<parts.length-1?`<a href="${p[1]}">${esc(p[0])}</a><span class="sep">/</span>`:esc(p[0])).join('')}
+
+async function vHome(){
+  crumb([['Advice tools']]);
+  const c=$('#content');
+  c.innerHTML=`<div class="page-head"><div><h1>Advice tools</h1><p class="sub">Run the practice's skills on a client's reports and records. Each run reads the client from the CRM as you see it, and every document it writes is a draft until checked${S.canApprove?'':' by an adviser'}.</p></div></div>
+  <section class="tools">${S.tools.map(t=>{const missing=!S.skills.includes(t.skill)&&!S.demo;return`<a class="tool" href="#/new/${t.id}"><span class="ico"><svg viewBox="0 0 16 16">${ICONS[t.id]||''}</svg></span><h3>${esc(t.name)}</h3><p>${esc(t.short)}</p>${t.approval?'<div><span class="chip brand">Adviser sign-off</span></div>':''}${missing?'<div><span class="chip bad">Skill not installed yet</span></div>':''}<div class="outs">${t.outputs.map(o=>`<span>${esc(o)}</span>`).join('')}</div></a>`}).join('')}</section>
+  <section class="card"><div class="card-head"><h2>Recent runs</h2><span class="label">${S.me.perms.allRecords||S.me.perms.admin?'Whole practice':'Your clients and your runs'}</span></div><div class="table-wrap" id="runs"><div class="card-body"><div class="skel" style="width:60%"></div></div></div></section>`;
+  const {runs}=await api('runs');
+  const byId=Object.fromEntries(S.tools.map(t=>[t.id,t]));
+  $('#runs').innerHTML=runs.length?`<table><thead><tr><th>Tool</th><th>Client</th><th>Status</th><th>Started by</th><th>Started</th><th class="num">Cost</th></tr></thead><tbody>${runs.map(r=>`<tr data-run="${esc(r.id)}"><td><a href="#/run/${esc(r.id)}">${esc(byId[r.tool]?.name||r.tool)}</a></td><td>${esc(r.clientName||'—')}</td><td>${chip(STATUS[r.status]||[r.status,''])}</td><td>${esc(r.createdByName||'')}</td><td>${when(r.createdAt)}</td><td class="num">${usd(r.costUsd)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No runs yet. Choose a tool above to start one.</div>';
+  $$('#runs tr[data-run]').forEach(tr=>tr.onclick=e=>{if(!e.target.closest('a'))location.hash='#/run/'+tr.dataset.run});
+}
+
+async function clients(){if(!S.clients)S.clients=(await api('clients')).clients;return S.clients}
+
+async function vNew(id,params){
+  const t=S.tools.find(x=>x.id===id);if(!t)return vHome();
+  crumb([['Advice tools','#/'],[t.name]]);
+  const c=$('#content');
+  const missing=!S.skills.includes(t.skill)&&!S.demo;
+  let cl=[];try{cl=await clients()}catch(e){toast('Could not load clients: '+e.message)}
+  const pre=params.get('client')||'';
+  const field=f=>{const req=f.required?' <span class="req" aria-hidden="true">*</span>':'';const id='f-'+f.key;
+    if(f.kind==='client')return`<div class="field"><label for="${id}">${esc(f.label)}${req}</label><select class="select" id="${id}" name="${f.key}" ${f.required?'required':''}><option value="">${f.required?'Choose a client':'No client (scenario only)'}</option>${cl.map(x=>`<option value="${esc(x.id)}" ${x.id===pre?'selected':''}>${esc(x.name)}${x.contact&&x.contact!==x.name?' · '+esc(x.contact):''}</option>`).join('')}</select>${cl.length?'':'<span class="hint">No clients in your list yet. Add them in the portal first.</span>'}</div>`;
+    if(f.kind==='select')return`<div class="field"><label for="${id}">${esc(f.label)}${req}</label><select class="select" id="${id}" name="${f.key}" required>${f.options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select></div>`;
+    if(f.kind==='textarea')return`<div class="field span"><label for="${id}">${esc(f.label)}${req}</label><textarea class="textarea" id="${id}" name="${f.key}" ${f.required?'required':''} placeholder="${esc(f.placeholder||'')}"></textarea></div>`;
+    if(f.kind==='date')return`<div class="field"><label for="${id}">${esc(f.label)}${req}</label><input class="input" type="date" id="${id}" name="${f.key}" ${f.required?'required':''}></div>`;
+    if(f.kind==='files')return`<div class="field span"><label for="${id}">${esc(f.label)}${req}</label><div class="drop" data-drop="${f.key}"><input type="file" id="${id}" multiple accept="${esc(f.accept)}" hidden><div class="row"><button type="button" class="btn btn-sm" data-pick="${f.key}">Choose files</button> <span class="hint">or drop them here · ${esc(f.accept.replace(/\./g,'').toUpperCase().replace(/,/g,', '))}</span></div><div class="files"></div></div></div>`;
+    return`<div class="field"><label for="${id}">${esc(f.label)}${req}</label><input class="input" id="${id}" name="${f.key}" ${f.required?'required':''} placeholder="${esc(f.placeholder||'')}"></div>`};
+  c.innerHTML=`<div class="page-head"><div><h1>${esc(t.name)}</h1><p class="sub">${esc(t.short)} Produces: ${t.outputs.map(esc).join(', ')}.</p></div></div>
+  ${missing?`<div class="note">The <b>${esc(t.skill)}</b> skill is not installed yet. Add it to <span class="mono">tools/agent/skills/${esc(t.skill)}/</span> before running this tool.</div>`:''}
+  ${t.approval?'<div class="note">This produces advice documents. They stay drafts until an adviser approves them on the run page.</div>':''}
+  <form class="card" id="run-form" novalidate><div class="card-body"><div class="form">${t.fields.map(field).join('')}</div></div>
+  <div class="card-body" style="border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" type="submit" ${missing?'disabled':''}>Start run</button><a class="btn btn-quiet" href="#/">Cancel</a><span class="error" id="form-error" role="alert" hidden></span></div></form>`;
+  const picked={};
+  const draw=key=>{$(`[data-drop="${key}"] .files`).innerHTML=(picked[key]||[]).map((f,i)=>`<span class="file"><span>${esc(f.name)}</span><button type="button" aria-label="Remove ${esc(f.name)}" data-rm="${key}:${i}">×</button></span>`).join('')};
+  $$('[data-drop]').forEach(d=>{const key=d.dataset.drop,inp=$('input[type=file]',d);const add=list=>{picked[key]=[...(picked[key]||[]),...list];draw(key)};
+    $('[data-pick]',d).onclick=()=>inp.click();inp.onchange=()=>{add([...inp.files]);inp.value=''};
+    d.ondragover=e=>{e.preventDefault();d.classList.add('over')};d.ondragleave=()=>d.classList.remove('over');d.ondrop=e=>{e.preventDefault();d.classList.remove('over');add([...e.dataTransfer.files])};
+    d.onclick=e=>{const rm=e.target.closest('[data-rm]');if(rm){const[k,i]=rm.dataset.rm.split(':');picked[k].splice(+i,1);draw(k)}}});
+  $('#run-form').onsubmit=async e=>{e.preventDefault();const form=e.target,err=$('#form-error');err.hidden=true;
+    for(const f of t.fields){const present=f.kind==='files'?(picked[f.key]||[]).length:String(form.elements[f.key]?.value||'').trim();if(f.required&&!present){err.textContent=f.label+' is required.';err.hidden=false;(form.elements[f.key]||$(`[data-pick="${f.key}"]`))?.focus();return}}
+    const fd=new FormData();fd.append('tool',t.id);for(const f of t.fields){if(f.kind==='files')(picked[f.key]||[]).forEach(file=>fd.append(f.key,file,file.name));else if(form.elements[f.key])fd.append(f.key,form.elements[f.key].value)}
+    const btn=$('button[type=submit]',form);btn.disabled=true;btn.textContent='Starting…';
+    try{const run=await api('runs',{body:fd});location.hash='#/run/'+run.id}catch(x){err.textContent=x.message;err.hidden=false;btn.disabled=false;btn.textContent='Start run'}};
+}
+
+function linkify(summary){return esc(summary).replace(/\[\[CONFIRM:[^\]]*\]\]/g,m=>`<mark>${m}</mark>`)}
+
+async function vRun(id){
+  const c=$('#content');
+  let run;try{run=await api('runs/'+id)}catch(e){c.innerHTML=`<div class="error">${esc(e.message)}</div><a href="#/">Back to advice tools</a>`;return}
+  const t=S.tools.find(x=>x.id===run.tool)||{name:run.tool,fields:[]};
+  crumb([['Advice tools','#/'],[t.name+(run.clientName?' · '+run.clientName:'')]]);
+  const live=['queued','running'].includes(run.status);
+  const labels=Object.fromEntries((t.fields||[]).map(f=>[f.key,f.label]));
+  const inputs=Object.entries(run.inputs||{}).filter(([k])=>k!=='clientId'&&k!=='files').map(([k,v])=>`<dt>${esc(labels[k]||k)}</dt><dd>${esc(v)}</dd>`).join('')+Object.entries((run.inputs||{}).files||{}).map(([k,v])=>`<dt>${esc(labels[k]||k)}</dt><dd>${v.map(esc).join('<br>')}</dd>`).join('');
+  const docs=run.documents.map(d=>{const ext=(d.filename.split('.').pop()||'').slice(0,4).toUpperCase();const review=d.status==='draft'&&run.canApprove;
+    return`<div class="doc" data-doc="${esc(d.id)}"><span class="ext">${esc(ext)}</span><div class="b"><div class="n">${esc(d.filename)}</div><div class="hint">${Math.max(1,Math.round(d.size/1024))} KB${d.decidedByName?` · ${d.status==='approved'?'approved':'sent back'} by ${esc(d.decidedByName)} ${when(d.decidedAt)}`:''}</div>${d.comment?`<div class="hint">“${esc(d.comment)}”</div>`:''}</div>
+    <div class="acts">${chip(DOC[d.status]||[d.status,''])}<a class="btn btn-sm" href="${API}documents/${esc(d.id)}">Download</a>${review?`<button class="btn btn-sm btn-good" data-approve="${esc(d.id)}">Approve</button><button class="btn btn-sm" data-sendback="${esc(d.id)}">Send back</button>`:''}</div>
+    ${review?`<form hidden data-backform="${esc(d.id)}"><label class="label" for="c-${esc(d.id)}">What needs to change</label><textarea class="textarea" id="c-${esc(d.id)}" required></textarea><div><button class="btn btn-sm btn-primary" type="submit">Send back</button> <button class="btn btn-sm btn-quiet" type="button" data-cancelback>Cancel</button></div></form>`:''}</div>`}).join('');
+  const waiting=run.status==='review'&&!run.canApprove?'<div class="note">Waiting for an adviser to approve these documents.</div>':'';
+  c.innerHTML=`<div class="page-head"><div><div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h1>${esc(t.name)}</h1>${chip(STATUS[run.status]||[run.status,''])}</div><p class="sub">${run.clientName?esc(run.clientName)+' · ':''}started by ${esc(run.createdByName||'')} ${when(run.createdAt)}${run.costUsd!=null?' · '+usd(run.costUsd):''}</p></div>
+  <div style="display:flex;gap:8px">${live?'<button class="btn" id="cancel">Cancel run</button>':''}<a class="btn" href="#/new/${esc(run.tool)}${run.clientId?'?client='+encodeURIComponent(run.clientId):''}">Run again</a></div></div>
+  ${run.error?`<div class="error">${esc(run.error)}</div>`:''}${waiting}
+  <div class="run-grid">
+    <section class="card"><div class="card-head"><h2>Progress</h2>${live?'<span class="chip brand live"><span class="dot"></span>Live</span>':''}</div><ol class="feed" id="feed"></ol></section>
+    <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+      <section class="card"><div class="card-head"><h2>Documents</h2><span class="label">${run.documents.length}</span></div>${docs||`<div class="empty">${live?'Documents appear here when the run finishes.':'This run produced no documents.'}</div>`}</section>
+      ${run.summary?`<section class="card"><div class="card-head"><h2>Summary for the adviser</h2></div><div class="card-body summary">${linkify(run.summary)}</div></section>`:''}
+      <section class="card"><div class="card-head"><h2>Inputs</h2></div><div class="card-body">${inputs?`<dl class="kv">${inputs}</dl>`:'<span class="muted">None</span>'}</div></section>
+    </div>
+  </div>`;
+  const feed=$('#feed');
+  const add=ev=>{feed.insertAdjacentHTML('beforeend',`<li class="k-${esc(ev.kind)}"><time>${clock(ev.at)}</time><span class="d"></span><span class="m">${esc(ev.message)}</span></li>`);feed.scrollTop=feed.scrollHeight;if(ev.kind==='end'&&live)setTimeout(()=>route(),400)};
+  const es=new EventSource(API+'runs/'+id+'/events');es.onmessage=e=>add(JSON.parse(e.data));S.stop=()=>es.close();
+  if(!live)setTimeout(()=>es.close(),1500);
+  $('#cancel')&&($('#cancel').onclick=async()=>{try{await api('runs/'+id+'/cancel',{method:'POST'});toast('Run cancelled');route()}catch(e){toast(e.message)}});
+  $$('[data-approve]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await api('documents/'+b.dataset.approve+'/decision',{body:{decision:'approved'}});toast('Approved');route()}catch(e){toast(e.message);b.disabled=false}});
+  $$('[data-sendback]').forEach(b=>b.onclick=()=>{const f=$(`[data-backform="${b.dataset.sendback}"]`);f.hidden=false;$('textarea',f).focus()});
+  $$('[data-backform]').forEach(f=>{$('[data-cancelback]',f).onclick=()=>f.hidden=true;f.onsubmit=async e=>{e.preventDefault();const comment=$('textarea',f).value.trim();if(!comment)return $('textarea',f).focus();try{await api('documents/'+f.dataset.backform+'/decision',{body:{decision:'rejected',comment}});toast('Sent back');route()}catch(x){toast(x.message)}}});
+}
+
+function signedOut(status,msg){
+  $('#content').innerHTML=status===401?`<div class="page-head"><div><h1>Sign in first</h1><p class="sub">The advice tools use your portal sign-in.</p></div></div><div><a class="btn btn-primary" href="/">Go to the portal sign-in</a></div>`
+    :`<div class="page-head"><div><h1>No access</h1><p class="sub">${esc(msg)}. Ask an admin to turn on Advice tools for your access level under Settings → Access levels.</p></div></div><div><a class="btn" href="/">Back to the portal</a></div>`;
+}
+
+async function route(){
+  if(S.stop){S.stop();S.stop=null}
+  const [path,qs]=(location.hash.replace(/^#/,'')||'/').split('?');const parts=path.split('/').filter(Boolean);const params=new URLSearchParams(qs||'');
+  try{
+    if(!S.me){const me=await api('me');S.me=me.user;S.canApprove=me.canApprove;const tl=await api('tools');S.tools=tl.tools;S.skills=tl.skills;S.demo=tl.demo;
+      $('#me').innerHTML=`<span class="av">${esc(initials(S.me.name))}</span><div class="who"><b>${esc(S.me.name)}</b><span>${esc(S.me.role)}</span></div>`;$('#me').hidden=false;$('#demo-chip').hidden=!S.demo}
+    if(parts[0]==='new')await vNew(parts[1],params);else if(parts[0]==='run')await vRun(parts[1]);else await vHome();
+  }catch(e){if(e.status===401||e.status===403)signedOut(e.status,e.message);else $('#content').innerHTML=`<div class="error">${esc(e.message)}</div>`}
+  window.scrollTo(0,0);
+}
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "brightday-advice-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Brightday advice tools: runs the practice's Claude skills (fee and product comparisons, tax, annual reviews, SOA/ROA) beside the CRM",
+  "type": "module",
+  "main": "server/index.js",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "DATA_DIR=./data ALLOW_UNENCRYPTED=1 CRM_URL=http://localhost:3000 node server/index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.284"
+  }
+}
