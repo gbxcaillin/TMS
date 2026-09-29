@@ -1,0 +1,55 @@
+# Runs on every pull request and on main: the CRM's suite (offline browser tests against the page source, server
+# tests against a built app with a throwaway database) and the advice tools' end-to-end tests (the real CRM and the
+# tools service together, with the stand-in agent). No secrets and no network services needed.
+name: Tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  crm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: crm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Server dependencies
+        run: npm install --no-audit --no-fund
+        working-directory: crm/server
+      - name: Test dependencies and Chromium
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright-core install --with-deps chromium
+        working-directory: crm/tests
+      - name: Syntax check the server
+        run: for f in server/*.js server/lib/*.js server/routes/*.js; do node --check "$f"; done
+      - name: Build
+        run: sh build.sh
+      - name: Tests
+        run: node tests/run.js
+
+  tools:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: CRM server dependencies (the tests boot the real CRM)
+        run: npm install --no-audit --no-fund
+        working-directory: crm/server
+      - name: Tools dependencies
+        run: npm ci --no-audit --no-fund
+        working-directory: tools
+      - name: Syntax check
+        run: for f in server/*.js server/lib/*.js; do node --check "$f"; done
+        working-directory: tools
+      - name: Tests
+        run: npm test
+        working-directory: tools

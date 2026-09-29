@@ -1,0 +1,41 @@
+# Brightday Portal behind Cloudflare. One host: /tools/* goes to the advice tools, everything else to the CRM.
+# Replace portal.brightday.com.au if the portal lives elsewhere (also APP_URL in crm.env).
+{
+	servers {
+		# Requests arrive from Cloudflare: trust its edge for the visitor's real IP (audit logs, rate limits).
+		# Current list: https://www.cloudflare.com/ips
+		trusted_proxies static 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+		client_ip_headers CF-Connecting-IP X-Forwarded-For
+	}
+}
+
+portal.brightday.com.au {
+	# Cloudflare Origin Certificate (15 years, nothing to renew). SSL/TLS mode in Cloudflare: Full (strict).
+	tls /certs/origin.pem /certs/origin.key
+
+	# Report uploads for the advice tools and SharePoint uploads for the CRM.
+	request_body {
+		max_size 100MB
+	}
+
+	handle /tools* {
+		reverse_proxy tools:3100 {
+			# Progress streams (server-sent events) must not be buffered.
+			flush_interval -1
+		}
+	}
+	handle {
+		reverse_proxy crm:3000 {
+			flush_interval -1
+		}
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+	encode gzip zstd
+}

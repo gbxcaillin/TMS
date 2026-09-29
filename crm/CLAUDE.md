@@ -27,6 +27,6 @@ capability or integration changed. See `docs/README.md`.
 - The test suite: `sh build.sh`, then `node tests/run.js` (every `tests/*.test.js`; add `--live` for the
   network-backed `*.live.js`, or name words to run a subset). Browser tests need Chromium: set `CHROME_BIN`, or
   `npx playwright-core install chromium` in `tests/`. GitHub Actions runs the same on every PR
-  (`.github/workflows/ci.yml`).
+  (`.github/workflows/ci.yml` at the repository root, which also runs the advice tools' tests in `../tools`).
 - A change that fixes a bug or adds a feature adds or extends a test in `tests/`. Fixtures use made-up data only:
   never commit client records or licensed data.

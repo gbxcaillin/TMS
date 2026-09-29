@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-28",
+  "version": "2026-09-29",
   "intro": "Step-by-step training for every part of Brightday Portal. Screens show sample data, never real clients. Each module lists what the screen is for, the steps to use it, and what happens behind the scenes. Modules are updated with every change to the CRM; see What's new for the latest.",
   "groups": [
     "Getting started",
@@ -506,6 +506,52 @@
       ]
     },
     {
+      "id": "tools",
+      "group": "Work",
+      "title": "Advice tools",
+      "summary": "Fee and product comparisons, tax-loss harvesting, annual reviews with the Ongoing Fee Arrangement, and SOA/ROA drafting. Each tool runs one of the practice's Claude skills on the reports you upload and the client's records in Brightday Portal, and hands back documents to check.",
+      "image": "tools.jpg",
+      "caption": "Advice tools: the five tools, and recent runs across the practice. Sample data.",
+      "images": [
+        {
+          "src": "tools-run.jpg",
+          "caption": "A run waiting for adviser review: live progress, the draft documents with Approve and Send back, the summary with items to confirm highlighted, and the inputs."
+        }
+      ],
+      "steps": [
+        {
+          "t": "Open Advice tools",
+          "d": "Choose Advice tools in the menu. It opens in its own page with the same sign-in; the Portal links on the left bring you back."
+        },
+        {
+          "t": "Pick a tool and a client",
+          "d": "Choose a tool, then the client. The list is your client list as the portal shows it to you."
+        },
+        {
+          "t": "Add the reports",
+          "d": "Drop in the platform reports, statements or PDS files the tool asks for, fill in the details (review period, proposed fee, recommendation) and choose Start run."
+        },
+        {
+          "t": "Watch it work",
+          "d": "The run page shows each step as it happens: the skill loading, each file being read, and each document being written. You can leave the page; the run carries on."
+        },
+        {
+          "t": "Check the documents",
+          "d": "Download each document and read the summary. Anything the tool could not confirm from the inputs is marked [[CONFIRM: …]] and highlighted."
+        },
+        {
+          "t": "Approve or send back",
+          "d": "SOA/ROA, annual review and OFA documents stay drafts until an adviser approves them. Send back asks for what needs to change. Paraplanners can prepare runs but cannot approve."
+        }
+      ],
+      "tips": [
+        "For an annual review, the tool reads the client's emails, meetings, notes and tasks for the review period from the portal, so file emails and meetings against the client beforehand.",
+        "A client's adviser sees the runs for their clients, including ones a paraplanner started.",
+        "Admins turn Advice tools on or off per access level under Settings, Access levels.",
+        "Everything a run keeps (uploads, the client records given to it, and the documents) is encrypted on the server."
+      ]
+    },
+    {
       "id": "invoices",
       "group": "Finance and research",
       "title": "Invoices",
@@ -868,6 +914,15 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-29",
+      "title": "Advice tools",
+      "body": "A new Advice tools section runs the practice's fee comparison, product comparison, tax-loss harvesting, annual review and SOA/ROA skills on a client's reports and portal records. Advice documents stay drafts until an adviser approves them.",
+      "modules": [
+        "tools",
+        "access"
+      ]
+    },
     {
       "date": "2026-09-29",
       "title": "The page no longer jumps back to the top",

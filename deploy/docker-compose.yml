@@ -1,0 +1,50 @@
+# Brightday Portal: the CRM, the advice tools and Caddy on one VPS, with Cloudflare in front.
+#
+#   cd /opt/brightday/deploy && docker compose up -d --build
+#
+# Data to back up: ./crm-data (CRM database, push keys, nightly backups) and ./tools-data (runs, their files and
+# documents). Both are encrypted with the same DATA_KEYS; keep a copy of that key off the server.
+services:
+  crm:
+    build:
+      context: ../crm
+    restart: unless-stopped
+    env_file: ./crm.env
+    environment:
+      NODE_ENV: production
+      TOOLS_URL: /tools/
+    volumes:
+      - ./crm-data:/app/data
+    expose: ["3000"]
+
+  tools:
+    build:
+      context: ../tools
+    restart: unless-stopped
+    env_file: ./tools.env
+    environment:
+      NODE_ENV: production
+      CRM_URL: http://crm:3000
+    volumes:
+      - ./tools-data:/app/data
+      # Skills live in the repo (tools/agent); mounted so a new or edited skill needs no rebuild.
+      - ../tools/agent:/app/agent:ro
+    expose: ["3100"]
+    depends_on: [crm]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./certs:/certs:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [crm, tools]
+
+volumes:
+  caddy_data:
+  caddy_config:

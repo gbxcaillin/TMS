@@ -9,3 +9,8 @@ data/
 *.log
 .DS_Store
 deploy/cloudflared/*.json
+deploy/*.env
+deploy/crm-data/
+deploy/tools-data/
+deploy/certs/*.pem
+deploy/certs/*.key
