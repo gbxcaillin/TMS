@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acme CRM Future Capabilities</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #FFFFFF; --soft: #F5F6F8; --card: #FFFFFF;
+    --ink: #0F172A; --ink-2: #3D3D3A; --ink-3: #6B6B66;
+    --line: rgba(10,10,10,0.12); --line-2: rgba(10,10,10,0.28);
+    --teal: #22389A; --teal-2: #3559E0; --teal-soft: rgba(46,139,110,0.12);
+    --void: #0F172A; --void-text: #FFFFFF;
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --sans: Inter, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #0F172A; --soft: #151514; --card: #1E293B;
+      --ink: #FFFFFF; --ink-2: #D8D6CF; --ink-3: #9A9891;
+      --line: rgba(255,253,248,0.14); --line-2: rgba(255,253,248,0.32);
+      --teal: #3559E0; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
+      --void: #000000; --void-text: #FFFFFF;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0F172A; --soft: #151514; --card: #1E293B;
+    --ink: #FFFFFF; --ink-2: #D8D6CF; --ink-3: #9A9891;
+    --line: rgba(255,253,248,0.14); --line-2: rgba(255,253,248,0.32);
+    --teal: #3559E0; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
+    --void: #000000; --void-text: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding-block: 40px 72px; padding-inline: clamp(16px, 4vw, 40px); }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.1; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(40px, 6vw, 64px); }
+  h2 { font-size: clamp(28px, 3.6vw, 38px); margin-bottom: 18px; }
+  h3 { font-size: 22px; margin-bottom: 6px; }
+  p { margin: 0; }
+  .eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); }
+  .eyebrow.teal { color: var(--teal); }
+  .lede { font-size: 18px; color: var(--ink-2); max-width: 62ch; }
+  .mono { font-family: var(--mono); font-size: 12.5px; }
+  header.hero { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding-bottom: 28px; border-bottom: 1px solid var(--line-2); }
+  header.hero .meta { display: grid; gap: 6px; text-align: right; color: var(--ink-3); font-family: var(--mono); font-size: 12px; }
+  section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  .grid { display: grid; gap: 16px; }
+  .cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 860px) { .cols-3, .cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; } header.hero { grid-template-columns: 1fr; } header.hero .meta { text-align: left; } }
+  .card { background: var(--card); border: 1px solid var(--line); padding: 20px 20px 18px; display: grid; gap: 8px; align-content: start; }
+  .card .eyebrow { margin-bottom: 2px; }
+  .card ul { margin: 4px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; }
+  .card li { margin: 2px 0; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 28px; }
+  @media (max-width: 560px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .stat { background: var(--soft); padding: 16px 18px; display: grid; gap: 2px; }
+  .stat b { font-family: var(--serif); font-size: 34px; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 12px; color: var(--ink-3); }
+  .diagram { margin: 0; background: var(--soft); border: 1px solid var(--line); padding: 8px; }
+  .diagram img { display: block; width: 100%; height: auto; }
+  .diagram figcaption { padding: 10px 8px 4px; font-size: 12.5px; color: var(--ink-3); }
+  .intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; margin-bottom: 24px; }
+  .intro figure { margin: 0; border: 1px solid var(--line); background: var(--soft); }
+  .intro img { display: block; width: 100%; height: auto; }
+  @media (max-width: 700px) { .intro { grid-template-columns: 1fr; } }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap { overflow-x: auto; }
+  th { text-align: left; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line-2); }
+  td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
+  td:first-child { color: var(--ink); font-weight: 500; }
+  td.num, th.num { text-align: right; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; padding-right: 0; }
+  tr.total td { border-bottom: 0; border-top: 1px solid var(--line-2); color: var(--ink); font-weight: 600; }
+  .chip { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 8px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink-2); white-space: nowrap; }
+  .chip.on { background: var(--teal-soft); border-color: transparent; color: var(--teal); }
+  .chip.opt { border-style: dashed; }
+  .flowlist { display: grid; gap: 0; border: 1px solid var(--line); }
+  .flowlist .row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--card); }
+  .flowlist .row:last-child { border-bottom: 0; }
+  .flowlist .row b { font-family: var(--serif); font-size: 20px; font-weight: 400; }
+  .flowlist .row p { color: var(--ink-2); font-size: 14px; }
+  @media (max-width: 560px) { .flowlist .row { grid-template-columns: 1fr; gap: 4px; } }
+  .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 860px) { .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .shots { grid-template-columns: 1fr; } }
+  .shots figure { margin: 0; border: 1px solid var(--line); background: var(--card); }
+  .shots img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+  .shots figcaption { padding: 8px 12px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+  .note { background: var(--soft); border-left: 2px solid var(--teal); padding: 14px 18px; color: var(--ink-2); font-size: 14px; max-width: 70ch; }
+  .jobs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .job { border: 1px solid var(--line); padding: 14px 16px; background: var(--card); display: grid; gap: 4px; }
+  .job .when { font-family: var(--mono); font-size: 12px; color: var(--teal); }
+  .job p { font-size: 13.5px; color: var(--ink-2); }
+  footer { padding-top: 28px; color: var(--ink-3); font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  .dark-band { background: var(--void); color: var(--void-text); padding: 28px clamp(16px, 4vw, 40px); margin-inline: calc(-1 * clamp(16px, 4vw, 40px)); }
+  .dark-band h2, .dark-band .eyebrow { color: var(--void-text); }
+  .dark-band .eyebrow { opacity: 0.7; }
+  .dark-band .grid .card { background: #151514; border-color: rgba(255,253,248,0.14); color: #FFFFFF; }
+  .dark-band .card ul, .dark-band .card p { color: #D8D6CF; }
+  .dark-band .card .eyebrow { color: #4FB08F; opacity: 1; }
+  @media print {
+    body { background: #FFFFFF; }
+    #crm-back { display: none !important; }
+    section { break-inside: avoid-page; }
+    .card, .job, .flowlist .row { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div id="crm-back" style="display:none;position:sticky;top:0;z-index:5;background:#0F172A;color:#FFFFFF;font:500 13px/1 Inter,Segoe UI,Helvetica,Arial,sans-serif;padding:12px 20px;align-items:center;gap:14px"><a href="../#/help/future" target="_top" style="color:#FFFFFF;text-decoration:none;border:1px solid rgba(255,253,248,.5);padding:7px 12px;letter-spacing:.06em;text-transform:uppercase;font-size:11px">&#8249; Back to Help &amp; training</a><span style="opacity:.75">Acme CRM future capabilities</span><span style="flex:1"></span><button onclick="window.print()" style="background:#22389A;color:#FFFFFF;border:0;padding:8px 12px;font:600 11px Inter,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Print / PDF</button></div>
+<script>if(window.self===window.top&&/\/docs\/capabilities\.html$/.test(location.pathname))document.getElementById('crm-back').style.display='flex';</script>
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <p class="eyebrow teal">Acme Advisory</p>
+      <h1>Future capabilities</h1>
+      <p class="lede" style="margin-top:14px">What has been designed but parked, what is built and waiting on an account or a decision, what the scale model still calls for, and what was considered and set aside. Each item says what it would take to switch on. The companion to the <a href="capabilities.html">current capabilities statement</a>.</p>
+    </div>
+    <div class="meta">
+      <span>crm.example.com</span>
+      <span>main 700cad1</span>
+      <span>28 September 2026</span>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>2</b><span>designed and parked</span></div>
+    <div class="stat"><b>6</b><span>built, waiting on an account or a decision</span></div>
+    <div class="stat"><b>2</b><span>planned from the scale model</span></div>
+    <div class="stat"><b>6</b><span>considered and set aside</span></div>
+  </div>
+
+  <section>
+    <p class="eyebrow">Parked</p>
+    <h2>Designed, not built</h2>
+    <div class="grid cols-2" style="margin-top:8px">
+      <div class="card"><p class="eyebrow teal">Parked · September 2026</p><h3>Busy time mirrored across your Outlook calendars</h3><p>Outlook cannot block one account's calendar when a meeting lands in another, and Alex holds three accounts. The CRM already reads every connected calendar, so it can do the job: a per-mailbox switch under Settings, Email accounts ("Block time here when another of my calendars is busy"). A meeting booked in one mailbox gets a private "Busy" placeholder in the others, kept in step when the original moves and removed when it is cancelled. Free-time entries and meetings already on both calendars are left alone. Accounts without an Exchange calendar (the brightday address) cannot take part.</p><p><b>To switch on:</b> about a day of work, no cost. Say "build the busy mirror".</p></div>
+      <div class="card"><p class="eyebrow teal">Parked · September 2026</p><h3>A staging copy of the CRM</h3><p>A second container on the same VPS, crm-staging.example.com, with its own database and sample data, an amber Staging mark on every screen, and no email or webhooks. Every pull request would be pushed to a staging branch and rebuilt there within five minutes, so a change can be clicked through before it is merged and goes live. Built and tested; parked before the one-time setup (DNS, Cloudflare Access, two Entra redirect URIs, a compose service and a Caddy block).</p><p><b>To switch on:</b> reopen pull request #76, merge it, then follow deploy/STAGING.md. About an hour of setup, no extra hosting cost.</p></div>
+      <div class="card"><p class="eyebrow teal">Proposed · September 2026</p><h3>Unlisted funds in model figures</h3><p>A model that holds an unlisted fund (an APIR code) leaves that fund out of its growth chart and its return and risk figures, because the fund has no daily price. The Morningstar reference data already carries each fund's one, three, five and ten year returns, three-year standard deviation and fees, so the model's weighted figures could include it, labelled as estimates alongside the price-based figures. About a day.</p></div>
+      <div class="card"><p class="eyebrow">Why it was parked</p><h3>Waiting on priority, not on a blocker</h3><p>The busy mirror was parked on 27 September to focus on the softphone and notes work; the staging copy on 28 September, with the review-before-merge workflow in place but the second container not yet set up. Nothing about either design depends on anything else. The alternatives (Power Automate flows per account, or a paid sync service) are listed under Considered and set aside below.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Ready</p>
+    <h2>Built, waiting on an account or a decision</h2>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Capability</th><th>What is in the code today</th><th>What it needs</th><th class="num">Cost</th></tr></thead>
+      <tbody>
+        <tr><td>Aircall transcripts and AI summaries on the card</td><td>The Aircall adapter fetches the transcript, summary and sentiment for every finished call and merges the later summary and transcription events</td><td>The AI Assist add-on on the Aircall plan, plus an API key in <code>AIRCALL_API_ID</code> / <code>AIRCALL_API_TOKEN</code></td><td class="num">US$9 to 49 a seat</td></tr>
+        <tr><td>Dialpad as the softphone</td><td>Full adapter: hangup, recording and transcription events, transcript fetched by API, recording share links so recordings open (or play) from the CRM</td><td>A Dialpad Pro plan (API access starts there) and a company API key in <code>DIALPAD_API_KEY</code></td><td class="num">about US$25 a user</td></tr>
+        <tr><td>JustCall as the softphone</td><td>Adapter that reads the recording, transcript, summary, sentiment and score straight from the webhook</td><td>A JustCall Team plan, two-seat minimum, and the webhook pointed at the CRM</td><td class="num">US$29 a user</td></tr>
+        <tr><td>Claude on an API key</td><td>Scoring, drafting, briefings and call summaries run through the Claude helper on the VPS today, sharing the personal subscription limit</td><td>Point the helper at an API key with Sonnet 5 so it no longer competes with day-to-day use; half a day</td><td class="num">about US$10 a month</td></tr>
+        <tr><td>Automatic accounts on Microsoft sign-in</td><td>Anyone in the ACME tenant who signs in gets a Member account without an invite</td><td>One line in the env file: <code>SSO_AUTO_PROVISION=1</code> with <code>SSO_DOMAIN=example.com</code></td><td class="num">0</td></tr>
+        <tr><td>Website traffic on the dashboard</td><td>The Website to pipeline tile shows visits and page views next to leads once Cloudflare Web Analytics is connected</td><td>Three env values: API token, account id and the site tag (see the deploy guide)</td><td class="num">0</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note" style="margin-top:14px">Every row above is exercised by a functional test against sample payloads, but none has seen a real delivery yet. The first live call or event is the one to watch.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Planned</p>
+    <h2>Still to build for 20 users and 1,000 leads a month</h2>
+    <div class="grid cols-2" style="margin-top:8px">
+      <div class="card"><p class="eyebrow teal">By month 4</p><h3>Targets reporting</h3><p>Per-user targets on the Reports page. The roles half shipped on 28 September as access levels, and first-response times per owner shipped the same day (Reports, Response times). About a day.</p></div>
+    </div>
+    <p class="note" style="margin-top:14px">The two "before month 1" items from the scale model, lead routing and the background newsletter sender, shipped on 27 September and now sit in the current statement.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Set aside</p>
+    <h2>Considered and not pursued, and why</h2>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Option</th><th>Why it was set aside</th><th>Revisit when</th></tr></thead>
+      <tbody>
+        <tr><td>Postmark instead of Resend for email</td><td>No gain at current volume: Resend already carries the one-click unsubscribe headers, bounce and complaint webhook and separate campaign domain, and its free tier covers today's sends</td><td>Inbox placement problems that Resend's support cannot resolve, or volumes past 50,000 a month</td></tr>
+        <tr><td>Microsoft Teams Phone as the softphone</td><td>Three licence layers per user, and recordings and transcripts of ordinary phone calls are not exposed through the API, so nothing would reach the deal card</td><td>Microsoft opens PSTN call recordings to Graph</td></tr>
+        <tr><td>Twilio, building our own dialer</td><td>Cheapest per minute, but a softphone to build, host and keep compliant, with number porting and emergency calling to handle</td><td>Twenty or more seats where per-seat pricing outweighs a build</td></tr>
+        <tr><td>Power Automate flows to mirror calendars</td><td>One flow per direction per account, each needing its own connection and licence; cross-tenant sign-ins break when passwords or MFA change</td><td>Only if the CRM busy mirror is not built</td></tr>
+        <tr><td>Paid calendar sync services (CalendarBridge, OneCal, SyncGene)</td><td>Another subscription holding tokens for every mailbox, for a job the CRM can do itself</td><td>If a non-Microsoft calendar ever needs to join</td></tr>
+        <tr><td>Standalone kit and sample records in production builds</td><td>Removed in the run-lean pass: unused code paths and demo data have no place on the live server</td><td>Not planned</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Keeping this current</p>
+    <h2>How items move between the two statements</h2>
+    <p class="lede">When a parked or planned item ships it moves into the current capabilities statement and out of here; when a decision sets something aside it lands in the table above with the reason. Both documents live in the CRM under Help &amp; training and are updated in the same pull request as the change, under the documentation rule in the repository.</p>
+  </section>
+
+  <footer>
+    <span>Acme CRM future capabilities. Companion to the system map at main 700cad1.</span>
+    <span>Confidential to Acme Advisory Pty Ltd</span>
+  </footer>
+</div>
+
+</body>
+</html>

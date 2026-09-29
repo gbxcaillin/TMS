@@ -1,0 +1,19 @@
+{
+  "name": "acme-crm-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Acme CRM CRM server: auth, shared state, lead webhooks, push, email, SharePoint, market data",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "DATA_DIR=../data node index.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "web-push": "^3.6.7",
+    "yahoo-finance2": "^4.0.2"
+  }
+}

@@ -1,0 +1,53 @@
+// Deal card Email tab on a real server: the conversation renders, New reply clears on opening, reply form present.
+const fs = require('node:fs'), os = require('node:os'), path = require('node:path'), http = require('node:http');
+const { spawn } = require('node:child_process');
+const { chromium } = require('playwright-core');
+const ROOT = require('node:path').resolve(__dirname, '..') + '';
+const DATA = fs.mkdtempSync(path.join(os.tmpdir(), 'deal-email-'));
+const PORT = 3990; const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) process.exitCode = 1; };
+const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(s || '{}') })); }); r.on('error', reject); if (data) r.write(data); r.end(); });
+(async () => {
+  process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
+  const D = require(ROOT + '/server/lib/db'); const auth = require(ROOT + '/server/lib/auth'); const threads = require(ROOT + '/server/lib/threads');
+  D.users.insert({ id: 'u1', email: 'cc@x.com', name: 'Alex Morgan', role: 'Admin', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  D.kvSet('settings', { notifyPrefs: { events: [] }, security: { mfaRequired: 'none' } });
+  D.kvSet('stages', [{ id: 'new', name: 'New lead' }, { id: 'won', name: 'Won', closed: true }]);
+  D.putRecord('deals', { id: 3, practice: 'Vantage Wealth', contact: 'Lisa Park', email: 'lisa@vantagewealth.com.au', stage: 'new', value: 96000, owner: 'u1', created: '2026-09-20', source: 'referral' }, 'u1');
+  const tg = threads.targetFor('lisa@vantagewealth.com.au');
+  threads.logMail({ ...tg, subject: 'Vantage Wealth — Proposal v2', inbound: false, from: 'Alex Morgan', at: '2026-09-26T09:00', body: 'Hi Lisa, proposal v2 attached.', uid: 'u1' });
+  threads.logMail({ ...tg, subject: 'RE: Vantage Wealth — Proposal v2', conv: 'C9', inbound: true, from: 'Lisa Park', at: '2026-09-27T14:10', body: 'Thanks Alex. Could we do a call this week?', mailId: 'M2', url: 'https://outlook.office.com/m2' });
+  D.db.close();
+  const srv = spawn('node', ['index.js'], { cwd: ROOT + '/server', env: { ...process.env, DATA_DIR: DATA, PORT: String(PORT), ALLOW_UNENCRYPTED: '1', NODE_ENV: 'test' }, stdio: ['ignore', 'pipe', 'pipe'] });
+  let log = ''; srv.stdout.on('data', (c) => (log += c)); srv.stderr.on('data', (c) => (log += c));
+  for (let i = 0; i < 50 && !/\[boot\] /.test(log); i++) await sleep(100);
+  const b = await chromium.launch({ executablePath: process.env.CHROME_BIN || undefined });
+  try {
+    const c = (await req('POST', '/auth/login', { body: { email: 'cc@x.com', password: 'pw-1234567890' } })).headers['set-cookie'][0].split(';')[0];
+    const ctx = await b.newContext({ viewport: { width: 1400, height: 900 } }); await ctx.addCookies([{ name: c.split('=')[0], value: c.split('=')[1], domain: '127.0.0.1', path: '/' }]);
+    const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+    await p.goto(`http://127.0.0.1:${PORT}/#/deal/3`, { waitUntil: 'load' });
+    await p.waitForFunction(() => typeof S === 'object' && S && S.loggedIn, null, { timeout: 10000 }); await sleep(600);
+    t('the thread reached the browser, unread', await p.evaluate(() => S.threads.length === 1 && S.threads[0].deal === 3 && S.threads[0].unread === true && S.threads[0].msgs.length === 2));
+    const tabs = await p.evaluate(() => [...document.querySelectorAll('.tabs button, .tabs a')].map((x) => x.textContent.trim()));
+    await p.click('.tabs button:has-text("Email"), .tabs a:has-text("Email")'); await sleep(400);
+    const v = await p.evaluate(() => { const c = document.querySelector('#content'); const msgs = [...c.querySelectorAll('.msg')]; return { msgs: msgs.length, first: msgs[0] && msgs[0].innerText.replace(/\s+/g, ' '), firstOut: msgs[0] && msgs[0].classList.contains('out'), second: msgs[1] && msgs[1].innerText.replace(/\s+/g, ' '), outlook: !!c.querySelector('a[href="https://outlook.office.com/m2"]'), reply: !!c.querySelector('#reply-form'), replyTo: (c.querySelector('#reply-form') || {}).dataset && c.querySelector('#reply-form').dataset.replyto, chip: /New reply/.test(c.innerText), heads: [...c.querySelectorAll('.card-head')].map((h) => h.innerText.replace(/\s+/g, ' ')), head: (c.querySelector('#reply-form') && c.querySelector('#reply-form').closest('.card').querySelector('.card-head') || {}).innerText }; });
+    t('Email tab shows both messages oldest first: sent (highlighted) then the reply', v.msgs === 2 && v.firstOut && /Alex Morgan/.test(v.first) && /proposal v2 attached/.test(v.first) && /Lisa Park/.test(v.second) && /call this week/.test(v.second));
+    t('reply carries its Open in Outlook link; reply form targets the last inbound message', v.outlook && v.reply && v.replyTo === 'M2');
+    t('thread header: subject, contact and address, 2 messages', /Proposal v2/.test(v.head) && /Lisa Park/.test(v.head) && /lisa@vantagewealth.com.au/.test(v.head) && /2 messages/.test(v.head));
+    await p.waitForFunction(() => !NET.dirty && !NET.busy, null, { timeout: 5000 }); await sleep(300);
+    const srvThread = (await req('GET', '/sync?since=0', { cookie: c })).body.records.find((r) => r.col === 'threads').data;
+    t('opening the tab marks the thread read and the server agrees', await p.evaluate(() => S.threads[0].unread === false) && srvThread.unread === false);
+    t('the Email nav badge no longer counts it', await p.evaluate(() => document.querySelector('#nav-mail').textContent === ''));
+    t('New email button on the tab addresses the contact', await p.evaluate(() => /New email to Lisa Park/.test(document.querySelector('[data-emaildeal="3"]').textContent)));
+    t('no Load full history button without a connected mailbox', !(await p.$('[data-mailhistory]')));
+    let hit = null; await p.route('**/api/v1/mail/backfill', async (rt) => { hit = JSON.parse(rt.request().postData()); await rt.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ added: 3 }) }); });
+    await p.evaluate(() => { NET.features.mailbox = true; route(); }); await sleep(300);
+    t('with a mailbox, the Email tab offers Load full history', !!(await p.$('[data-mailhistory="3"]')));
+    await p.click('[data-mailhistory="3"]'); await sleep(1200);
+    t('Load full history asks the server for deal 3 and reports what it added', hit && hit.deal === 3 && /3 earlier emails added/.test(await p.innerText('body')), hit);
+    await p.screenshot({ path: require('node:os').tmpdir() + '/deal-email.jpg', type: 'jpeg', quality: 70 });
+    t('no page errors', errs.length === 0); if (errs.length) console.log(errs);
+  } finally { await b.close(); srv.kill('SIGTERM'); }
+  if (process.exitCode) console.log(log.slice(-1200));
+})().catch((e) => { console.error(e); process.exit(1); });

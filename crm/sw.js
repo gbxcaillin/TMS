@@ -1,0 +1,116 @@
+/* Acme CRM service worker — caches the app shell so the CRM opens instantly
+   from the home screen and still loads with a flaky connection. Data calls
+   (the real API, Microsoft Graph, ad webhooks) are always network-first and
+   never cached here. */
+const VERSION = 'acme-shell-v3';
+const SHELL = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './icons/icon.svg',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/maskable-512.png',
+  './icons/apple-touch-icon.png',
+  './icons/badge-96.png'
+];
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== VERSION).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  // Only handle same-origin shell assets; fonts and APIs go straight to the network.
+  if (url.origin !== self.location.origin) return;
+  if (url.pathname.includes('/api/')) return;
+  // The app shell (the HTML document) is network-first so a new deploy shows on the
+  // next load when online; fall back to the cached shell offline. Other static
+  // assets (icons, manifest) stay stale-while-revalidate for instant, offline-safe loads.
+  const isDoc = req.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('/index.html');
+  if (isDoc) {
+    e.respondWith((async () => {
+      try {
+        const res = await fetch(req);
+        if (res && res.ok) { const c = await caches.open(VERSION); c.put('./index.html', res.clone()); }
+        return res;
+      } catch (_) {
+        return (await caches.match('./index.html', { ignoreSearch: true })) || (await caches.match(req, { ignoreSearch: true })) || Response.error();
+      }
+    })());
+    return;
+  }
+  e.respondWith(
+    caches.match(req, { ignoreSearch: true }).then((hit) => {
+      const fetched = fetch(req).then((res) => {
+        if (res && res.ok) caches.open(VERSION).then((c) => c.put(req, res.clone()));
+        return res;
+      }).catch(() => hit);
+      return hit || fetched;
+    })
+  );
+});
+
+self.addEventListener('message', (e) => {
+  if (e.data === 'skipWaiting') self.skipWaiting();
+});
+
+/* ---------- Web Push ---------- */
+// Payload shape sent by the server (see /api/v1/push/send):
+// { title, body, url, tag, kind: 'lead'|'task'|'mention'|'system', id, actions:[{action,title}], renotify }
+self.addEventListener('push', (e) => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { title: 'Acme CRM', body: e.data ? e.data.text() : '' }; }
+  const title = d.title || 'Acme CRM';
+  const opts = {
+    body: d.body || '',
+    icon: './icons/icon-192.png',
+    badge: './icons/badge-96.png',
+    tag: d.tag || ('acme-' + (d.kind || 'system') + '-' + (d.id || Date.now())),
+    renotify: !!d.renotify,
+    timestamp: Date.now(),
+    vibrate: [80, 40, 80],
+    data: { url: d.url || './index.html#/dashboard', id: d.id, kind: d.kind },
+    actions: Array.isArray(d.actions) ? d.actions.slice(0, 2) : []
+  };
+  // The taskbar / home-screen icon carries the person's unread count (sent by the server), like Teams or Outlook.
+  const badge = typeof d.badge === 'number' && 'setAppBadge' in self.navigator ? (d.badge > 0 ? self.navigator.setAppBadge(d.badge) : self.navigator.clearAppBadge()).catch(() => {}) : Promise.resolve();
+  e.waitUntil(Promise.all([self.registration.showNotification(title, opts), badge]));
+});
+
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  const { url, id, kind } = e.notification.data || {};
+  const action = e.action;
+  e.waitUntil((async () => {
+    const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    if (action === 'done' && kind === 'task') {
+      // Complete straight from the notification; the API call is the source of truth, open clients update via message.
+      await fetch('./api/v1/tasks/' + id + '/complete', { method: 'POST' }).catch(() => {});
+      wins.forEach((c) => c.postMessage({ type: 'task-done', id }));
+      return;
+    }
+    // Server payloads carry just the hash ('#/chat/dm_u1_u2'); anchor it to the app page, not to this worker's URL.
+    const target = new URL(String(url || '#/dashboard').replace(/^#/, './index.html#'), self.location.href).href;
+    for (const c of wins) {
+      if ('focus' in c) { c.postMessage({ type: 'navigate', url: target }); return c.focus(); }
+    }
+    return self.clients.openWindow(target);
+  })());
+});
+
+self.addEventListener('pushsubscriptionchange', (e) => {
+  // Browser rotated the subscription: re-subscribe and tell the server.
+  e.waitUntil(self.registration.pushManager.subscribe(e.oldSubscription ? e.oldSubscription.options : { userVisibleOnly: true })
+    .then((sub) => fetch('./api/v1/push/subscribe', { method: 'POST', headers: { 'content-type': 'application/json', 'x-requested-with': 'acme' }, body: JSON.stringify({ subscription: sub }) }))
+    .catch(() => {}));
+});

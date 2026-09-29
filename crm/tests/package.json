@@ -1,0 +1,7 @@
+{
+  "name": "acme-pipeline-tests",
+  "private": true,
+  "description": "Browser and server tests for Acme CRM. Run from the repo root: node tests/run.js",
+  "scripts": { "test": "node run.js", "test:live": "node run.js --live" },
+  "devDependencies": { "playwright-core": "1.63.0" }
+}

@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acme CRM System Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #FFFFFF; --soft: #F5F6F8; --card: #FFFFFF;
+    --ink: #0F172A; --ink-2: #3D3D3A; --ink-3: #6B6B66;
+    --line: rgba(10,10,10,0.12); --line-2: rgba(10,10,10,0.28);
+    --teal: #22389A; --teal-2: #3559E0; --teal-soft: rgba(46,139,110,0.12);
+    --void: #0F172A; --void-text: #FFFFFF;
+    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --sans: Inter, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #0F172A; --soft: #151514; --card: #1E293B;
+      --ink: #FFFFFF; --ink-2: #D8D6CF; --ink-3: #9A9891;
+      --line: rgba(255,253,248,0.14); --line-2: rgba(255,253,248,0.32);
+      --teal: #3559E0; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
+      --void: #000000; --void-text: #FFFFFF;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0F172A; --soft: #151514; --card: #1E293B;
+    --ink: #FFFFFF; --ink-2: #D8D6CF; --ink-3: #9A9891;
+    --line: rgba(255,253,248,0.14); --line-2: rgba(255,253,248,0.32);
+    --teal: #3559E0; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
+    --void: #000000; --void-text: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding-block: 40px 72px; padding-inline: clamp(16px, 4vw, 40px); }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.1; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(40px, 6vw, 64px); }
+  h2 { font-size: clamp(28px, 3.6vw, 38px); margin-bottom: 18px; }
+  h3 { font-size: 22px; margin-bottom: 6px; }
+  p { margin: 0; }
+  .eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); }
+  .eyebrow.teal { color: var(--teal); }
+  .lede { font-size: 18px; color: var(--ink-2); max-width: 62ch; }
+  .mono { font-family: var(--mono); font-size: 12.5px; }
+  header.hero { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding-bottom: 28px; border-bottom: 1px solid var(--line-2); }
+  header.hero .meta { display: grid; gap: 6px; text-align: right; color: var(--ink-3); font-family: var(--mono); font-size: 12px; }
+  section { padding-block: 44px; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  .grid { display: grid; gap: 16px; }
+  .cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 860px) { .cols-3, .cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; } header.hero { grid-template-columns: 1fr; } header.hero .meta { text-align: left; } }
+  .card { background: var(--card); border: 1px solid var(--line); padding: 20px 20px 18px; display: grid; gap: 8px; align-content: start; }
+  .card .eyebrow { margin-bottom: 2px; }
+  .card ul { margin: 4px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; }
+  .card li { margin: 2px 0; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 28px; }
+  @media (max-width: 560px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .stat { background: var(--soft); padding: 16px 18px; display: grid; gap: 2px; }
+  .stat b { font-family: var(--serif); font-size: 34px; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 12px; color: var(--ink-3); }
+  .diagram { margin: 0; background: var(--soft); border: 1px solid var(--line); padding: 8px; }
+  .diagram img { display: block; width: 100%; height: auto; }
+  .diagram figcaption { padding: 10px 8px 4px; font-size: 12.5px; color: var(--ink-3); }
+  .intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; margin-bottom: 24px; }
+  .intro figure { margin: 0; border: 1px solid var(--line); background: var(--soft); }
+  .intro img { display: block; width: 100%; height: auto; }
+  @media (max-width: 700px) { .intro { grid-template-columns: 1fr; } }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap { overflow-x: auto; }
+  th { text-align: left; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line-2); }
+  td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
+  td:first-child { color: var(--ink); font-weight: 500; }
+  td.num, th.num { text-align: right; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; padding-right: 0; }
+  tr.total td { border-bottom: 0; border-top: 1px solid var(--line-2); color: var(--ink); font-weight: 600; }
+  .chip { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 8px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink-2); white-space: nowrap; }
+  .chip.on { background: var(--teal-soft); border-color: transparent; color: var(--teal); }
+  .chip.opt { border-style: dashed; }
+  .flowlist { display: grid; gap: 0; border: 1px solid var(--line); }
+  .flowlist .row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--card); }
+  .flowlist .row:last-child { border-bottom: 0; }
+  .flowlist .row b { font-family: var(--serif); font-size: 20px; font-weight: 400; }
+  .flowlist .row p { color: var(--ink-2); font-size: 14px; }
+  @media (max-width: 560px) { .flowlist .row { grid-template-columns: 1fr; gap: 4px; } }
+  .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 860px) { .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .shots { grid-template-columns: 1fr; } }
+  .shots figure { margin: 0; border: 1px solid var(--line); background: var(--card); }
+  .shots img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+  .shots figcaption { padding: 8px 12px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+  .note { background: var(--soft); border-left: 2px solid var(--teal); padding: 14px 18px; color: var(--ink-2); font-size: 14px; max-width: 70ch; }
+  .jobs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .job { border: 1px solid var(--line); padding: 14px 16px; background: var(--card); display: grid; gap: 4px; }
+  .job .when { font-family: var(--mono); font-size: 12px; color: var(--teal); }
+  .job p { font-size: 13.5px; color: var(--ink-2); }
+  footer { padding-top: 28px; color: var(--ink-3); font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  .dark-band { background: var(--void); color: var(--void-text); padding: 28px clamp(16px, 4vw, 40px); margin-inline: calc(-1 * clamp(16px, 4vw, 40px)); }
+  .dark-band h2, .dark-band .eyebrow { color: var(--void-text); }
+  .dark-band .eyebrow { opacity: 0.7; }
+  .dark-band .grid .card { background: #151514; border-color: rgba(255,253,248,0.14); color: #FFFFFF; }
+  .dark-band .card ul, .dark-band .card p { color: #D8D6CF; }
+  .dark-band .card .eyebrow { color: #4FB08F; opacity: 1; }
+  @media print {
+    body { background: #FFFFFF; }
+    #crm-back { display: none !important; }
+    section { break-inside: avoid-page; }
+    .card, .job, .flowlist .row { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div id="crm-back" style="display:none;position:sticky;top:0;z-index:5;background:#0F172A;color:#FFFFFF;font:500 13px/1 Inter,Segoe UI,Helvetica,Arial,sans-serif;padding:12px 20px;align-items:center;gap:14px"><a href="../#/help/capabilities" target="_top" style="color:#FFFFFF;text-decoration:none;border:1px solid rgba(255,253,248,.5);padding:7px 12px;letter-spacing:.06em;text-transform:uppercase;font-size:11px">&#8249; Back to Help &amp; training</a><span style="opacity:.75">Acme CRM capabilities statement</span><span style="flex:1"></span><button onclick="window.print()" style="background:#22389A;color:#FFFFFF;border:0;padding:8px 12px;font:600 11px Inter,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Print / PDF</button></div>
+<script>if(window.self===window.top&&/\/docs\/capabilities\.html$/.test(location.pathname))document.getElementById('crm-back').style.display='flex';</script>
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <p class="eyebrow teal">Acme Advisory</p>
+      <h1>Pipeline system map</h1>
+      <p class="lede" style="margin-top:14px">What the CRM does, how the website feeds it, which outside services it leans on, and roughly what it all costs to run each month. Parked and planned work is in the <a href="capabilities-future.html">future capabilities statement</a>.</p>
+    </div>
+    <div class="meta">
+      <span>crm.example.com</span>
+      <span>main 4d96aa9</span>
+      <span>27 September 2026</span>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>16</b><span>workspaces in the app</span></div>
+    <div class="stat"><b>13</b><span>website tools feeding leads</span></div>
+    <div class="stat"><b>12</b><span>outside services connected</span></div>
+    <div class="stat"><b>7</b><span>scheduled background jobs</span></div>
+  </div>
+
+  <section>
+    <p class="eyebrow">How it fits together</p>
+    <h2>Website in, pipeline out</h2>
+    <figure class="diagram">
+      <img src="capabilities-img/diagram.jpg" width="1600" height="900" alt="Architecture: example.com sends tools, contact form, newsletter signups and bookings into the Acme CRM CRM behind Cloudflare Access; the CRM connects to Microsoft 365, Resend email, Google Ads and Meta, Claude and Yahoo Finance.">
+      <figcaption>The website feeds the CRM; the CRM does the follow-up. Staff reach it only through Cloudflare Access.</figcaption>
+    </figure>
+  </section>
+
+
+  <section>
+    <p class="eyebrow">The website's own capabilities</p>
+    <h2>example.com is a lead engine, not a brochure</h2>
+    <p class="lede" style="margin-bottom:18px">Every page is prerendered for search and shares a sitemap. Thirteen free tools give visitors a result in minutes and give you a qualified lead with the answers attached.</p>
+    <div class="grid cols-3">
+      <div class="card"><p class="eyebrow teal">Diagnostics</p><h3>Business Health Check</h3><p>Two-minute scorecard across six performance areas, with anonymous benchmarks once 25 responses exist.</p></div>
+      <div class="card"><p class="eyebrow teal">Diagnostics</p><h3>AI Readiness Assessment</h3><p>How ready the business is to adopt AI, and where to start.</p></div>
+      <div class="card"><p class="eyebrow teal">Diagnostics</p><h3>Will AI Actually Help?</h3><p>Six questions between a business and an honest answer.</p></div>
+      <div class="card"><p class="eyebrow teal">Calculators</p><h3>Capacity and Profit</h3><p>How much revenue is already sitting in the building.</p></div>
+      <div class="card"><p class="eyebrow teal">Calculators</p><h3>Pipeline Gap</h3><p>How many leads a revenue target actually needs.</p></div>
+      <div class="card"><p class="eyebrow teal">Calculators</p><h3>Unit Economics</h3><p>Whether growth is actually profitable, in a minute.</p></div>
+      <div class="card"><p class="eyebrow teal">Planning</p><h3>KPI Starter Kit</h3><p>The six numbers a business should watch.</p></div>
+      <div class="card"><p class="eyebrow teal">Planning</p><h3>Marketing Rhythm Planner</h3><p>A marketing plan sized to the hours available.</p></div>
+      <div class="card"><p class="eyebrow teal">Planning</p><h3>Positioning Statement Builder</h3><p>One clear, repeatable sentence about what the business does.</p></div>
+      <div class="card"><p class="eyebrow teal">Operations</p><h3>Automation Opportunity Finder</h3><p>Which hours a team could stop doing by hand.</p></div>
+      <div class="card"><p class="eyebrow teal">People</p><h3>Workplace Financial Wellbeing Check</h3><p>How well a workplace supports people with money.</p></div>
+      <div class="card"><p class="eyebrow teal">People</p><h3>Team Capability Check</h3><p>Eight questions on onboarding, CPD, compliance and knowledge capture.</p></div>
+      <div class="card"><p class="eyebrow teal">AI</p><h3>Prompt Optimizer</h3><p>Research-backed prompts tailored to each AI model.</p></div>
+    </div>
+    <div class="grid cols-3" style="margin-top:16px">
+      <div class="card"><p class="eyebrow">Pages</p><ul><li>Services, Diagnostic, Leadership, Approach, Education, Tools and Insights, Case studies, Contact, Book</li><li>Articles with structured data for search</li><li>Privacy policy and AFSL disclaimer on every page</li></ul></div>
+      <div class="card"><p class="eyebrow">Under the hood</p><ul><li>React on Cloudflare Pages, 59 routes prerendered, sitemap generated at build; repo trimmed of unshipped media and one-off tooling</li><li>Two Pages Functions: lead capture and health-check benchmarks</li><li>D1 database keeps every submission with the full answers</li></ul></div>
+      <div class="card"><p class="eyebrow">Brand</p><ul><li>Approved logo in dark and light versions, animated brand film</li><li>Source Serif 4 and Inter, ACME palette</li><li>Open Graph image and icons generated from the logo master</li></ul></div>
+    </div>
+  </section>
+  <section>
+    <p class="eyebrow">Website to CRM</p>
+    <h2>Every enquiry lands in the pipeline</h2>
+    <div class="flowlist">
+      <div class="row"><b>Tools and contact form</b><p>All 13 interactive tools (Business Health Check, Capacity and Profit Calculator, Pipeline Gap Calculator, AI Readiness Assessment, KPI Starter Kit, Positioning Statement Builder, and the rest) plus the contact form post to a Cloudflare Function. It logs the submission to D1, emails you and the visitor through Resend, then creates a lead in the CRM with the tool results attached. Duplicates on the same email, domain or practice are flagged rather than doubled up.</p></div>
+      <div class="row"><b>Newsletter signup</b><p>The footer form calls the CRM's subscribe hook. Single-click by default: the address goes straight onto the mailing list and gets the welcome email. Double opt-in can be switched on with one setting.</p></div>
+      <div class="row"><b>Booking a call</b><p>The /book page embeds Microsoft Bookings. Every booked call syncs into the CRM within 15 minutes as an activity and a task on the matching lead, or as a new lead. A booked call also stops any nurture sequence for that person.</p></div>
+      <div class="row"><b>Automatic follow-up</b><p>New leads are scored by Claude within about five minutes and enrolled in the matching nurture sequence. Follow-ups go out in Melbourne business hours, each with a booking link, and stop the moment the lead replies, books, moves stage or opts out.</p></div>
+      <div class="row"><b>Public pages the CRM serves</b><p>Unsubscribe, subscription confirmation and nurture opt-out pages are served by the CRM without a login. Email templates load the approved logo from example.com, since the CRM itself sits behind Cloudflare Access.</p></div>
+      <div class="row"><b>Website traffic on the dashboard</b><p>The CRM dashboard shows example.com visits and page views from Cloudflare Web Analytics next to leads and pipeline value, so "website to pipeline" is one glance.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="intro">
+      <div>
+        <p class="eyebrow">Inside the CRM</p>
+        <h2>Sixteen workspaces, one database</h2>
+        <p class="lede">Everything below is one app and one encrypted SQLite file. Each workspace reads and writes the same records, so a lead that arrives from the website is the same object a task, an email thread and an invoice attach to.</p>
+      </div>
+      <figure><img src="capabilities-img/pipeline.jpg" width="1000" height="667" alt="Illustration of a pipeline board with one card highlighted"></figure>
+    </div>
+    <div class="grid cols-3">
+      <div class="card"><p class="eyebrow teal">Work</p><h3>Dashboard</h3><ul><li>Waiting on us: every open deal where the client emailed last and nobody has answered, for you or the team</li><li>Open pipeline value and new leads by week</li><li>Website to pipeline tile with traffic trend</li><li>Tasks due, calendar, unread chat</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Work</p><h3>Pipeline</h3><ul><li>Closed deals archive after 90 days: summaries sync, full history loads when opened, nothing deleted</li><li>Kanban by stage with drag to move; call or email the contact straight from the card</li><li>Lead detail: activity log, notes, files, emails</li><li>Claude score, priority and rationale on each lead</li><li>Duplicate detection on email, domain and practice</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Work</p><h3>Clients</h3><ul><li>Client records with engagements and contacts</li><li>SharePoint folder per client, created on demand</li><li>Invoices and files in one place</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Work</p><h3>Tasks and calendar</h3><ul><li>Assign, complete, due dates, reminders</li><li>Daily digest of due and overdue items</li><li>Shared calendar synced both ways with each person's Outlook; invites by email</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Work</p><h3>Email</h3><ul><li>Each user connects their Microsoft 365 inbox</li><li>Read, reply, archive, delete, search, attachments</li><li>Every email with a lead, sent or received, threaded on the deal card with reply from the card; the owner is alerted when a contact replies</li><li>Claude drafts replies; remote images blocked by default</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Work</p><h3>Chat</h3><ul><li>Rooms and direct messages between staff, live within a second on every open device</li><li>@mentions and direct messages notify by push or email</li><li>Edit, recall or delete your own messages</li><li>Unread digest after 24 hours away</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Marketing</p><h3>Mailing list</h3><ul><li>Subscribers, status, bounces and complaints</li><li>Branded newsletter builder with Claude drafting</li><li>Preview, send-me-a-test, then send to a segment</li><li>Sends run in the background with progress, cancel, retry and a report</li><li>One-click unsubscribe headers on every send</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Marketing</p><h3>Nurture</h3><ul><li>Sequences per service and source, four steps over 14 days</li><li>Auto-enrol new leads, backfill older ones</li><li>Sends in business hours from your mailbox or the campaign address</li><li>Stops on reply, booking, stage change or opt-out</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Finance</p><h3>Invoices</h3><ul><li>Tax invoices with GST, line items, terms</li><li>PDF saved to SharePoint, emailed with one click</li><li>Draft, sent, paid and overdue states</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Finance</p><h3>Reports</h3><ul><li>Response times per owner: first contact on new leads and replies to client emails, with the share inside 24 hours</li><li>Pipeline by stage, source and owner</li><li>Conversion and value over time</li><li>CSV export</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Finance</p><h3>Files</h3><ul><li>Client library on SharePoint, browsed from the CRM</li><li>Upload, download, reconcile folders</li><li>Email attachments filed straight to a client</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Finance</p><h3>Research</h3><ul><li>Research library of ASX, US and global securities with live prices, five years of history, distributions and fees; starter library, the ASX 20 or ASX 50 in one click, or any list of ASX codes (such as the ASX 200) uploaded as a CSV</li><li>Model portfolios with returns, risk and growth of $100 from real month-end prices against a benchmark ETF</li><li>Fees, ratings and three-year risk for about 8,200 ETFs and managed funds from Morningstar exports kept in SharePoint; unlisted funds found by APIR code</li><li>Claude research notes and peer comparison; notes signed off by a second person and reviewed yearly, with review tasks</li><li>Branded fact sheet PDFs per security and client pack PDFs per model, with live charts, saved to SharePoint</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Configure</p><h3>Integrations</h3><ul><li>Status of every connection, test buttons</li><li>API keys with scopes for external agents</li><li>Run any background job on demand</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Configure</p><h3>Settings and team</h3><ul><li>Users, five access levels with a per-function matrix and per-person overrides, invites, 2FA reset</li><li>Notification preferences per event</li><li>Claude triggers, booking link, brand details</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Configure</p><h3>Security</h3><ul><li>Two-factor with backup codes, device list</li><li>Audit log with two-year retention and export</li><li>Sign out other devices</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Anywhere</p><h3>Installed app</h3><ul><li>Installs to phone, tablet and desktop</li><li>Works offline for the shell, keeps you signed in</li><li>Push alerts for new leads, tasks, mentions and direct messages</li></ul></div>
+      <div class="card"><p class="eyebrow teal">Anywhere</p><h3>Help &amp; training</h3><ul><li>A training module for every section, with screenshots and diagrams</li><li>What's new: a log of every change to the CRM</li><li>This capabilities statement, stored in the app and updated with it</li></ul></div>
+    </div>
+
+    <div class="shots" style="margin-top:28px">
+      <figure><img src="capabilities-img/crm-dashboard.jpg" width="1000" height="625" alt="CRM dashboard with pipeline value, new leads and website traffic"><figcaption>Dashboard</figcaption></figure>
+      <figure><img src="capabilities-img/crm-pipeline.jpg" width="1000" height="625" alt="Pipeline board by stage"><figcaption>Pipeline</figcaption></figure>
+      <figure><img src="capabilities-img/crm-email.jpg" width="1000" height="625" alt="Connected mailbox inside the CRM"><figcaption>Email</figcaption></figure>
+      <figure><img src="capabilities-img/crm-mailing.jpg" width="1000" height="625" alt="Mailing list with subscribers and the newsletter composer"><figcaption>Mailing list</figcaption></figure>
+      <figure><img src="capabilities-img/crm-invoice.jpg" width="1000" height="625" alt="Tax invoice editor beside the rendered invoice document"><figcaption>Invoices</figcaption></figure>
+      <figure><img src="capabilities-img/crm-reports.jpg" width="1000" height="625" alt="Reports by stage, source and owner"><figcaption>Reports</figcaption></figure>
+    </div>
+    <p class="note" style="margin-top:14px">Screenshots are from the demo workspace that ships with the build, so names and figures are sample data.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Integrations</p>
+    <h2>Outside services and what each one does</h2>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Service</th><th>Used for</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Cloudflare Pages</td><td>Hosts example.com, runs the lead and benchmark functions, stores submissions in D1</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Cloudflare proxy and Zero Trust</td><td>Sits in front of crm.example.com; staff sign in with Microsoft before the CRM is even reached; public email links bypass</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Cloudflare Web Analytics</td><td>Site traffic on the CRM dashboard</td><td><span class="chip opt">optional</span></td></tr>
+        <tr><td>Microsoft Entra ID</td><td>Single sign-on to the CRM and to Cloudflare Access; MFA and conditional access apply</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Microsoft 365 mail (Graph)</td><td>Per-user connected inboxes, sending as the user, calendar invites</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>SharePoint</td><td>Client file library, invoice PDFs, nightly database backup copy</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Microsoft Bookings</td><td>Public booking page; booked calls sync to leads every 15 minutes</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Resend</td><td>Transactional mail from example.com and campaign mail from news.example.com; bounce and complaint webhook</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Softphone: JustCall (or Dialpad, Aircall)</td><td>Calls and texts posted by webhook: recording, transcript, AI summary, comments, link back to Aircall; matched to deals by phone number; click-to-call numbers</td><td><span class="chip opt">ready, needs an account</span></td></tr>
+        <tr><td>Other email providers</td><td>None in the code. Postmark, SMTP and Graph send were removed in September 2026 to run lean; they sit in git history if Resend ever has to be replaced</td><td><span class="chip opt">removed</span></td></tr>
+        <tr><td>Google Ads lead forms</td><td>Webhook straight into the pipeline</td><td><span class="chip opt">when campaigns run</span></td></tr>
+        <tr><td>Meta Lead Ads</td><td>Facebook and Instagram instant forms into the pipeline</td><td><span class="chip opt">when campaigns run</span></td></tr>
+        <tr><td>Claude</td><td>Lead scoring, reply drafts, newsletter and nurture drafting, research notes</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Yahoo Finance</td><td>Prices, history, distributions and profiles for Research, refreshed on a schedule</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Web push (VAPID)</td><td>Phone and desktop alerts, no third party involved</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Google Postmaster, DMARC</td><td>Deliverability monitoring for both sending domains</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>REST API with scoped keys</td><td>Zapier, agents or scripts can create and update leads</td><td><span class="chip on">live</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="intro">
+      <div>
+        <p class="eyebrow">Runs on its own</p>
+        <h2>Background jobs</h2>
+        <p class="lede">A scheduler inside the server ticks every minute. No host cron, no third-party automation service. Any job can also be run on demand from Integrations.</p>
+      </div>
+      <figure><img src="capabilities-img/jobs.jpg" width="1000" height="667" alt="Illustration of a clock ringed by seven task icons"></figure>
+    </div>
+    <div class="jobs">
+      <div class="job"><span class="when">every 5 min</span><b>Lead scoring</b><p>Claude scores unscored leads and writes the rationale to the activity log.</p></div>
+      <div class="job"><span class="when">every 10 min</span><b>Nurture</b><p>Sends due sequence steps in Melbourne business hours.</p></div>
+      <div class="job"><span class="when">every 15 min</span><b>Bookings sync</b><p>Pulls new appointments into leads and tasks.</p></div>
+      <div class="job"><span class="when">every 15 min</span><b>Chat digest</b><p>Emails anyone with messages unread for over 24 hours.</p></div>
+      <div class="job"><span class="when">every 20 min</span><b>Market refresh</b><p>Updates watched securities.</p></div>
+      <div class="job"><span class="when">every 5 min</span><b>Auto deploy</b><p>Checks GitHub and puts merged changes live, with a one-line rollback.</p></div>
+      <div class="job"><span class="when">07:30 daily</span><b>Task digest</b><p>Due and overdue tasks to each owner.</p></div>
+      <div class="job"><span class="when">02:30 nightly</span><b>Backup</b><p>SQLite snapshot to the VPS and a copy to SharePoint; sessions and old audit rows pruned.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="dark-band">
+      <div class="intro">
+        <div>
+          <p class="eyebrow">Security</p>
+          <h2>What protects the data</h2>
+        </div>
+        <figure style="border-color:rgba(255,253,248,0.14);background:#151514"><img src="capabilities-img/security.jpg" width="1000" height="667" alt="Illustration of a vault door ringed by a teal perimeter and a padlock"></figure>
+      </div>
+      <div class="grid cols-3" style="margin-top:18px">
+        <div class="card"><p class="eyebrow">Perimeter</p><ul><li>Cloudflare proxy, origin certificate, staff-only Access with Microsoft login</li><li>Rate limits, CSP, HSTS, fail2ban and unattended upgrades on the VPS</li></ul></div>
+        <div class="card"><p class="eyebrow">Accounts</p><ul><li>Entra single sign-on or password plus TOTP two-factor</li><li>Access levels decide which sections each person gets and whether they see everyone's records or only their own; the server enforces both</li><li>Device list, sign out elsewhere, invite and reset links</li></ul></div>
+        <div class="card"><p class="eyebrow">Data</p><ul><li>Every record sealed with AES-256-GCM before it touches disk; versioned keys, rotation tool</li><li>Mailbox tokens stored encrypted server-side only</li><li>Two-year audit trail, nightly backups, restore steps documented</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section>
+    <p class="eyebrow">Scale model</p>
+    <h2>Twenty users and 1,000 new leads a month</h2>
+    <p class="lede" style="margin-bottom:22px">Assumes 1,000 leads a month split roughly Google Ads 40%, Meta 40%, website 20% (about 33 a day, peaks near 100), 20 staff of whom 5 are admins, four-step nurture on every lead, and a mailing list that grows by about 5,000 a year. Every cap below is read from the code, not estimated.</p>
+
+    <h3>Load against the built-in limits</h3>
+    <div class="table-wrap" style="margin-top:8px">
+    <table>
+      <thead><tr><th>Function</th><th>Load at 1,000 leads a month</th><th>Cap in the code today</th><th class="num">Used</th></tr></thead>
+      <tbody>
+        <tr><td>Lead intake (webhooks and website)</td><td>33 a day, peaks of 100</td><td>40 hook calls a minute per source IP, 600 API calls a minute</td><td class="num">under 5%</td></tr>
+        <tr><td>Claude scoring</td><td>33 a day</td><td>3 leads every 5 minutes, 864 a day</td><td class="num">4%</td></tr>
+        <tr><td>Nurture sends</td><td>4,000 a month, about 135 a day</td><td>30 every 10 minutes in business hours, about 1,600 a day</td><td class="num">8%</td></tr>
+        <tr><td>Live updates</td><td>20 users, one open event stream each plus a fallback sync every minute: 20 requests a minute, and a pull only when something changed</td><td>600 a minute per office IP</td><td class="num">4%</td></tr>
+        <tr><td>Bookings sync</td><td>96 Graph calls a day</td><td>Graph allows thousands per 10 minutes</td><td class="num">under 1%</td></tr>
+        <tr><td>Database</td><td>12,000 leads and about 50,000 activities a year, under 100 MB</td><td>SQLite comfortably handles millions of rows at this write rate</td><td class="num">low</td></tr>
+        <tr><td>Newsletter to the whole list</td><td>10,000 recipients by year one</td><td>Queued on the server and sent in the background at 2 a second (Resend's limit), resuming after a restart; 10,000 recipients in about 85 minutes</td><td class="num">fits</td></tr>
+        <tr><td>Admin browser load</td><td>Admins receive every record: 12,000 leads a year, roughly 60 MB of JSON</td><td>Members only receive their own deals, so they are fine; admins on phones will feel it after about 4,000 leads</td><td class="num" style="color:#B3261E">over by month 5</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top:32px">Email volume a month</h3>
+    <div class="table-wrap" style="margin-top:8px">
+    <table>
+      <thead><tr><th>Stream</th><th>Basis</th><th class="num">Emails</th></tr></thead>
+      <tbody>
+        <tr><td>Nurture</td><td>1,000 leads, four steps, about a third stop early after a reply or booking</td><td class="num">3,000</td></tr>
+        <tr><td>New-lead alerts</td><td>Owner plus admins only; the "any new lead" alert no longer reaches the whole team</td><td class="num">1,000</td></tr>
+        <tr><td>Task, chat and calendar notices</td><td>20 users, working days</td><td class="num">1,500</td></tr>
+        <tr><td>Newsletter</td><td>Monthly issue to a list that reaches 10,000 in year one</td><td class="num">5,000 to 10,000</td></tr>
+        <tr><td>Invoices, confirmations, resets</td><td>Low volume</td><td class="num">300</td></tr>
+        <tr class="total"><td>Total</td><td>Resend Pro covers 50,000 a month</td><td class="num">11,000 to 16,000</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top:32px">Monthly cost at this scale</h3>
+    <div class="table-wrap" style="margin-top:8px">
+    <table>
+      <thead><tr><th>Item</th><th>Basis</th><th class="num">A$ / month</th></tr></thead>
+      <tbody>
+        <tr><td>VPS</td><td>Move to 4 vCPU, 8 GB for headroom on PDF rendering, scoring and backups</td><td class="num">40 to 70</td></tr>
+        <tr><td>Cloudflare</td><td>Zero Trust stays free to 50 users; Pages, D1 and Web Analytics stay within free tiers at this volume</td><td class="num">0</td></tr>
+        <tr><td>Resend</td><td>Pro tier, 50,000 emails a month, about US$20</td><td class="num">30</td></tr>
+        <tr><td>Claude</td><td>1,000 scores plus drafts on Sonnet 5 through the API at US$2 in and US$10 out per million tokens is about US$10; on the subscription helper it is A$0 but shares your personal rate limit</td><td class="num">0 to 20</td></tr>
+        <tr><td>Microsoft 365, 20 seats</td><td>Business Basic about A$10 or Business Standard about A$21 a seat; you would carry these for Outlook and Teams regardless of the CRM</td><td class="num">200 to 420</td></tr>
+        <tr><td>Google Ads and Meta connections</td><td>Free. Media spend to generate 800 paid leads a month at a typical A$40 to A$120 cost per lead is A$32,000 to A$96,000 and sits in the marketing budget</td><td class="num">0</td></tr>
+        <tr class="total"><td>System total</td><td>Excluding the Microsoft seats you already pay for and excluding ad spend</td><td class="num">about 70 to 120</td></tr>
+        <tr class="total"><td>Per user, all in</td><td>Including Microsoft seats</td><td class="num">about 14 to 27</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note" style="margin-top:18px">For comparison, a hosted CRM with the same automation (sequences, scoring, mailing, booking sync) typically lists at A$75 to A$150 a seat a month at this tier, so 20 seats would be A$1,500 to A$3,000 before email and AI add-ons.</p>
+
+    <h3 style="margin-top:32px">What has to change before you get there</h3>
+    <div class="grid cols-2" style="margin-top:8px">
+      <div class="card"><p class="eyebrow">Done · September 2026</p><h3>Lead routing</h3><p>Every lead now gets an owner the moment it arrives: a default of round-robin across a pool, one fixed owner, or unassigned, plus rules matched on source and service line under Settings, Lead routing. The "any new lead" alert goes to admins only; the owner gets their own. Leads added by hand without an owner are routed the same way.</p></div>
+      <div class="card"><p class="eyebrow">Done · September 2026</p><h3>Background bulk sender</h3><p>Newsletter sends are queued in the database and worked through by the scheduler at two a second, resuming after a restart without sending anyone twice. The Mailing view shows progress, lets you cancel or retry failures, and keeps a per-send report; the sender is notified when it finishes. The old 350-recipient ceiling is gone.</p></div>
+      <div class="card"><p class="eyebrow teal">Shipped · 28 September 2026</p><h3>Archive closed leads</h3><p>Won and lost deals closed for more than 90 days sync as short summaries; their history loads from the server when the deal is opened. The period is set under Settings, Stages. Nothing is deleted.</p></div>
+      <div class="card"><p class="eyebrow teal">By month 4</p><h3>Roles and reporting</h3><p>Add a team lead role that sees a team's deals without full admin rights, per-user targets, and first-response time on the reports page. Two to three days.</p></div>
+      <div class="card"><p class="eyebrow teal">When convenient</p><h3>Claude on an API key</h3><p>Point scoring and drafting at the API with Sonnet 5 so it no longer shares your personal subscription limit. Half a day, roughly US$10 a month.</p></div>
+      <div class="card"><p class="eyebrow teal">When convenient</p><h3>Monitoring</h3><p>Uptime check on the health endpoint, error alerts from the container log, and a weekly deliverability read-out from Postmaster and the bounce webhook. Half a day.</p></div>
+    </div>
+    <p class="note" style="margin-top:18px">What does not need to change: SQLite (fine to well over 100,000 leads at this write rate), the single VPS, Cloudflare Access, Bookings sync, the scoring and nurture schedulers, or the website functions. Duplicate detection already ignores Gmail, Outlook and other free-mail domains, so Meta leads will not be flagged against each other.</p>
+  </section>
+  <section>
+    <p class="eyebrow">Rough running cost</p>
+    <h2>What it costs each month today</h2>
+    <p class="lede" style="margin-bottom:18px">Estimates in Australian dollars at current list prices. Most of the stack sits on free tiers or inside licences you already pay for. Check against your invoices before quoting these to anyone.</p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Basis</th><th class="num">A$ / month</th></tr></thead>
+      <tbody>
+        <tr><td>VPS (CRM container, Caddy, backups)</td><td>Shared with the other ACME services already on it; a 2 vCPU, 4 GB box is plenty</td><td class="num">15 to 40</td></tr>
+        <tr><td>Cloudflare: DNS, Pages, Zero Trust, D1, Web Analytics</td><td>Free plan; Zero Trust free up to 50 users; D1 free tier far above current volume</td><td class="num">0</td></tr>
+        <tr><td>Domains: example.com, news.example.com</td><td>One registration, subdomain is free; about A$20 a year</td><td class="num">2</td></tr>
+        <tr><td>Resend</td><td>Free up to 3,000 emails a month; the next tier is about US$20 (A$30) for 50,000</td><td class="num">0 to 30</td></tr>
+        <tr><td>Microsoft 365 (Entra, Outlook, SharePoint, Bookings, Graph)</td><td>Included in the Business licences the team already holds; no add-on required</td><td class="num">0 extra</td></tr>
+        <tr><td>Claude scoring and drafting</td><td>Runs through the Claude subscription helper on the VPS, so no separate API bill; on the API it would be a few dollars a month at current lead volume</td><td class="num">0 to 10</td></tr>
+        <tr><td>Google Ads and Meta lead webhooks</td><td>The connections are free; ad spend is a marketing budget item, not a system cost</td><td class="num">0</td></tr>
+        <tr><td>Yahoo Finance, Postmaster Tools, web push</td><td>No charge</td><td class="num">0</td></tr>
+        <tr><td>Softphone with recording and transcription (when adopted)</td><td>JustCall Team at US$29 a user a month on annual billing, two-seat minimum, unlimited AI transcription, Australian numbers included; Dialpad Pro is the runner-up at about US$25; Aircall starts at US$30 with a three-seat minimum plus an AI add-on</td><td class="num">about 90 per seat pair</td></tr>
+        
+        <tr class="total"><td>Typical total</td><td>Everything above at today's volumes</td><td class="num">about 20 to 80</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note" style="margin-top:18px">No per-seat CRM licence. Adding a staff member costs nothing beyond their Microsoft 365 licence, and the whole stack runs without any subscription that scales with contacts or emails until the mailing list passes roughly 3,000 sends a month.</p>
+  </section>
+
+  <footer>
+    <span>Acme CRM system map. Source: crm.example.com main 4d96aa9 and example.com main 480e2fb.</span>
+    <span>Confidential to Acme Advisory Pty Ltd</span>
+  </footer>
+</div>
+
+</body>
+</html>

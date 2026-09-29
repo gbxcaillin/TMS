@@ -1,0 +1,1269 @@
+{
+  "version": "2026-09-28",
+  "intro": "Step-by-step training for every part of Acme CRM. Screens show sample data, never real clients. Each module lists what the screen is for, the steps to use it, and what happens behind the scenes. Modules are updated with every change to the CRM; see What's new for the latest.",
+  "groups": [
+    "Getting started",
+    "Work",
+    "Marketing",
+    "Finance and research",
+    "Configure",
+    "Reference"
+  ],
+  "modules": [
+    {
+      "id": "start",
+      "group": "Getting started",
+      "title": "Signing in and finding your way",
+      "summary": "Acme CRM lives at crm.example.com. It is a web app that also installs on your phone. This module covers signing in, the layout on desktop and phone, search, and the notification bell.",
+      "image": "dashboard.jpg",
+      "caption": "Desktop layout: navigation rail on the left, search and New lead at the top, the notification bell on the right.",
+      "steps": [
+        {
+          "t": "Open crm.example.com",
+          "d": "The site sits behind Cloudflare Access, so the first screen is the Microsoft sign-in for your ACME account. Only people in the ACME tenant get past it."
+        },
+        {
+          "t": "Sign in to the CRM",
+          "d": "Use Sign in with Microsoft, or your CRM email and password if password sign-in is on. Admins are asked for a two-factor code from an authenticator app. New users arrive by invitation from Settings, Team."
+        },
+        {
+          "t": "Learn the layout",
+          "d": "On desktop the rail on the left lists every section in three groups: Work, Finance, Configure. On a phone the bottom tab bar shows Home, Pipeline, Tasks and Chat; everything else is under More."
+        },
+        {
+          "t": "Search from anywhere",
+          "d": "Press / or tap the search box to find deals, contacts and files by name. Results open the record directly."
+        },
+        {
+          "t": "Watch the bell",
+          "d": "The bell carries a red count of unread alerts and pulses while any are waiting; the browser tab title shows the count too, and on the installed app the same number sits as a red badge on the taskbar or home-screen icon, like Teams, and disappears when everything is read. When a new alert lands while the app is open, the bell rings and a card pops up at the bottom right for a few seconds; click it to jump straight to the record. Looking at the thing an alert points to marks it read on its own: open the chat room, the task list, the deal or Email and the alert clears, and an alert for a room you are already reading never pops up. Settings, Notifications has a Sound switch for a short chime on this device. What you are alerted about is set on the same page."
+        },
+        {
+          "t": "Install on your phone",
+          "d": "Open More, then Install on this phone. The installed app opens instantly, keeps you signed in and can receive push alerts."
+        }
+      ],
+      "images": [
+        {
+          "src": "phone-dashboard.jpg",
+          "caption": "Phone layout with the tab bar."
+        },
+        {
+          "src": "phone-more.jpg",
+          "caption": "The More menu holds the rest of the sections, theme, sign out and Install."
+        }
+      ],
+      "tips": [
+        "The theme button in the top bar switches between light and dark.",
+        "On a short screen the section list on the left scrolls; the logo stays at the top and your name at the bottom. On desktop there are no scrollbars: a small arrow at the top or bottom edge of a pane means there is more that way, and a thin marker shows your position while you scroll.",
+        "Changes other people make arrive within a second while the app is open, over a live connection to the server. If that connection drops (a lift, a tunnel) the app falls back to checking every 15 seconds and catches up when it returns."
+      ]
+    },
+    {
+      "id": "dashboard",
+      "group": "Getting started",
+      "title": "Dashboard",
+      "summary": "Your morning view: the numbers that matter, what needs attention today, and what happened recently.",
+      "image": "dashboard.jpg",
+      "caption": "Tiles across the top, then Website to pipeline, Pipeline by stage and Needs attention.",
+      "steps": [
+        {
+          "t": "Read the four tiles",
+          "d": "Open pipeline is the value of every deal not yet won or lost. New leads counts the last 7 days and how many came from paid media. Win rate and average engagement cover the last 90 days."
+        },
+        {
+          "t": "Waiting on us",
+          "d": "Lists the open deals where the contact emailed last and nobody has replied or had a connected call since, oldest first, with how long they have waited (red after a day). Mine shows your deals; Team, for those who can see everyone's deals, shows all of them with the owner. Click one to open the deal on its Email tab, which shows the same Waiting on us banner. No reply needed clears it until the contact writes again. The morning briefing mentions the oldest one too."
+        },
+        {
+          "t": "Morning briefing",
+          "d": "The dark panel is written fresh each day from your own pipeline: overdue tasks, deals closing within a week, new leads since yesterday, leads not yet worked, stalled deals and finished newsletter sends. Claude writes it when the helper is configured; otherwise the CRM writes it from rules. The buttons open the deals it names. Refresh rebuilds it after you have made changes."
+        },
+        {
+          "t": "Website to pipeline",
+          "d": "Website leads in the last 7 days next to open pipeline value. When Cloudflare Web Analytics is connected it also shows visits and page views, so traffic and leads sit side by side."
+        },
+        {
+          "t": "Pipeline by stage",
+          "d": "Open value and count per stage. Click a stage to open the pipeline filtered to it."
+        },
+        {
+          "t": "Needs attention",
+          "d": "Overdue and due-today tasks assigned to you. Tick the box to complete a task without leaving the dashboard."
+        },
+        {
+          "t": "Recent activity",
+          "d": "The latest events across all deals: leads created, stage moves, emails, notes and files."
+        }
+      ],
+      "tips": [
+        "Managers and admins see the whole team's numbers; members see their own deals."
+      ]
+    },
+    {
+      "id": "pipeline",
+      "group": "Work",
+      "title": "Pipeline and new leads",
+      "summary": "Every engagement is a card on the pipeline board, moving left to right through the stages. Leads arrive here automatically from the website, Google Ads, Meta and bookings, or you add them by hand.",
+      "image": "pipeline.jpg",
+      "caption": "The board: one column per stage, cards show value, source, priority and lead score.",
+      "diagram": "lead-flow.svg",
+      "diagramCaption": "What happens in the first minute after a lead arrives.",
+      "steps": [
+        {
+          "t": "Read a card",
+          "d": "Practice name, service line, then the contact's phone number and email address as links: the number dials through your softphone (Aircall, JustCall or Dialpad) and the address opens a new email in the CRM addressed to them, from your connected mailbox. Below that: value, source chip (Google Ads, Meta, Website, Referral and so on), priority, the lead score and the owner's avatar. The number in the corner is days in stage."
+        },
+        {
+          "t": "Move a deal",
+          "d": "Drag a card to another column, or open the deal and click a stage in the stage bar. Every move is logged in the deal's changelog."
+        },
+        {
+          "t": "Filter and bulk actions",
+          "d": "Filter by owner or stage from the toolbar. Tick several cards to move them together or reassign the owner in one go."
+        },
+        {
+          "t": "Add a lead by hand",
+          "d": "Click New lead. Practice, contact, email, value and service line are required. Leave Owner blank and the routing rules assign one; a first-call task is created and the owner is alerted."
+        },
+        {
+          "t": "Automatic leads",
+          "d": "Website tool and contact-form leads, Google Ads and Meta lead forms, and bookings made on the website booking page all create leads through the server. Duplicates by email, company domain or practice name are rejected and logged under Integrations."
+        },
+        {
+          "t": "Lead score",
+          "d": "Each lead gets a rule-based score at intake, then Claude re-scores it within a few minutes with a short rationale. Use it to decide who to call first."
+        },
+        {
+          "t": "Archived deals",
+          "d": "Won and lost deals closed for more than 90 days are archived: they still appear in the pipeline, search, client pages and reports, but their timeline, email conversation, files and calls stay on the server until you open the deal, which loads them in a moment. This keeps the app quick on phones as the pipeline grows. Nothing is deleted, and moving an archived deal back to an open stage brings it back in full. Change the period, or turn archiving off, under Settings, Stages."
+        }
+      ],
+      "tips": [
+        "Lost deals stay on the board in the Lost column for reporting; won deals can be converted to clients.",
+        "A form such as New lead only closes from its cross, Cancel or Escape. Clicking the dimmed background does nothing, and if you have typed anything the close asks first, so nothing is lost by a stray click."
+      ]
+    },
+    {
+      "id": "deal",
+      "group": "Work",
+      "title": "Working a lead",
+      "summary": "The deal page is the one place for everything about an engagement: contact details, stage, score, tasks, files, email and history.",
+      "image": "deal.jpg",
+      "caption": "Header actions, the stage bar, tabs, then the lead score card, tasks and files on the right.",
+      "steps": [
+        {
+          "t": "Header actions",
+          "d": "Email opens a draft to the contact (logged to the timeline). Task adds a task tied to this deal. Invoice starts an invoice with the client details filled in. Upload puts a file in the deal's SharePoint folder. Nurture enrols the lead in a sequence. Mark lost and Convert to client close the deal either way."
+        },
+        {
+          "t": "Stage bar",
+          "d": "Click a stage to move the deal. The stages are New lead, Health check, Scoped, Proposal sent, Negotiation, Won, Lost (rename them under Settings, Stages)."
+        },
+        {
+          "t": "Tabs",
+          "d": "Overview holds the fields. Activity is the timeline of everything that happened. Email is the conversation with this contact: every email they sent you and every email you sent them, from the CRM or from your connected mailbox, oldest to newest with a reply box underneath. Files lists the SharePoint folder. Changelog records every field change with who and when."
+        },
+        {
+          "t": "Lead score card",
+          "d": "The score out of 100 with Claude's reasoning. Draft follow-up writes a first-touch email you can edit before sending. Re-score asks Claude again after you add notes."
+        },
+        {
+          "t": "Tasks and files",
+          "d": "Add tasks on the right; overdue ones show in red. Files open straight from SharePoint."
+        },
+        {
+          "t": "Notes",
+          "d": "Notes are a log, not a box. Type a note and Save note; it is stamped with your name and the time and sits in the list with every call, text and email with this contact. The notes that came in with the lead appear once as an Intake note. The full history is under Activity."
+        }
+      ],
+      "images": [
+        {
+          "src": "deal-email.jpg",
+          "caption": "The Email tab: the whole exchange with the contact, your messages highlighted, and a reply box under the latest thread."
+        },
+        {
+          "src": "phone-deal.jpg",
+          "caption": "The same deal on a phone."
+        }
+      ],
+      "tips": [
+        "Changing the owner alerts the new owner straight away.",
+        "Convert to client keeps the deal history and creates the client record with its engagements."
+      ]
+    },
+    {
+      "id": "clients",
+      "group": "Work",
+      "title": "Clients",
+      "summary": "Won engagements become clients. The client page gathers every engagement, invoice and file for that practice.",
+      "image": "clients.jpg",
+      "caption": "Active clients with their owner, engagements and value.",
+      "steps": [
+        {
+          "t": "Convert a won deal",
+          "d": "On the deal page click Convert to client. The client is created with the practice details and the deal is linked as its first engagement."
+        },
+        {
+          "t": "Client page",
+          "d": "Contact details, engagements (open and closed), invoices with their status, and files. Add a new engagement from here to start another deal for the same practice."
+        },
+        {
+          "t": "Status",
+          "d": "Mark a client inactive when the work ends; they drop off the active count but keep their history."
+        },
+        {
+          "t": "Notes",
+          "d": "The same timestamped notes log as on a deal, covering the client and all of its engagements."
+        }
+      ],
+      "images": [
+        {
+          "src": "client.jpg",
+          "caption": "A client page with engagements, invoices and files."
+        }
+      ]
+    },
+    {
+      "id": "tasks",
+      "group": "Work",
+      "title": "Tasks",
+      "summary": "Tasks are the to-do list for the team, with owners, due dates, a notify list and a choice of alert channels. The system creates some for you, such as the first call after a lead arrives.",
+      "image": "tasks.jpg",
+      "caption": "Tasks grouped by due date, with assignees and the deal they belong to.",
+      "diagram": "task-flow.svg",
+      "diagramCaption": "Who is told what, and when, for a task.",
+      "steps": [
+        {
+          "t": "Create a task",
+          "d": "Click New task (or Task on a deal). Give it a title, due date, the people who must do it and, optionally, people to notify when it is done."
+        },
+        {
+          "t": "Channels",
+          "d": "Choose app, email and push for the alerts this task sends. Each person can still switch a channel off for themselves under Settings, Notifications."
+        },
+        {
+          "t": "Repeat",
+          "d": "Set a repeat (daily, weekly, monthly) for recurring work; completing one creates the next."
+        },
+        {
+          "t": "Complete",
+          "d": "Tick the box. The creator and the notify list are told, and the completion is logged on the deal."
+        },
+        {
+          "t": "Daily digest",
+          "d": "At 07:30 each person gets one summary of tasks due today and overdue, by push and email according to their preferences."
+        }
+      ],
+      "images": [
+        {
+          "src": "task.jpg",
+          "caption": "The task form with assignees, notify list and channels."
+        }
+      ],
+      "tips": [
+        "Tasks with a file attached show a paperclip; the file lives in the deal's SharePoint folder."
+      ]
+    },
+    {
+      "id": "calendar",
+      "group": "Work",
+      "title": "Calendar",
+      "summary": "A shared team calendar that syncs both ways with each person's Outlook calendar. Outlook meetings appear here, and events added here land in Outlook for everyone on them.",
+      "image": "calendar.jpg",
+      "caption": "Month view with each person's colour.",
+      "steps": [
+        {
+          "t": "Connect your calendar",
+          "d": "Calendar sync rides on your mailbox connection. Under Settings, Email accounts, connect a mailbox (or click Reconnect to sync calendar next to an existing one). Your Outlook events for the last 30 days and next 90 days appear within a minute."
+        },
+        {
+          "t": "Add an event",
+          "d": "Click a day or New event. Set the time or all day, link a deal, and invite team members. Invitees get an alert, and the event is written to the Outlook calendar of everyone on it who has connected a mailbox."
+        },
+        {
+          "t": "Edit or delete",
+          "d": "Changes made here update the Outlook copies; changes or deletions made in Outlook flow back within 15 minutes, or straight away with Sync Outlook now."
+        },
+        {
+          "t": "Outlook events",
+          "d": "Meetings from Outlook show with the Outlook type. Private items show as Private. The same meeting on two people's calendars appears once with both people on it. Open an event for the Open in Outlook link."
+        },
+        {
+          "t": "Colours",
+          "d": "Each person's colour is chosen under Settings, Profile, so a glance shows who is busy."
+        },
+        {
+          "t": "Bookings",
+          "d": "Appointments booked on the example.com booking page arrive as new leads through Microsoft Bookings, and the meeting itself appears on your calendar through Outlook."
+        }
+      ]
+    },
+    {
+      "id": "email",
+      "group": "Work",
+      "title": "Email",
+      "summary": "Read and answer your Microsoft 365 mail inside the CRM, so replies land on the deal timeline and Claude can draft for you.",
+      "image": "email.jpg",
+      "caption": "Connected mailboxes at the top, the inbox list, and a conversation open on the right.",
+      "steps": [
+        {
+          "t": "Connect a mailbox",
+          "d": "Settings, Email accounts, Connect a mailbox. You sign in to Microsoft once; the CRM keeps an encrypted token and never shares it with other users. The same connection syncs your Outlook calendar; a mailbox connected before calendar sync existed shows Reconnect to sync calendar."
+        },
+        {
+          "t": "Read",
+          "d": "The inbox lists recent mail per mailbox. Open a message to see the whole conversation, oldest first. Images from unknown senders are blocked until you allow them."
+        },
+        {
+          "t": "Reply and compose",
+          "d": "Reply from the conversation or Compose at the top. Mail is sent as you, from your mailbox. Draft with Claude writes a reply from the thread for you to edit."
+        },
+        {
+          "t": "Housekeeping",
+          "d": "Mark read, Archive and Delete act on your real mailbox."
+        },
+        {
+          "t": "Make the panes fit your screen",
+          "d": "On a desktop the conversation fills the width of the window. Drag the divider between the inbox list and the conversation to make either side wider; double-click it to go back to the default. The CRM remembers your widths in that browser. Chat's room list resizes the same way."
+        },
+        {
+          "t": "From a deal",
+          "d": "Email on a deal page opens a draft to the contact and logs the send to the deal's activity."
+        },
+        {
+          "t": "On the deal card",
+          "d": "Every 15 minutes the CRM checks each connected mailbox and adds emails to or from a deal's contact to that deal's timeline and to the Email tab on the card, where the whole exchange reads as one conversation with an Open in Outlook link on each message. Emails you send from the CRM land there straight away. When a contact replies, the deal's owner gets an alert (the row A client replies on one of my deals under Settings, Notifications) and the thread shows a New reply chip until the tab is opened. The conversation includes the history from before a deal was synced: each connected mailbox is searched once for every email with the contact's address, across all folders, and those emails are added at their real dates without alerts. Load full history on the Email tab runs that search again straight away."
+        }
+      ],
+      "tips": [
+        "Newsletters and notifications are sent by the server through Resend, not from your mailbox, so your sent folder stays clean."
+      ]
+    },
+    {
+      "id": "chat",
+      "group": "Work",
+      "title": "Chat",
+      "summary": "Team chat with rooms and direct messages, internal to the CRM.",
+      "image": "chat.jpg",
+      "caption": "Rooms on the left, the conversation in the middle.",
+      "steps": [
+        {
+          "t": "Rooms and DMs",
+          "d": "General and Pipeline rooms include everyone. Add people opens a member picker for a room. Start a direct message from a person's name. An admin can remove a room with Delete room in its header; the room and every message in it go for everyone, after a confirm."
+        },
+        {
+          "t": "Live",
+          "d": "Messages appear for everyone in the room within a second of being sent, with no refresh. The unread counts on Chat in the sidebar and tab bar update at the same time."
+        },
+        {
+          "t": "@mentions",
+          "d": "Type @ and a name. The person gets an alert by app, push or email according to their preferences."
+        },
+        {
+          "t": "Direct messages",
+          "d": "A direct message alerts the other person straight away by push, the same as a mention, and tapping the alert opens that conversation. The switch is the Someone sends me a direct message row under Settings, Notifications; quiet hours hold it."
+        },
+        {
+          "t": "Unread reminders",
+          "d": "A message you have not read for 24 hours is emailed to you as a digest, so nothing is missed on days you are not in the app."
+        },
+        {
+          "t": "Edit, recall or delete a message",
+          "d": "Hover a message you sent (on a phone the buttons are always shown) for Edit, Recall and Delete. Edit changes the text in place and marks it edited. Recall unsends it: the words disappear for everyone and the line reads Message recalled, so the room can see something was withdrawn. Delete removes it entirely. Admins can delete anyone's message; only the sender can edit or recall. Push and email alerts that already went out cannot be pulled back."
+        }
+      ]
+    },
+    {
+      "id": "calls",
+      "group": "Work",
+      "title": "Calls",
+      "summary": "Every call and text on Aircall lands in the CRM with its recording, transcript and a link back to Aircall, matched to the deal by phone number.",
+      "image": "calls.jpg",
+      "caption": "The Calls list: direction, number, matched deal, who took it, length and the AI summary.",
+      "steps": [
+        {
+          "t": "Make and take calls in the softphone",
+          "d": "Phone numbers on deals and clients are click-to-call; the softphone app on your phone or computer places the call. Nothing changes about how you dial."
+        },
+        {
+          "t": "After you hang up",
+          "d": "Within a minute the call appears under Calls and, when the number matches a deal or client, on that deal's notes and timeline with the summary and an Open in Aircall link. Texts sent or received in Aircall land the same way with their content. A comment you add to the call in Aircall becomes a note on the deal."
+        },
+        {
+          "t": "Recording, transcript and the source",
+          "d": "Open a call for the summary, sentiment, the recording player and the full transcript, plus Open in Dialpad or Open in Aircall to see the call where it was recorded. Deal timeline entries carry the same links. If a recording does not play inside the CRM, the provider needs you signed in; the link opens it there."
+        },
+        {
+          "t": "Link to deal",
+          "d": "A call from a number the CRM does not know waits under Calls with a Link to deal button. Add the number to the deal so the next call matches on its own."
+        },
+        {
+          "t": "Mine or everyone",
+          "d": "The Mine switch shows your calls; Everyone shows the team's. Members only see calls on their own deals."
+        }
+      ],
+      "tips": [
+        "Recordings stay with the phone provider; the CRM keeps the link, the transcript and the summary.",
+        "When the provider sends a transcript but no summary, Claude writes one if the helper is configured."
+      ]
+    },
+    {
+      "id": "mailing",
+      "group": "Marketing",
+      "title": "Mailing list and newsletters",
+      "summary": "Subscribers from the website sign-up forms live here. Compose a branded newsletter, test it on yourself, then send it to everyone or a tag. Sends run in the background on the server.",
+      "image": "mailing.jpg",
+      "caption": "Subscriber counts, the Sends card with progress, then the subscriber table.",
+      "diagram": "newsletter-flow.svg",
+      "diagramCaption": "From compose to inbox: what the server does with a send.",
+      "steps": [
+        {
+          "t": "Subscribers",
+          "d": "People who sign up on example.com land here automatically with the source and tags. Statuses are subscribed, unsubscribed, and bounced or complained (suppressed by the Resend webhook). Add someone by hand with Add subscriber."
+        },
+        {
+          "t": "Choose the audience",
+          "d": "Tick people in the table to email just them, or use Compose and pick All subscribed or a tag."
+        },
+        {
+          "t": "Compose",
+          "d": "Pick a format: Branded newsletter (headline, intro, up to four sections, button, sign-off), Plain message, or Upload HTML. Draft with Claude fills in a starter issue from a topic. {{name}} becomes the subscriber's first name."
+        },
+        {
+          "t": "Preview and test",
+          "d": "Preview shows the finished email. Send me a test delivers it to your own inbox. Both are instant."
+        },
+        {
+          "t": "Send",
+          "d": "Confirm the count. The send is queued on the server and you can leave the page. The Sends card shows progress as it goes out at about two a second."
+        },
+        {
+          "t": "Sends card",
+          "d": "Cancel stops a running send (people already sent to keep their copy). Report lists any failed addresses with the reason. Retry failed resends only those. You get a bell notification when it finishes."
+        }
+      ],
+      "images": [
+        {
+          "src": "compose.jpg",
+          "caption": "The compose form in Branded newsletter mode."
+        }
+      ],
+      "tips": [
+        "Every email carries a one-click unsubscribe link and headers, as the Spam Act and Gmail require.",
+        "A restart of the server does not lose a send; it resumes where it left off."
+      ]
+    },
+    {
+      "id": "nurture",
+      "group": "Marketing",
+      "title": "Nurture sequences",
+      "summary": "Timed follow-up emails to new leads, sent from the server on the lead owner's behalf. A sequence stops the moment the lead replies, moves stage or opts out.",
+      "image": "nurture.jpg",
+      "caption": "Sequences with their steps and active enrolments.",
+      "steps": [
+        {
+          "t": "Build a sequence",
+          "d": "Give it a name, the sources it applies to, and steps with a day offset, subject and body. Sending hours keep mail inside business hours."
+        },
+        {
+          "t": "Auto-enrol",
+          "d": "Switch on auto-enrol and new leads from the matching sources join the sequence as they arrive. You can also enrol a lead by hand from the deal page (Nurture)."
+        },
+        {
+          "t": "Stop rules",
+          "d": "Choose whether a reply or a stage change ends the sequence. Opting out from the link in the email always ends it, for good."
+        },
+        {
+          "t": "Monitor",
+          "d": "Active enrolments show the next step and when it goes. Stopped ones show the reason on the deal's timeline."
+        }
+      ],
+      "tips": [
+        "Emails use the owner's name and reply-to, so replies come back to a real person."
+      ]
+    },
+    {
+      "id": "files",
+      "group": "Work",
+      "title": "Files",
+      "summary": "Client files live in SharePoint, one folder per deal, and the CRM shows them where you need them.",
+      "image": "files.jpg",
+      "caption": "Client folders on the left, files on the right, all stored in the Clients site in SharePoint.",
+      "steps": [
+        {
+          "t": "Upload",
+          "d": "Upload from the Files page or a deal. The folder is created in SharePoint on first upload and named after the practice."
+        },
+        {
+          "t": "Open",
+          "d": "Open launches the file in SharePoint or Office. Nothing is stored on the CRM server."
+        },
+        {
+          "t": "Invoices and backups",
+          "d": "Invoice PDFs are saved to the client folder; nightly database backups go to a _CRM Backups folder."
+        }
+      ]
+    },
+    {
+      "id": "invoices",
+      "group": "Finance and research",
+      "title": "Invoices",
+      "summary": "Create an invoice from a deal, send it by email, save the PDF to SharePoint and record payment.",
+      "image": "invoices.jpg",
+      "caption": "All invoices with status and totals.",
+      "steps": [
+        {
+          "t": "Start from a deal",
+          "d": "Click Invoice on the deal. The client, contact and service line are filled in; add line items, quantities and prices. GST is applied from the invoicing settings."
+        },
+        {
+          "t": "Numbering and terms",
+          "d": "Numbers follow the prefix and next number under Settings, Invoicing, along with your entity details, bank details, terms and footer text."
+        },
+        {
+          "t": "Send",
+          "d": "Send emails the invoice to the client with the PDF attached and logs it on the deal. Save to SharePoint files the PDF in the client folder. Print gives a clean paper copy."
+        },
+        {
+          "t": "Record payment",
+          "d": "Mark paid sets the date and updates the client page and reports."
+        }
+      ],
+      "images": [
+        {
+          "src": "invoice.jpg",
+          "caption": "The invoice editor and preview."
+        }
+      ]
+    },
+    {
+      "id": "reports",
+      "group": "Finance and research",
+      "title": "Reports",
+      "summary": "Pipeline, sources and spend in one place, so you can see what paid media returns and where deals stall.",
+      "image": "reports.jpg",
+      "caption": "Pipeline by stage and source, conversion, and spend against leads.",
+      "steps": [
+        {
+          "t": "Pipeline and conversion",
+          "d": "Value and count by stage, win rate and average time in stage."
+        },
+        {
+          "t": "Sources",
+          "d": "Leads and won value by source, so Google, Meta, website, referral and outbound can be compared."
+        },
+        {
+          "t": "Spend",
+          "d": "Enter monthly spend per channel to see cost per lead and cost per win next to the results."
+        },
+        {
+          "t": "Response times",
+          "d": "Per deal owner for the chosen period: new leads, the median time from a lead arriving to our first email or connected call, the share contacted within 24 hours and how many have not been contacted; then client emails answered, the median time to our next email or call, the share within 24 hours, and how many are waiting now. Times are elapsed hours, evenings and weekends included. Automated nurture emails do not count as a response."
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "group": "Finance and research",
+      "title": "Research",
+      "summary": "Live market data for the securities and model portfolios you talk to clients about: prices, five years of history, distributions, fees, notes, peer comparison and branded PDFs.",
+      "image": "research.jpg",
+      "caption": "The Securities tab: the watchlist with three-month price lines, then the library by asset class.",
+      "steps": [
+        {
+          "t": "Getting started",
+          "d": "A new workspace starts with an empty library. Load the starter library adds 14 core ASX ETFs and shares, plus the S&P/ASX 200 index, with live prices (the server also loads it on its first price refresh). On Model portfolios, Add the starter models adds ACME Conservative, Balanced, Growth and High Growth as drafts to review before you publish them."
+        },
+        {
+          "t": "Adding a security",
+          "d": "Add a security searches by ticker or name, for example VHY, Vanguard high yield, Telstra, AAPL or an APIR code such as VAN0111AU. Pick a result: listed securities are fetched from Yahoo Finance with their price, five years of daily history, distributions and profile. Unlisted managed funds come from the Morningstar reference data, with returns and risk but no daily price. ASX codes end in .AX."
+        },
+        {
+          "t": "The largest ASX shares",
+          "d": "Add ASX top shares adds the biggest companies in the S&P/ASX 200 by index weight as individual shares: the ASX 20 (the big four banks, BHP, CSL, Macquarie, Wesfarmers, Woodside and more) or the ASX 50. Each comes with live prices, five years of history, dividends and its profile, and is tagged ASX 20 or ASX 50 in the table; type \"ASX 20\" in the filter to see just those. The ASX 20 was added to the library once automatically. Property trusts and infrastructure (Goodman, Scentre, Transurban and others) sit in the property & infrastructure sleeve. Franking is not published by the data provider, so add it with Edit details where it matters."
+        },
+        {
+          "t": "Adding a whole list, such as the ASX 200",
+          "d": "For a wider list, upload a CSV of ASX codes in Settings, Research, Reference data: a Code column, with Company alongside (the S&P/ASX 200 constituents file works as it is). Every company in it is added to the library in the background, a few seconds each, and tagged with the file's name, so ASX 200.csv tags them ASX 200 and typing that in the Research filter shows them. The card shows progress, then how many were added, which codes were not found (delisted or taken over), and which codes now belong to a different company than the one the file names, which are left out. Upload a newer list and companies that have left it lose the tag but stay in the library."
+        },
+        {
+          "t": "Morningstar reference data",
+          "d": "Settings, Research, Reference data holds the Morningstar ETF and managed fund screener exports (CSV) for about 8,200 funds. Every security in the library that is in them picks up its management fee, and its page shows a Morningstar card: category, star and medalist ratings, risk against its category, three-year standard deviation, Sharpe ratio, alpha and beta, ten-year return, fund size and style. The files live in SharePoint under Client Files, Research, Reference data: edit them or replace them with a new export there, and the CRM re-imports changed files within the hour. Upload a Morningstar export in Settings does the same in one step. A fee typed on a security's page is kept over the export."
+        },
+        {
+          "t": "Prices and the watchlist",
+          "d": "The server refreshes every price on the schedule under Settings, Research (every 20 minutes by default). The line under the page title says whether prices are current, where the S&P/ASX 200 closed and its move on the day, when prices last refreshed and the Australian dollar in US dollars, and Refresh now fetches them straight away. Star a security to pin it to the watchlist at the top."
+        },
+        {
+          "t": "Security page",
+          "d": "Price chart from one month to five years, returns, volatility, worst drawdown and beta, key facts, the distributions actually paid, the description and your research note. Edit details sets the asset class, type, sector, fee, franking and description. Yahoo often has no fee for ETFs, so add it from the PDS; a price refresh never overwrites what you enter. Refresh data re-fetches the security now, and the cross removes it from the library when no model holds it."
+        },
+        {
+          "t": "Research notes: sign-off and review",
+          "d": "Draft research note (or write one) saves it as a draft with a review date, a year out unless you choose another. Someone other than the author signs it off with Sign off; admins may sign off their own. Changing the text of a signed-off note makes it a draft again. A week before the review date the author gets a task that links to the security; Mark reviewed moves the date on a year and closes the task. The Securities tab flags notes that are unsigned or due for review, with a filter, and the fact sheet PDF says whether the note is signed off."
+        },
+        {
+          "t": "Fact sheet PDF",
+          "d": "On a security page, Fact sheet PDF opens a one-page branded sheet: price and change, performance over one month to five years, volatility and drawdown, a five-year price chart, key facts, the description, your research note and which models hold it. Save to SharePoint files it under Research in the Clients library."
+        },
+        {
+          "t": "Models",
+          "d": "Each model's return, volatility and worst drawdown come from five years of month-end prices of its holdings, rebalanced to target each month, with a growth of $100 chart against its chart benchmark (any ticker, set in Edit details; the starter models use the matching Vanguard diversified ETF). Change a weight and the figures recalculate. Compare models charts up to five side by side."
+        },
+        {
+          "t": "Client pack PDF",
+          "d": "On a model page, Client pack PDF opens the branded pack: objective and benchmark, headline return, fee and yield, asset allocation, growth of $100 over five years from real prices against the chart benchmark, and the holdings sized to the amount entered under Rebalance for (units and dollars). Attach to deal / client saves the same pack into that client's SharePoint folder."
+        }
+      ],
+      "images": [
+        {
+          "src": "security.jpg",
+          "caption": "A security page."
+        },
+        {
+          "src": "model.jpg",
+          "caption": "A model portfolio."
+        }
+      ],
+      "tips": [
+        "Data is general information only; the disclaimer setting under Settings, Research adds the standard wording to research pages and PDFs.",
+        "The At a glance box is worked out from the figures on the page. Draft research note and Compare peers use Claude when the helper is running on the server.",
+        "Morningstar ratings are for internal research. They are not printed on fact sheets or client packs."
+      ]
+    },
+    {
+      "id": "integrations",
+      "group": "Configure",
+      "title": "Integrations",
+      "summary": "Where the outside world connects: the website, Google Ads, Meta, Claude, Microsoft 365, Cloudflare analytics and the REST API.",
+      "image": "integrations.jpg",
+      "caption": "The server card with admin actions, then one card per integration.",
+      "diagram": "overview.svg",
+      "diagramCaption": "How the website, the CRM and the services fit together.",
+      "steps": [
+        {
+          "t": "Server card (admins)",
+          "d": "Shows what is configured (email, SharePoint, push, market data, web analytics, bookings) and offers Send me a test email, Back up now, Refresh market data, run the digests and Sync bookings now."
+        },
+        {
+          "t": "Background jobs (admins)",
+          "d": "Under the Server card, Background jobs lists what the server does on its own: price refresh, Morningstar import, mailbox and calendar sync, bookings, nurture, lead scoring, newsletter sending, digests and the nightly backup. Each row shows when it last ran and what it did. A job that fails three runs in a row alerts the admins, repeats the alert once a day while it keeps failing, and sends one more when it recovers."
+        },
+        {
+          "t": "Website, Google Ads and Meta",
+          "d": "Each card shows the webhook address, how many leads that source has sent and the last one, plus the routing default. Add a sample lead puts a test lead through so you can see the flow."
+        },
+        {
+          "t": "Phone",
+          "d": "JustCall, Dialpad or Aircall post finished calls to the webhook shown on the card. Set the shared secret on the server, paste the address into the provider, and calls start arriving with recordings and transcripts."
+        },
+        {
+          "t": "Google Ads and Meta",
+          "d": "Lead form webhooks create leads with campaign details. Send test lead checks the path end to end."
+        },
+        {
+          "t": "Claude",
+          "d": "Re-score and Draft follow-up on leads, Draft with Claude on email and newsletters, automatic scoring of new leads. Claude never sends email or moves stages on its own."
+        },
+        {
+          "t": "Microsoft 365",
+          "d": "One app registration covers mailboxes, SharePoint and sign-in."
+        },
+        {
+          "t": "REST API and keys",
+          "d": "Generate keys for other systems. Every call is rate limited, and the webhook log at the bottom (admins) shows the latest calls with their result."
+        }
+      ]
+    },
+    {
+      "id": "routing",
+      "group": "Configure",
+      "title": "Lead routing",
+      "summary": "Every new lead gets an owner the moment it arrives. Set a default and add rules by source and service line.",
+      "image": "settings-routing.jpg",
+      "caption": "Settings, Lead routing: the default, the round-robin pool and the rules table.",
+      "steps": [
+        {
+          "t": "Default",
+          "d": "Round-robin across the pool shares leads evenly and remembers where it got to. Always one person sends everything to one owner. Leave unassigned turns routing off."
+        },
+        {
+          "t": "Pool",
+          "d": "Tick who takes part in round-robin. Nobody ticked means everyone active. Deactivated users are skipped automatically."
+        },
+        {
+          "t": "Rules",
+          "d": "Add a rule for a source, a service line, or both, and choose a person or Round-robin across the pool. Rules are checked top to bottom; the first match wins."
+        },
+        {
+          "t": "Alerts",
+          "d": "The owner gets the new-lead alert and a first-call task. Admins get the any-new-lead alert; the rest of the team is not interrupted."
+        },
+        {
+          "t": "Leads added by hand",
+          "d": "If Owner is left blank on the New lead form, the same rules pick one."
+        }
+      ],
+      "tips": [
+        "Admins only. The Integrations page shows the current routing summary."
+      ]
+    },
+    {
+      "id": "notifications",
+      "group": "Configure",
+      "title": "Notifications",
+      "summary": "Choose, per event, whether you are told in the app, by email or by push, plus quiet hours and the digest time.",
+      "image": "settings-notifications.jpg",
+      "caption": "One row per event with three switches.",
+      "steps": [
+        {
+          "t": "Per event",
+          "d": "Rows cover new leads, tasks assigned, due and overdue, completions, replies, mentions, direct messages, chat digests and calendar invites. Switch each channel on or off for yourself. Admins also have \"Something needs an admin\": an error that stopped a page drawing on someone's screen, or a background job that keeps failing. The error details go to the audit log."
+        },
+        {
+          "t": "Quiet hours",
+          "d": "Push alerts are held during quiet hours and delivered in the app instead."
+        },
+        {
+          "t": "Daily digest time",
+          "d": "When the task digest is sent (07:30 by default)."
+        },
+        {
+          "t": "Push on this device",
+          "d": "Turn on push for the device you are using. Each phone or browser is enrolled separately and listed here."
+        },
+        {
+          "t": "Sound on this device",
+          "d": "The Sound button next to the push controls plays a short two-note chime in this browser whenever a notification arrives while the app is open. It is off by default and remembered per browser."
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "group": "Configure",
+      "title": "Team and security",
+      "summary": "Invite people, give each an access level, customise one person, and manage sign-in security.",
+      "image": "settings-team.jpg",
+      "caption": "The team list with access levels, Customise, status and admin actions.",
+      "steps": [
+        {
+          "t": "Invite",
+          "d": "Invite user sends an email with a link to choose a password. The link lasts seven days; Resend if it expires. New people start on the default access level set under Access levels."
+        },
+        {
+          "t": "Access level",
+          "d": "Each person has one of five levels: Admin (full access), Manager, Paraplanner, Client manager or Basic. Change it from the drop-down in the list. What each level can use is set under Settings, Access levels."
+        },
+        {
+          "t": "Customise one person",
+          "d": "Customise opens a list of every function with three choices: Level (follow the level), Yes or No. Only the functions you change are stored, so the person picks up any later change to their level for everything else. Follow the level clears them all."
+        },
+        {
+          "t": "Deactivate",
+          "d": "Deactivated users cannot sign in and are skipped by routing; their history stays."
+        },
+        {
+          "t": "Security",
+          "d": "Under Settings, Security: require two-factor for admins or everyone, session length, and whether password sign-in is allowed alongside Microsoft. Reset a password or two-factor for a colleague from the team list."
+        }
+      ]
+    },
+    {
+      "id": "access",
+      "group": "Configure",
+      "title": "Access levels",
+      "summary": "Decide which parts of the CRM each access level gets, then fine-tune individuals from the Team list.",
+      "image": "settings-access.jpg",
+      "caption": "The access matrix: one column per level, one row per function.",
+      "steps": [
+        {
+          "t": "The five levels",
+          "d": "Admin (full access) can do everything, including team, access levels and security, and cannot be restricted. Manager, Paraplanner, Client manager and Basic each start from a sensible default and are yours to change."
+        },
+        {
+          "t": "Tick what each level gets",
+          "d": "Rows are functions: every section of the CRM, the Configure areas (Integrations, Workspace settings, Lead routing) and three data rules: see everyone's deals and clients or only their own, delete deals, clients and invoices, and export CSV files. A tick means that level can use it. Changes save as you tick and reach each person the next time their screen refreshes."
+        },
+        {
+          "t": "What off means",
+          "d": "An off section disappears from the rail, the phone tab bar and the More sheet, and opening its link sends the person to their home page. The server also stops sending that section's records to them and refuses changes to it, so it is not just hidden. Deals, clients, tasks, calendar and files always sync so cards and links keep working."
+        },
+        {
+          "t": "Default for new people",
+          "d": "The drop-down at the top sets the level given to anyone invited or signed in through Microsoft for the first time."
+        },
+        {
+          "t": "Reset",
+          "d": "Reset under a level puts that column back to the starting defaults. The list at the bottom shows everyone with customised access and what was changed."
+        }
+      ]
+    },
+    {
+      "id": "fields",
+      "group": "Configure",
+      "title": "Fields, stages and profile",
+      "summary": "Shape the deal form and pipeline to how ACME sells.",
+      "image": "settings-fields.jpg",
+      "caption": "Deal fields with type, required and show-on-card.",
+      "steps": [
+        {
+          "t": "Fields",
+          "d": "Add a field with a type (text, number, select, date), mark it required, and choose whether it shows on the pipeline card. Service line and Practice type are select fields you can edit."
+        },
+        {
+          "t": "Stages",
+          "d": "Rename stages to match your process. Order and colours follow."
+        },
+        {
+          "t": "Profile",
+          "d": "Your name, calendar colour and avatar. Email accounts and push devices are under their own sections."
+        }
+      ]
+    },
+    {
+      "id": "whatsnew",
+      "group": "Reference",
+      "title": "What's new",
+      "summary": "Every change to the CRM, newest first. Modules above are updated at the same time.",
+      "changelog": true
+    },
+    {
+      "id": "capabilities",
+      "group": "Reference",
+      "title": "Capabilities statement",
+      "summary": "The full description of what Acme CRM does, how it connects to example.com, the integrations, running costs and the plan for scaling to 20 users and 1,000 leads a month. Kept up to date alongside this training.",
+      "steps": [
+        {
+          "t": "Read it here",
+          "d": "The statement is shown on this page, below the summary. Scroll as you would any other module; the rest of the app stays put."
+        },
+        {
+          "t": "Print or save as PDF",
+          "d": "Use Open on its own, then the Print / PDF button at the top of that page. A Back to Help & training link on the same bar brings you back into the CRM."
+        },
+        {
+          "t": "What it covers",
+          "d": "A system map, every function by section, how the website feeds the CRM, integrations with costs, security and hosting, the scale model and what has been built towards it."
+        }
+      ],
+      "embed": "docs/capabilities.html"
+    },
+    {
+      "id": "future",
+      "group": "Reference",
+      "title": "Future capabilities",
+      "summary": "The companion to the capabilities statement: what has been designed but parked, what is built and waiting on an account or a decision, what the scale model still calls for, and what was considered and set aside, with what each would take to switch on.",
+      "embed": "docs/capabilities-future.html",
+      "steps": [
+        {
+          "t": "Read it here",
+          "d": "Shown on this page like the current statement. Use Open on its own to print or save a PDF."
+        },
+        {
+          "t": "How items move",
+          "d": "When a parked or planned item ships it moves into the current statement; when something is set aside it lands here with the reason. Both are updated with the change that affects them."
+        }
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-09-29",
+      "title": "The page no longer jumps back to the top",
+      "body": "Pages were jumping back to the top on their own whenever something updated in the background: a colleague's change arriving, prices or charts loading, or companies being added from a list. The page now stays where you had scrolled to, including scrolled tables, the pipeline board and the email and chat panes. Opening a different page, tab, email or chat room still starts at the top.",
+      "modules": [
+        "start",
+        "pipeline",
+        "research"
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "title": "Upload a list of ASX codes, such as the ASX 200",
+      "body": "Settings, Research, Reference data now accepts a plain list of ASX codes (Code and Company columns) as well as the Morningstar exports. Its companies are added to the Research library in the background and tagged with the list's name, so an ASX 200 file gives you every ASX 200 company, filterable as ASX 200. Codes that have been delisted, or that now belong to another company, are listed rather than added. Also fixed: an edit made while prices were refreshing could be overwritten by the refresh, and a save could be held back while live updates were arriving quickly.",
+      "modules": [
+        "research"
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "title": "The ASX 20 and ASX 50 as shares in Research",
+      "body": "Research now carries the largest companies in the S&P/ASX 200 as individual shares. The ASX 20 is added to the library automatically at the next price refresh, and Add ASX top shares adds the ASX 20 or the full ASX 50 whenever you like. They are tagged ASX 20 or ASX 50 in the table and the filter finds them by that tag. The S&P/ASX 200 index itself stays in the prices line as the market reference.",
+      "modules": [
+        "research"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "The ASX 200 in Research, and a cleaner left bar",
+      "body": "The S&P/ASX 200 is now in the research library, added once to existing libraries at the next price refresh. Its level and daily move show in the prices line at the top of Research, and its page shows the index in points with price returns (dividends excluded), ready to use as a chart benchmark for any model (^AXJO). An index cannot be added to a model as a holding. Also fixed: the left bar's scroll area showed a pale grey strip in light mode, because a chart style with the same name was painting it; it is now transparent in both themes.",
+      "modules": [
+        "research",
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Waiting on us, and response times",
+      "body": "The dashboard has a Waiting on us card: every open deal where the contact emailed last and nobody has replied or called since, oldest first, for you or the whole team. It opens the deal on its Email tab, and No reply needed clears one until the contact writes again. The morning briefing mentions the oldest. Reports gains a Response times card per owner: how quickly new leads get a first email or call, and how quickly client emails are answered, with the share inside 24 hours. Also fixed: the Reports 30 and 90 day views used fixed dates from the sample period instead of counting back from today.",
+      "modules": [
+        "dashboard",
+        "reports"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Closed deals archive after 90 days",
+      "body": "Won and lost deals closed for more than 90 days now reach phones and browsers as a short summary, with their history kept on the server until someone opens the deal. They still show in the pipeline, search, client pages and reports. This keeps sign-in and syncing quick as the pipeline grows toward a thousand leads a month. Nothing is deleted; set the period or turn it off under Settings, Stages.",
+      "modules": [
+        "pipeline"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Research notes are signed off and reviewed",
+      "body": "A research note is now a draft until someone other than its author signs it off, and it carries a review date. A week before that date the author gets a task linking to the security, and Mark reviewed moves the date on a year. Editing a signed-off note makes it a draft again. The Securities tab flags notes that are unsigned or due for review, and fact sheets print whether the note is signed off and by whom.",
+      "modules": [
+        "research"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "The CRM tells admins when something breaks",
+      "body": "When a page fails to draw on anyone's screen, the error now reaches the server: it is logged with the page it happened on, added to the audit log, and the admins get an alert (once per distinct error every six hours), so a problem no longer depends on someone reporting it. Background jobs such as the price refresh, the Morningstar import and the mailbox sync now alert the admins after three failed runs in a row, and again when they recover; Integrations shows each job's last run and health. Behind the scenes, the automated test suite (19 files, over 240 checks) now lives with the code and runs on every change before it can be merged.",
+      "modules": [
+        "integrations",
+        "notifications"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Fix: the deal card shows the whole email history",
+      "body": "The Email tab on a deal card could show only the latest email, because the mailbox sync reads just the newest messages and older mail had only reached the timeline. Each connected mailbox is now searched once per deal for every email with the contact's address, across all folders, and those emails fill the conversation and the timeline at their real dates, without alerts or unread marks. This runs on its own over the next few syncs, a few deals at a time. Load full history on the Email tab does it straight away for that deal.",
+      "modules": [
+        "deal",
+        "email"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Fees and fund figures from your Morningstar exports",
+      "body": "Research now reads the Morningstar ETF and managed fund screener exports kept in SharePoint (Client Files, Research, Reference data). Every ETF and fund in the library that is in them gets its management fee, and its page gains a Morningstar card with category, star and medalist ratings, risk against its category, three-year standard deviation, Sharpe ratio, alpha and beta, ten-year return, fund size and style. Add a security now finds unlisted managed funds by APIR code or name, about 7,700 of them, with their returns and risk from the export. Replace or edit the files in SharePoint and the CRM re-imports them within the hour, or upload a new export under Settings, Research. A fee typed on a security's page is kept over the export. Also fixed: an ETF with \"Australian\" in its name could be classed as international equities.",
+      "modules": [
+        "research"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Research rebuilt on live market data",
+      "body": "Research now runs on real prices end to end. A new workspace gets a one-click starter library of core ASX ETFs and shares and the four ACME starter models as drafts. Add a security searches by ticker or name and the server fetches the full record: price, five years of history, distributions, fund size, beta and description. Model returns, volatility and drawdowns are calculated from month-end prices with a real benchmark line, instead of estimates and simulated charts. You can edit a security's asset class, fee, franking and description, and remove securities. Fixed along the way: yields under 1% were shown 100 times too high, the exchange rate was shown upside down, a looked-up security could break its page, New model failed when no model existed, and the Research settings choices did nothing.",
+      "modules": [
+        "research"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Every email with a lead sits on the deal card",
+      "body": "The Email tab on a deal card is now the conversation with that contact. Every email you send from the CRM to the lead, and every reply that lands in a connected Outlook mailbox from their address, is threaded there in order, newest thread first, with your messages highlighted and an Open in Outlook link on synced mail. Reply from the card and the message goes out from your mailbox on the same Outlook conversation. When a contact replies, the deal owner is alerted and the thread shows a New reply chip until the tab is opened. Emails from addresses that match no open deal or client are left alone.",
+      "modules": [
+        "deal",
+        "email"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Forms no longer close by accident",
+      "body": "Clicking the dimmed background behind a form (New lead, New task, an event, a client, compose) used to close it and throw away what you had typed. The background now does nothing. A form closes only from its cross, its Cancel button or the Escape key, and if you have typed anything those ask whether to close without saving first. Saving closes it as before.",
+      "modules": [
+        "pipeline",
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Fix: push alerts come back after a reinstall",
+      "body": "Uninstalling and reinstalling the app, or clearing site data, silently dropped the device's push enrolment, so alerts stopped arriving with the app closed. The app now checks its enrolment every time you sign in and re-enrols the device on its own while notifications are still allowed for the site. If the browser has forgotten the permission too, a message says push is off on this device so you can turn it back on under Settings, Notifications.",
+      "modules": [
+        "notifications"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Scrollbars hidden for good",
+      "body": "A browser was still drawing the section list's scrollbar in white. The list, the main area and the chat log are now each drawn slightly wider than their frame and clipped by it, so whatever scrollbar a browser draws sits just past the visible edge. This works in every browser regardless of how it treats scrollbar styling. Nothing else moves; the edge arrows and the marker while scrolling stay where they were.",
+      "modules": [
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Scrollbars blend in on every browser",
+      "body": "Some browsers were still drawing a white or grey scrollbar on the section list and the chat. The hiding now uses every method the browser engines offer, with a transparent colour as the fallback, and applies at every window size, so the bar blends into its backdrop and only the edge arrows and the marker while scrolling remain.",
+      "modules": [
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Scrollbars out of sight",
+      "body": "On desktop the grey scrollbars on the section list, the main area, chat, email and the pipeline board are gone. In their place a small arrow sits at the top or bottom edge of a pane whenever there is more content that way, and a thin marker slides along the right edge while you scroll, then fades. Mouse wheel, trackpad and keyboard scrolling work as before. Phones keep their own scrollbars.",
+      "modules": [
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Alerts clear themselves once you have seen the thing",
+      "body": "A notification is marked read as soon as you are looking at what it points to: open the chat room the message is in, the task list, the deal or Email and the bell count, tab title and app icon badge drop straight away. An alert that arrives for the room you are already reading no longer pops up or rings. Nothing changes for alerts you have not looked at.",
+      "modules": [
+        "start",
+        "chat"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Fix: Research opens on every workspace; pages report their own errors",
+      "body": "Research was still failing on workspaces set up before the Research section existed: as well as the watchlist, those workspaces had no Research settings section (data provider, refresh interval), which the page also expected. Any settings section a workspace is missing is now filled in at sign-in, the same way missing documents are. And when any page fails to draw, the CRM now shows a card naming the problem with a Reload button, instead of silently leaving the previous page on screen.",
+      "modules": [
+        "research",
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Unread count on the app icon",
+      "body": "On the installed app (Windows taskbar, Mac dock, phone home screen) the icon now carries a red badge with your number of unread notifications, the same count as the bell, and the badge clears when everything is read. It updates while the app is open and also when a push alert arrives with the app closed. The platform offers a number badge only, so all read shows as no badge rather than a tick.",
+      "modules": [
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Fix: Research opens on older workspaces; teal title bar",
+      "body": "Research failed to open on a workspace that was set up before the Research section existed, because the page expected a saved watchlist that such workspaces never had. Any settings document a workspace is missing now starts empty at sign-in and is saved on the next change, so every section opens. The installed app's title bar is now teal instead of black, and it reads \"Acme CRM - 2 unread\" rather than repeating the app name; in a browser tab the title stays \"(2) Acme CRM\". The number is your own count of unread notifications, so it differs from person to person.",
+      "modules": [
+        "research",
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Fixes: calendar moves forward again, alerts open the app, admins can delete rooms",
+      "body": "The calendar's next arrow was stuck: it worked out dates in UTC, so in Melbourne (UTC plus 10) stepping to the next month landed on the last day of the same month and the week started on a Saturday. Dates are now worked out in local time, which also fixes week stepping and the recurring-task intervals. The week grid now stretches to fit early or late events instead of letting them run off the bottom. Tapping a push alert when the CRM was not open used to show the service worker's code instead of the app; alert links are now anchored to the site, so they open the conversation, task or lead in the app. People who tapped an alert before their browser had picked up the update may see it once more; opening the CRM once refreshes it. Admins can now delete a chat room from its header.",
+      "modules": [
+        "calendar",
+        "chat",
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Call or email from the card, tidy up chat, and a rail that scrolls",
+      "body": "Pipeline cards now show the contact's phone number and email address as links: the number dials through your softphone and the address opens a new email in the CRM to that person. Your own chat messages can be edited (marked edited), recalled (the text is withdrawn for everyone and the line reads Message recalled) or deleted; admins can delete any message. The section list on the left scrolls when the window is too short to show every section. Every card heading across the app is now larger and bold, matching the dashboard tiles, and the pipeline column names are bolder too.",
+      "modules": [
+        "pipeline",
+        "chat",
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Notifications you cannot miss, and panes that fit the screen",
+      "body": "The bell now shows a red count of unread alerts and pulses while any are waiting, the tab title carries the count, and a new alert arriving while the app is open rings the bell and pops up a card at the bottom right that opens the record when clicked. A Sound switch under Settings, Notifications adds a short chime per browser. On desktop the Email conversation now fills the width of the window instead of a narrow column, and the dividers in Email and Chat can be dragged to resize the panes (double-click resets); each browser remembers your widths.",
+      "modules": [
+        "start",
+        "email",
+        "chat",
+        "notifications"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Live chat and push alerts for direct messages",
+      "body": "Chat is now live: a message shows up for everyone in the room within a second instead of on the next 15-second check, and the same live connection carries every other change (a lead assigned, a task completed) to every open tab. A direct message sends a push alert to the other person straight away, the same as an @mention, with a new Someone sends me a direct message row under Settings, Notifications to switch it off. Tapping a chat alert opens that conversation. The four dashboard stat headings are larger and bold.",
+      "modules": [
+        "chat",
+        "notifications",
+        "dashboard"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Access levels: choose what each person can use",
+      "body": "Five access levels replace the old Admin, Manager and Member roles: Admin (full access), Manager, Paraplanner, Client manager and Basic. Under Settings, Access levels an admin ticks which sections and data rules each level gets and sets the default for new people; Customise on the Team list overrides any function for one person. Off sections vanish from the navigation and their data stops syncing to that person. Anyone who was a Member is now a Client manager, which behaves the same way (own deals and clients only) until you change it.",
+      "modules": [
+        "access",
+        "team"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Future capabilities beside the capabilities statement",
+      "body": "Help & training now has a Future capabilities button next to the Capabilities statement button at the top of the page, as well as the module under Reference. The future statement lists the staging copy of the CRM as parked.",
+      "modules": [
+        "whatsnew",
+        "future",
+        "capabilities"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Merged changes go live on their own",
+      "body": "The server now checks for merged changes every five minutes and deploys them itself, so a fix or a new feature is live within five minutes of the pull request merging. Nothing to do on your side; the What's new list stays the record of what changed.",
+      "modules": [
+        "whatsnew"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Future capabilities statement",
+      "body": "A second statement next to the current one, listing parked designs (the calendar busy mirror), capabilities built but waiting on an account (Aircall AI Assist, Dialpad, JustCall, Claude on an API key, auto-provisioned sign-in, web analytics), the two remaining scale-model items, and options considered and set aside with reasons. The two statements link to each other and stay inside the CRM when you follow the link.",
+      "modules": [
+        "future",
+        "capabilities"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Timestamped notes, and every touch on the card",
+      "body": "Notes on deals and clients are now a log: each note is saved with who and when. Calls and texts from Aircall (with a link back to Aircall), comments made in Aircall, and emails to or from the contact in your connected mailbox all land on the deal's notes and timeline automatically.",
+      "modules": [
+        "deal",
+        "clients",
+        "calls",
+        "email"
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "title": "Calls from the softphone",
+      "body": "A Calls page and call entries on deal timelines, fed by JustCall, Dialpad or Aircall webhooks: direction, number, who took it, length, recording link, transcript and an AI summary. Calls match deals by phone number; the rest can be linked by hand. Phone numbers are click-to-call.",
+      "modules": [
+        "calls",
+        "integrations"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Calendar syncs with Outlook",
+      "body": "The shared calendar now mirrors each person's Outlook calendar both ways through their mailbox connection: Outlook meetings show in the CRM, CRM events land in Outlook for everyone on them, and deletions flow both ways. Reconnect your mailbox once to grant calendar access. A person with more than one connected mailbox syncs each of them; an account with no Outlook calendar behind it shows as such under Email accounts.",
+      "modules": [
+        "calendar",
+        "email"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Fact sheet and client pack PDFs",
+      "body": "Both are real now: one-page branded PDFs built on the server from the research library and live price history, with the approved logo, a chart, and the general advice wording. Invoices carry the logo image too instead of typeset text.",
+      "modules": [
+        "research",
+        "invoices"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Sample sections replaced with live ones",
+      "body": "Dashboard tiles now show value added this week and the average across open deals. Integrations cards for the website, Google Ads and Meta read the pipeline (leads received, last lead, webhook addresses) and the webhook log is the real one. Storage has a working Test connection, research Refresh now refreshes prices, chat rooms have a member picker, and pretend buttons (fact sheet PDFs, OpenAPI spec, re-consent) are gone.",
+      "modules": [
+        "dashboard",
+        "integrations",
+        "chat",
+        "research"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Dashboard briefing is live",
+      "body": "The 'Claude, this morning' panel was sample text. It is now built each day from the real pipeline for the person signed in, with buttons to the deals it names and a Refresh button.",
+      "modules": [
+        "dashboard"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Inline images in email now show",
+      "body": "Logos and pictures embedded in a message (for example Microsoft Bookings notifications) were showing as broken images. The CRM now matches them by every identifier senders use, and the capabilities statement's diagrams load inside Help & training.",
+      "modules": [
+        "email",
+        "capabilities"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Capabilities statement reads inside the CRM",
+      "body": "It used to open as a separate page, which left the installed app with no way back. It is now shown on the Help & training page itself, and a Back link appears when it is opened on its own for printing.",
+      "modules": [
+        "capabilities"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Help & training added",
+      "body": "This section: a module for every part of the CRM with screenshots and diagrams, a What's new log, and the capabilities statement stored in the app. Both are updated with every change from now on.",
+      "modules": [
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Newsletter sends run in the background",
+      "body": "Sends are queued on the server and go out at about two a second, resume after a restart, and show progress under Sends with cancel, retry and a report. The old limit of roughly 350 recipients per send is gone.",
+      "modules": [
+        "mailing"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Lead routing rules",
+      "body": "Every new lead gets an owner on arrival: round-robin across a pool, one fixed owner, or rules by source and service line under Settings, Lead routing. The any-new-lead alert now goes to admins only.",
+      "modules": [
+        "routing",
+        "pipeline"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Email threads open again",
+      "body": "Opening a conversation failed with a Microsoft Graph error; fixed.",
+      "modules": [
+        "email"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Running lean",
+      "body": "Resend is the only email provider; the standalone kit and demo records were removed from production builds.",
+      "modules": [
+        "integrations"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Approved logo everywhere",
+      "body": "The framed Acme Advisory logo (dark and light versions) replaces the typeset lockups across the app, login, invoices and emails.",
+      "modules": [
+        "start"
+      ]
+    },
+    {
+      "date": "2026-09-27",
+      "title": "Branded newsletter builder",
+      "body": "Headline, intro, sections, button and sign-off in the example.com style, with preview, send-me-a-test and Draft with Claude.",
+      "modules": [
+        "mailing"
+      ]
+    },
+    {
+      "date": "2026-09-26",
+      "title": "Reply-To on campaigns, automatic lead scoring, research notes",
+      "body": "Campaign mail replies go to a real mailbox; new leads are scored by Claude within minutes; securities gained notes and peer comparison.",
+      "modules": [
+        "mailing",
+        "pipeline",
+        "research"
+      ]
+    }
+  ]
+}

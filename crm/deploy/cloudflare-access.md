@@ -1,0 +1,124 @@
+# Putting Cloudflare in front of crm.example.com
+
+> **Status: optional, not currently applied.** The live deployment relies on the
+> CRM's own auth (login + TOTP 2FA) and keeps `crm.example.com` DNS-only with
+> Caddy's automatic Let's Encrypt certificate. This guide is for adding a
+> Cloudflare perimeter later if the extra DDoS/WAF/Zero-Trust layer is wanted;
+> it is not required to run the CRM.
+
+This adds a security perimeter (TLS, CDN, DDoS protection and a Zero Trust
+login) in front of the CRM without moving the app off the VPS. The container
+keeps running behind Caddy exactly as it does now; Cloudflare sits in front of
+it.
+
+The one thing to get right: **gate the human UI, but never the machine
+endpoints.** The website lead webhook, the Microsoft sign-in callback and the
+health check are called by servers, not people, so they cannot carry a Zero
+Trust login and must be allowed through.
+
+## 1. Proxy the DNS record
+
+In the Cloudflare dashboard, `example.com` zone -> DNS:
+
+- Find the `crm` record (A/AAAA/CNAME pointing at the VPS).
+- Set it to **Proxied** (orange cloud).
+
+## 2. Keep TLS working behind the proxy
+
+Once the record is proxied, Caddy can no longer renew its Let's Encrypt
+certificate over HTTP-01/TLS-ALPN (Cloudflare now terminates 443). Use a
+Cloudflare **Origin Certificate** instead, which never needs renewing:
+
+1. Cloudflare -> SSL/TLS -> Origin Server -> **Create Certificate** (hostname
+   `crm.example.com`, 15-year). Copy the cert and private key to the VPS, e.g.
+   `/root/familyoffice/certs/crm.example.com.pem` and `.key`.
+2. In the `crm.example.com` block of the Caddyfile, point Caddy at them:
+   ```
+   crm.example.com {
+       tls /certs/crm.example.com.pem /certs/crm.example.com.key
+       reverse_proxy crm:3000
+       # ... existing headers / request_body ...
+   }
+   ```
+   (mount the certs dir into the Caddy container), then apply the change with
+   `docker compose up -d --force-recreate caddy` (not `caddy reload` — the
+   Caddyfile is a single-file bind mount; see DEPLOY.md "Applying Caddyfile
+   changes").
+3. Cloudflare -> SSL/TLS -> Overview -> set the mode to **Full (strict)**.
+
+Alternative if you would rather keep Let's Encrypt: switch Caddy to the DNS-01
+challenge with a scoped Cloudflare API token. The Origin Certificate is simpler
+and has nothing to renew.
+
+## 3. Add the Zero Trust login (Cloudflare Access)
+
+Cloudflare **Zero Trust** dashboard -> Access -> Applications -> **Add an
+application** -> **Self-hosted**:
+
+- Application name: `Acme CRM CRM`
+- Session duration: e.g. 24 hours
+- Application domain: `crm.example.com` (path left blank = the whole site)
+- Identity: add a login method under Settings -> Authentication first. Use
+  **Microsoft Entra ID** so it matches the M365 accounts (or email one-time PIN
+  to start).
+- Policy: **Allow**, with an include rule of either **Emails** (list your
+  team's addresses) or **Emails ending in** `@example.com`, or an Entra group.
+
+Everyone who reaches the UI now signs in through Cloudflare first, then through
+the CRM's own login (defence in depth). The CRM's TOTP MFA still applies.
+
+## 4. Let the machines through (critical)
+
+Still in Access -> Applications, add these **Bypass** applications so
+server-to-server calls are not sent to the login screen. Each is a self-hosted
+application scoped to a path, with a single policy of action **Bypass**,
+include **Everyone**. Cloudflare evaluates the most specific path first, so
+these win over the site-wide app above.
+
+| Application domain + path | Why it must bypass |
+|---|---|
+| `crm.example.com/api/v1/hooks/*` | Lead webhooks: the example.com website, Google Ads and Meta. Authenticated by API key / signature, not a human login. |
+| `crm.example.com/api/v1/auth/microsoft/callback` | The Microsoft sign-in redirect, which arrives before any Access session exists. |
+| `crm.example.com/api/v1/mail/connect/callback` | The per-user mailbox OAuth redirect (Settings -> Email accounts -> Connect). |
+| `crm.example.com/api/v1/health` | The uptime / health check. |
+| `crm.example.com/api/v1/unsubscribe/*` | The unsubscribe link and one-click button in every newsletter. Subscribers are not staff. |
+| `crm.example.com/api/v1/subscribe/confirm/*` | The double opt-in confirmation link (when `MAILING_DOUBLE_OPTIN=1`). |
+| `crm.example.com/api/v1/nurture/stop/*` | The "Stop these emails" link in every nurture email. |
+
+`hooks/*` also covers `hooks/subscribe` (website newsletter signups) and
+`hooks/mail-events/*` (the Resend bounce and complaint webhook).
+
+These endpoints are not "open": they enforce their own auth (the webhook API
+key, the OIDC state, etc.). Bypass only means "do not show the Access login
+here."
+
+### Programmatic API access (Claude agent, Zapier)
+
+Anything that calls the rest of the API with a Bearer key (for example
+`GET /api/v1/leads`) is also a machine and would be blocked by the site-wide
+Access app. Two clean options:
+
+- **Cloudflare Access service token:** Zero Trust -> Access -> Service Auth ->
+  create a token, then add a policy of action **Service Auth** to the CRM app.
+  The client sends the `CF-Access-Client-Id` / `CF-Access-Client-Secret`
+  headers alongside its Bearer key.
+- **Or** add `crm.example.com/api/v1/*` as a Bypass application and rely on the
+  CRM's own API-key auth for those routes. Simpler, slightly less layered.
+
+The example.com website only calls `/api/v1/hooks/lead`, so the hooks bypass in
+the table above is enough for it; you only need this section if you also drive
+the API from Claude or Zapier.
+
+## 5. Verify
+
+- Open `https://crm.example.com` in a fresh browser -> you should hit the
+  Cloudflare Access login, then the CRM login.
+- `curl -s https://crm.example.com/api/v1/health` -> `{"ok":true,...}` with no
+  login redirect.
+- Submit a tool on example.com (with `CRM_WEBHOOK_URL` / `CRM_API_KEY` set) ->
+  the lead lands in the CRM, proving the webhook bypass works.
+- Send yourself a newsletter and click Unsubscribe in the footer -> the
+  "Unsubscribed" page, not a Cloudflare login. Same for the "Stop these
+  emails" link in a nurture email.
+- In Resend -> Webhooks, send a test event -> the CRM answers 200 (a 302 to
+  a login page means the `hooks/*` bypass is missing).

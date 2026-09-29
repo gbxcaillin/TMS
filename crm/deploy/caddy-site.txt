@@ -1,0 +1,19 @@
+# Paste this block into /root/familyoffice/deploy/Caddyfile on the VPS,
+# alongside the office.example.com and play.example.com blocks.
+# The app has its own login now, so no basic_auth is needed.
+
+crm.example.com {
+	reverse_proxy crm:3000
+
+	# Large SharePoint uploads go through the API.
+	request_body {
+		max_size 100MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+	}
+}

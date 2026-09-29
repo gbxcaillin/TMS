@@ -1,0 +1,4 @@
+Name,Symbol,APIR Code,Morningstar Medalist Rating™,Medalist Disclosure,Medalist Rating Date,Morningstar Category,1 Month Return (%),3 Months Return (%),1 Year Annualised (%),3 Years Annualised (%),5 Years Annualised (%),10 Years Annualised (%),Investment Management Fee(%),TCR (P),Fund Size (Mil),Morningstar Rating,Morningstar Risk (Rel to Category),3 Year Alpha,3 Year Beta,3 Year R-Squared,3 Year Standard Deviation,3 Year Sharpe Ratio
+Sample High Growth Index Fund,90001,TST0111AU,Silver,,2026-05-11,Multisector Aggressive,1.22,2.78,9.62,13.48,8.42,10.06,0.29,0.29,"15,081.49 ",4,3,0.27,0.99,98.97,8.52,1.06
+Sample Private Debt Trust,90002,TST0222AU,,,,Alternative - Private Debt,0.50,1.50,6.00,,,,1.10,1.25,,,,,,,,
+Sample Platform Wrapper Account,90003,,,,,Miscellaneous,0.10,0.20,1.00,,,,,,,,,,,,,
