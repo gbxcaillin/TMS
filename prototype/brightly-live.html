@@ -361,7 +361,7 @@ function flower(id,size){const N=7;let defs='',clips='',body='',over='';for(let 
   return`<svg viewBox="-60 -60 120 120" width="${size}" height="${size}" aria-hidden="true"><defs>${defs}${clips}</defs>${body}${over}</svg>`}
 
 /* ================= people ================= */
-const USERS={alex:{id:'alex',name:'Adviser',role:'Client manager',title:'Adviser'},sam:{id:'sam',name:'Paraplanner',role:'Paraplanner',title:'Paraplanner'},jordan:{id:'jordan',name:'Practice manager',role:'Admin',title:'Practice manager'}};
+const USERS={alex:{id:'alex',name:'Scott Brouwer',role:'Client manager',title:'Adviser'},sam:{id:'sam',name:'Paraplanner',role:'Paraplanner',title:'Paraplanner'},jordan:{id:'jordan',name:'Practice manager',role:'Admin',title:'Practice manager'}};
 const APPROVERS=['Admin','Manager','Client manager'];
 
 /* ================= state ================= */
@@ -669,7 +669,7 @@ function filterPanel(f){
 /* ================= live demo: practice settings and product data ================= */
 /* No client data lives in this file. Clients come from documents loaded in the browser, or from an encrypted
    client pack the adviser saves to their own computer. */
-const PRACTICE={adviser:'',arNo:'',firm:'Brightday Australia Pty Ltd',car:'',licensee:'',afsl:'',address:'',phone:'',email:'',abn:'',
+const PRACTICE={adviser:'Scott Brouwer',arNo:'',firm:'Brightday Australia Pty Ltd',car:'1313063',licensee:'Banyan Securities Pty Ltd',afsl:'484139',address:'4 Sycamore Street, Box Hill South VIC 3128',phone:'+61 3 9595 3855',email:'clientservices@brightday.com.au',abn:'79 609 452 226',pearlFamily:'Pearl Lite',
   upfrontPct:.033,upfrontCap:4950,ongoingPct:.011,ongoingCap:10000};
 /* DASH and Pearl fee data from the fee-comparison building block. Marked unverified there: check against the current PDS. */
 const DASHP={
@@ -684,7 +684,10 @@ const PEARLP=[["Pearl X Conservative",.0055,.0042,1,.001009,.000013],["Pearl X M
   .map(([name,mgmt,icr,op,brok,bs])=>({name,mgmt,icr,op:!!op,brok,bs}));
 const RISK_TERMS=['Conservative','Moderately Conservative','Moderate','Balanced','Growth','High Growth','High Conviction'];
 const pearl=n=>PEARLP.find(p=>p.name===n)||null;
-const defaultPortfolio=c=>{const r=c&&c.profile.risk;const m=r&&PEARLP.find(p=>p.name==='Pearl X '+r);return(m||pearl('Pearl X Growth')).name};
+const PEARL_FAMILIES=['Pearl Lite','Pearl X','Pearl Plus'];
+const NEAR_RISK={'Moderately Conservative':['Moderate','Conservative'],'High Conviction':['High Growth'],'High Growth':['High Conviction'],'Moderate':['Balanced']};
+const defaultPortfolio=c=>{const fam=PRACTICE.pearlFamily||'Pearl Lite';const r=c&&c.profile.risk;
+  for(const risk of [r,...(NEAR_RISK[r]||[]),'Growth']){const m=risk&&PEARLP.find(p=>p.name===fam+' '+risk);if(m)return m.name}return PEARLP.find(p=>p.name.startsWith(fam+' ')).name};
 const isSuperKind=k=>['Super','Pension'].includes(k);
 const dashFor=a=>isSuperKind(a.kind)?DASHP.super:DASHP.wealth;
 const onDash=a=>/dash|simplifier/i.test(a.p+' '+a.prod);
@@ -990,7 +993,7 @@ function askText(title,label,value,cb,opts={}){const d=document.createElement('d
 const TOOLS=[
   {id:'client-profile',name:'Client profile',short:'Reads statements, platform CSV exports, the paraplanning request, file notes and call transcripts into one record the other tools work from.',approval:'data',outs:['Client profile']},
   {id:'fee-comparison',name:'Fee comparison',short:'Current products against DASH Super or Wealth Simplifier with a Pearl portfolio under the MDA, in the SOA table layout.',approval:false,outs:['Fee comparison (.docx)']},
-  {id:'soa',name:'SOA: move to DASH',short:'Statement of Advice to move to DASH with a Pearl portfolio under the MDA, mainly for lower fees. Insurance is out of scope.',approval:'advice',outs:['Statement of Advice (.docx)']},
+  {id:'soa',name:'SOA',short:'Statement of Advice for a platform or investment switch into a Pearl portfolio. Insurance is out of scope.',approval:'advice',outs:['Statement of Advice (.docx)']},
   {id:'roa',name:'ROA',short:'Record of Advice: no change, or adjusting the underlying investments.',approval:'advice',outs:['Record of Advice (.docx)']},
   {id:'tax-optimisation',name:'Tax-loss harvesting',short:'Unrealised gains and losses by holding, from the cost bases in the profile, and what realising the losses could save.',approval:false,outs:['Harvesting schedule (.docx)']},
   {id:'annual-review',name:'Annual review and OFA',short:'Reads the year’s file notes and transcripts; drafts the review letter and the Ongoing Fee Agreement.',approval:'advice',outs:['Annual review (.docx)','Ongoing Fee Agreement (.docx)']},
@@ -1032,12 +1035,13 @@ const signNames=c=>{const ppl=c.profile.people.filter(x=>x.role!=='Other');retur
 const accLabel=a=>`${a.p}${a.prod?' '+a.prod:''} (${a.owner||'owner not stated'}, ${money(a.bal)})`;
 const listJoin=l=>l.length<2?l.join(''):l.slice(0,-1).join(', ')+' and '+l[l.length-1];
 
-/* ---------- SOA: move to DASH ---------- */
+/* ---------- SOA ---------- */
 const SOA_PROMPT=(c,f,inp)=>`You are Brightly, drafting the personalised parts of a Statement of Advice for Brightday (an Australian financial advice practice). The page puts your text into the practice's SOA template, which already holds the standard disclosures, fee tables and signature blocks.
 
 THE ADVICE (decided by the adviser):
 - Move ${listJoin(f.rows.map(r=>accLabel(r.a)))} to ${listJoin(f.products)}, and invest through the DASH managed discretionary account (MDA) in the ${f.port.name} portfolio run by Pearl Investment House, matching the client's ${c.profile.risk} risk profile.
 - Main reason: lower ongoing costs. Current products cost ${money(f.cur.total)} a year; the recommendation costs ${money(f.rec.total)} a year: ${f.saving>=0?'a saving of '+money(f.saving):'an extra '+money(-f.saving)} a year${f.bal?` (${pct(Math.abs(f.saving)/f.bal)} of the balance)`:''}. One-off establishment transaction costs about ${money(f.rec.estab)}.
+- Implementation: a straight switch. Current investments are sold, the proceeds move to DASH in cash, and are invested in the Pearl model. No in specie transfer.
 - Platform features are the same or similar enough. The MDA lets Pearl rebalance and change the portfolio without a Record of Advice for each change, which a model portfolio or SMA does not.
 - Out of scope: personal insurance, super contributions, estate planning, debt and cash flow, Centrelink, tax advice.
 - Advice fees: there is no fee for this advice or the switch. The client's existing ongoing service fee (${inp.ongoing?money(inp.ongoing)+' a year':'as already agreed'}) continues unchanged under their current arrangement.
@@ -1087,7 +1091,7 @@ function soaBlocks(c,f,inp,s){const P=PRACTICE,p=c.profile,L=a=>Array.isArray(a)
   ...(p.assets.length||p.liabs.length?[{t:'h2',x:'Your assets and liabilities'},{t:'table',head:['Item','Owner','Value'],rows:[...p.assets.map(a=>[a[0],a[1]||'—',money(a[2])]),...p.liabs.map(l=>[l[0]+' (liability)',l[1]||'—',money(-l[2])])]}]:[]),
   {t:'h1',x:'Your Risk Profile'},{t:'p',x:`We have discussed your attitude to investment risk and assessed your risk profile as ${risk}. The recommended portfolio, ${f.port.name}, is designed for investors with this risk profile.`},
   {t:'h1',x:'Our Strategy Recommendations'},{t:'h2',x:`Recommendation 1 – Move to ${listJoin(f.products)}`},
-  {t:'p',x:`We recommend that you move ${listJoin(accs.map(accLabel))}, totalling approximately ${money(f.bal)}, into a new account on ${listJoin(f.products)}.`},
+  {t:'p',x:`We recommend that you move ${listJoin(accs.map(accLabel))}, totalling approximately ${money(f.bal)}, into a new account on ${listJoin(f.products)}. Your current investments will be sold and the proceeds transferred in cash, then invested in the ${f.port.name} portfolio.`},
   ...(f.saving>0?[{t:'p',x:`Based on our analysis, ${listJoin(f.products)} is expected to cost less than your current arrangements: about ${money(f.saving)} a year less (${money(f.cur.total)} now, compared with ${money(f.rec.total)}). Lower administration and investment costs let more of your balance stay invested and compound over time.`}]:[]),
   {t:'p',x:'Why we believe it is in your best interest:'},{t:'ul',items:L(s.rolloverReasons)},
   {t:'h2',x:`Recommendation 2 – Invest in the ${f.port.name} portfolio`},{t:'p',x:`We recommend investing in the diversified ${f.port.name} portfolio, which matches your ${risk} risk profile. It spreads your investments across a broad range of asset classes. To manage it well, this will be done through a managed discretionary account (MDA), where Pearl Investment House oversees and implements the investment strategy for you.`},
@@ -1200,7 +1204,7 @@ const RUNNERS={
     run.result=`<section class="card"><div class="card-head"><h2>Fee comparison</h2><span class="label">In the SOA</span></div>${feeTableHTML(f)}</section>`;
     ev('tool','Brightly is drafting the personalised sections');const s=await brightly(SOA_PROMPT(c,f,inp),run.ctl.signal);ev('text','Draft received. Putting it into the SOA template.');
     const blocks=soaBlocks(c,f,inp,s);run.checks=soaChecks(c,f);const nc=countConfirm(blocks);
-    run.docs=[{n:`SOA - ${c.name} - move to DASH`,x:'DOCX',st:'draft',blocks}];
+    run.docs=[{n:`SOA - ${c.name}`,x:'DOCX',st:'draft',blocks}];
     const open=run.checks.filter(k=>!k.ok);run.summary=`Drafted the Statement of Advice: move ${f.rows.length} account(s) (${money(f.bal)}) to ${listJoin(f.products)} with ${f.port.name}, ${f.saving>=0?'saving '+money(f.saving):'costing '+money(-f.saving)+' more'} a year.\n\n${open.length?`${open.length} compliance check${open.length>1?'s need':' needs'} attention.`:'All compliance checks pass.'} ${nc} item${nc===1?'':'s'} marked [[CONFIRM]] in the document.${(s.confirm||[]).length?'\n\nBrightly asks you to check:\n- '+s.confirm.map(String).join('\n- '):''}`},
   'roa':async(run,c,inp,ev)=>{ev('tool','Brightly is drafting the Record of Advice');const s=await brightly(ROA_PROMPT(c,inp),run.ctl.signal);ev('text','Draft received. Putting it into the ROA template.');
     const blocks=roaBlocks(c,inp,s);const nc=countConfirm(blocks);run.docs=[{n:`ROA - ${c.name} - ${inp.kind==='no-change'?'no change':'investment adjustment'}`,x:'DOCX',st:'draft',blocks}];
@@ -1228,11 +1232,12 @@ function toolFields(t,c){if(!c)return'';const p=c.profile;const accs=p.accounts;
   if(t.id==='fee-comparison'||t.id==='soa'){const tot=accs.filter(switchable).reduce((s,a)=>s+a.bal,0);
     return`<div class="field span"><label>Accounts to move</label><div class="checks">${accs.map(a=>`<label class="check-row"><input type="checkbox" data-accpick="${a.id}" ${switchable(a)?'checked':'disabled'}> <span><b>${esc(a.p)}</b> ${esc(a.prod)} · ${esc(a.owner||'')} · ${money(a.bal)}${switchable(a)?'':` <span class="muted">(${onDash(a)?'already on DASH':a.bal>0?esc(a.kind)+' account':'no balance'})</span>`}${a.insurance.length?` <span class="chip warn"><span class="dot"></span>Holds insurance</span>`:''}</span></label>`).join('')}</div></div>
     <div class="field span"><label>Current fees <span class="muted" style="text-transform:none;letter-spacing:0">from the profile; fill any gaps from the PDS or statement</span></label><div class="table-wrap"><table class="fees-in"><thead><tr><th>Account</th><th>Admin %</th><th>Admin $ p.a.</th><th>Investment %</th><th>Expense recovery %</th><th>Or: fees paid last year $</th></tr></thead><tbody>${accs.filter(switchable).map(feeRow).join('')}</tbody></table></div></div>
-    <div class="field"><label for="f-port">Pearl portfolio</label><select class="select" id="f-port">${['Pearl X','Pearl Plus','Pearl Lite'].map(g=>`<optgroup label="${g}">${PEARLP.filter(x=>x.name.startsWith(g+' ')).map(x=>`<option ${x.name===defaultPortfolio(c)?'selected':''}>${esc(x.name)}</option>`).join('')}</optgroup>`).join('')}</select></div>
+    <div class="field"><label for="f-port">Pearl portfolio</label><select class="select" id="f-port">${PEARL_FAMILIES.map(g=>`<optgroup label="${g}">${PEARLP.filter(x=>x.name.startsWith(g+' ')).map(x=>`<option ${x.name===defaultPortfolio(c)?'selected':''}>${esc(x.name)}</option>`).join('')}</optgroup>`).join('')}</select></div>
     <div class="field"><label for="f-ong">Existing ongoing fee ($ a year, unchanged)</label><input class="input" id="f-ong" inputmode="decimal" value="${Math.round(c.fee||ongoingDefault(tot))}"></div>
     ${t.id==='soa'?`<div class="field"><label>Fee for this advice</label><div class="note" style="margin:0">None: platform and investment switches are free. The existing ongoing fee continues.</div></div>
     <div class="field span"><label for="f-req">Paraplanning request</label><textarea class="textarea" id="f-req">${esc([p.request&&p.request.summary,...((p.request&&p.request.instructions)||[])].filter(Boolean).join('\n'))}</textarea></div>
     <div class="field span"><label for="f-notes">Adviser notes for Brightly</label><textarea class="textarea" id="f-notes" placeholder="Anything the SOA should say, e.g. the client wants to keep a small cash buffer."></textarea></div>`:''}
+    <div class="field span"><label>Transition</label><div class="note" style="margin:0">Straight switch: current investments are sold, moved across in cash and invested in the chosen Pearl model. In specie and hybrid Pearl and direct share transitions will come with the transition engine.</div></div>
     <div class="field span"><div class="note" id="fpreview"></div></div>`}
   if(t.id==='roa')return`<div class="field"><label for="f-kind">Advice</label><select class="select" id="f-kind"><option value="no-change" ${p.request&&p.request.advice==='roa-adjust'?'':'selected'}>No change: strategy remains appropriate</option><option value="adjust" ${p.request&&p.request.advice==='roa-adjust'?'selected':''}>Adjust the underlying investments</option></select></div>
     <div class="field"><label for="f-soa">Date of the previous SOA</label><input class="input" type="date" id="f-soa"></div>
@@ -1288,7 +1293,7 @@ function vSettings(){crumb([['Practice settings']]);const PR=PRACTICE;
   const fn=(k,l)=>`<div class="field"><label for="ps-${k}">${l}</label><input class="input" id="ps-${k}" data-psn="${k}" value="${esc(PR[k]??'')}" inputmode="decimal"></div>`;
   P(`<div class="head"><div><h1>Practice settings</h1><p class="sub">Printed on every SOA, ROA and fee agreement. Saved in your client pack, not in this page.</p></div></div>
   <form class="card" id="psf"><div class="card-head"><h2>Adviser and licensee</h2></div><div class="card-body"><div class="form">${f('adviser','Adviser name')}${f('arNo','Authorised representative number')}${f('firm','Practice')}${f('car','Corporate authorised representative (CAR) number')}${f('licensee','Licensee')}${f('afsl','AFSL number')}${f('address','Address')}${f('phone','Phone')}${f('email','Email')}${f('abn','ABN')}</div></div>
-  <div class="card-head" style="border-top:1px solid var(--line)"><h2>Fee defaults</h2></div><div class="card-body"><div class="form">${fp('ongoingPct','Ongoing fee (% a year, incl. GST)')}${fn('ongoingCap','Ongoing fee cap ($ a year)')}</div></div>
+  <div class="card-head" style="border-top:1px solid var(--line)"><h2>Portfolios and fees</h2></div><div class="card-body"><div class="form"><div class="field"><label for="ps-fam">Default Pearl range</label><select class="select" id="ps-fam" data-ps="pearlFamily">${PEARL_FAMILIES.map(x=>`<option ${PR.pearlFamily===x?'selected':''}>${x}</option>`).join('')}</select></div>${fp('ongoingPct','Ongoing fee (% a year, incl. GST)')}${fn('ongoingCap','Ongoing fee cap ($ a year)')}</div></div>
   <div class="card-body row" style="border-top:1px solid var(--line)"><button class="btn btn-primary" type="submit">Save settings</button></div></form>
   <section class="card"><div class="card-head"><h2>Product data used by the tools</h2><span class="label">Check against the current PDS</span></div><div class="table-wrap"><table><thead><tr><th>Product</th><th>Administration</th><th>Other</th><th>Source</th></tr></thead><tbody>
   <tr><td><b>${DASHP.super.name}</b></td><td>0.352% on the first $500,000, nil above</td><td>Expense recovery 0.03%</td><td class="small muted">${esc(DASHP.super.src)}</td></tr>
@@ -1328,7 +1333,7 @@ function vWelcome(){crumb([['Dashboard']]);
    <li><b>Practice details</b><span>Your name, AR number and licensee, printed on every advice document.</span><button class="btn btn-sm" data-go2="settings">Practice settings</button></li>
    <li><b>Add clients</b><span>Drop in statements, platform CSV exports, paraplanning requests, file notes and call transcripts. Brightly sorts them by client.</span><button class="btn btn-sm btn-primary" id="wadd">Add clients</button></li>
    <li><b>Check each profile</b><span>Every balance shows the document it came from. Confirm the profile, or fix it.</span></li>
-   <li><b>Run the tools</b><span>Fee comparison against DASH, SOA to move to DASH, ROA, tax-loss harvesting, annual review and OFA.</span></li></ol>
+   <li><b>Run the tools</b><span>Fee comparison, SOA, ROA, tax-loss harvesting, annual review and OFA.</span></li></ol>
   <div class="card-body row" style="border-top:1px solid var(--line)"><button class="btn" id="wopen">Open a client pack</button><span class="hint">Client documents stay in this browser tab. Save a client pack (encrypted, on your computer) to keep them.</span></div></section>`);
   $('#wadd').onclick=()=>{impReset();go('import')};$('#wopen').onclick=packOpen;$$('[data-go2]').forEach(b=>b.onclick=()=>go(b.dataset.go2))}
 /* Editable details the tools depend on. */
