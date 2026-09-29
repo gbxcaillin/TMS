@@ -82,7 +82,7 @@ a{color:var(--accent-ink);text-decoration:none;cursor:pointer}a:hover{text-decor
 .crumb{font-family:var(--font-head);font-size:18px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .crumb a{color:var(--ink-3)}.crumb .sep{color:var(--ink-3);margin:0 8px}
 .top .sp{flex:1}
-.search{position:relative;width:min(300px,34vw)}
+.search{position:relative;width:min(400px,42vw)}
 .search input{width:100%;height:34px;border:1px solid var(--line-2);background:var(--surface);padding:0 10px 0 30px}
 .search svg{position:absolute;left:9px;top:9px;width:15px;height:15px;stroke:var(--ink-3);fill:none;stroke-width:1.5}
 .page{padding:24px clamp(16px,3vw,32px) 56px;display:flex;flex-direction:column;gap:20px;max-width:1320px;width:100%}
@@ -262,6 +262,31 @@ mark{background:var(--warn-tint);color:var(--warn);padding:0 2px}
 @media (max-width:760px){.chat{grid-template-columns:minmax(0,1fr);height:auto}.chans{flex-direction:row;border-right:0;border-bottom:1px solid var(--line)}.msgs{max-height:55vh}}
 
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--cadet);color:#fff;padding:10px 16px;font-size:13px;z-index:50;max-width:calc(100vw - 32px)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px 14px;padding:14px 18px 18px}
+.aibar{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--accent-tint);border-left:3px solid var(--accent);color:var(--ink)}
+.aibar.warn{background:var(--warn-tint);border-left-color:var(--warn)}
+.bmark{display:inline-grid;place-items:center;flex:none;line-height:0}.bmark.spin svg{animation:bspin 2.4s linear infinite}@keyframes bspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.bmark.spin svg{animation:none}}
+.search .ask-btn{position:absolute;right:-1px;top:-4px;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#fff;border:1px solid var(--line-2);box-shadow:0 1px 4px rgba(18,53,89,.18);transition:transform .15s}
+.search .ask-btn svg{position:static;width:36px;height:36px;stroke:none}
+.search .ask-btn:hover{transform:scale(1.06);border-color:var(--accent)}.search input{padding-right:48px}
+.bdisc{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fff;margin:-4px 8px -4px -4px;line-height:0}
+.ask-box .btn{display:inline-flex;align-items:center}
+.nav .bmark{width:16px;height:16px}
+.ask-box{display:flex;gap:10px;padding:16px 18px 12px}.ask-box .input{height:44px;font-size:15px}.ask-box .btn{height:44px}
+.sugg{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 12px}
+.sugg button{border:1px solid var(--line-2);padding:6px 10px;font-size:12.5px;background:var(--surface);text-align:left;color:var(--ink-2)}
+.sugg button:hover{border-color:var(--accent);color:var(--accent-ink)}
+.src-note{font-size:12px;color:var(--ink-3);padding:0 18px 14px;margin:0}
+.opp{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;padding:16px 18px;border-top:1px solid var(--line)}.opp:first-child{border-top:0}
+.opp .rank{width:26px;height:26px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;font-weight:700;font-size:12px}
+.opp h3{font-size:15.5px;margin:6px 0 2px}.opp .why{margin:0;color:var(--ink-2)}
+.opp .ev{margin:6px 0 0;padding-left:18px;color:var(--ink-3);font-size:12.5px}.opp .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.thinking{display:flex;align-items:center;gap:14px;padding:18px}.thinking>div{flex:1}
+.answer{padding:14px 18px;display:flex;flex-direction:column;gap:10px}.answer p{margin:0}
+.pearl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}.pearl.good{color:var(--good)}.pearl.bad{color:var(--bad)}
+.matched{font-size:12.5px;color:var(--ink-2)}
+@media (max-width:640px){.ask-box{flex-direction:column}}
 </style>
 
 <div class="demo" role="note"><span>Prototype with five made-up clients. Nothing is sent or saved; runs are simulated.</span><button type="button" id="reset">Start again</button></div>
@@ -316,7 +341,7 @@ const APPROVERS=['Admin','Manager','Client manager'];
 
 function seed(){
   const C=[
-  {id:'nguyen',name:'Harper & Eli Nguyen',type:'Couple',segment:'Pre-retirees',adviser:'alex',since:'2021',email:'harper.nguyen@example.test',phone:'0412 555 101',city:'Carlton VIC',nextReview:day(9),ofa:day(26),fee:6600,
+  {id:'nguyen',name:'Harper & Eli Nguyen',type:'Couple',segment:'Pre-retirees',adviser:'alex',since:'2021',email:'harper.nguyen@example.test',phone:'0412 555 101',city:'Carlton VIC',nextReview:day(9),ofa:day(26),fee:6600,feeType:'Ongoing',
    notes:'Eli retires in March next year. Wants the transition-to-retirement pension and salary sacrifice question covered at the review.',
    profile:{version:2,status:'confirmed',by:'Sam Rivera',when:day(-12),asAt:'30 Jun 2026',risk:'Growth',
     scope:{Super:'in',Insurance:'in','Salary sacrifice':'in','Estate planning':'out',Retirement:'in',Investments:'in'},
@@ -330,7 +355,7 @@ function seed(){
     flags:[{s:'warn',m:'Eli’s income differs: Fact Finder $135,000, KYC note $142,000 (pay rise from July). The KYC figure is used.'}],
     gaps:['Eli’s AustralianSuper insurance premium is not on the statement'],
     docs:['Fact Finder - Nguyen.xlsx','KYC File Note - Nguyen.docx','ART statement FY26.pdf','AustralianSuper statement FY26.pdf','HUB24 valuation 30-06-2026.csv']}},
-  {id:'wilson',name:'Wilson Family SMSF',type:'SMSF',segment:'Retirees',adviser:'alex',since:'2019',email:'trustee@wilsonsmsf.example.test',phone:'0418 555 202',city:'Toorak VIC',nextReview:day(21),ofa:day(47),fee:9900,
+  {id:'wilson',name:'Wilson Family SMSF',type:'SMSF',segment:'Retirees',adviser:'alex',since:'2019',email:'trustee@wilsonsmsf.example.test',phone:'0418 555 202',city:'Toorak VIC',nextReview:day(21),ofa:day(47),fee:9900,feeType:'Fixed term',
    notes:'Corporate trustee. Graham and Lorraine are both in pension phase (68% of the fund). Commercial property held directly.',
    profile:{version:3,status:'confirmed',by:'Sam Rivera',when:day(-4),asAt:'25 Sep 2026',risk:'Balanced',
     scope:{Super:'in',Investments:'in',Tax:'in',Insurance:'out','Estate planning':'in'},
@@ -344,7 +369,7 @@ function seed(){
     realised:48200,pensionShare:.68,
     flags:[{s:'info',m:'Tax figures use the fund’s 68% pension share from the June actuarial certificate.'}],gaps:[],
     docs:['SMSF financial statements FY26.pdf','Netwealth valuation 25-09-2026.pdf','Netwealth unrealised CGT report.pdf','Actuarial certificate FY26.pdf']}},
-  {id:'raman',name:'Priya Raman',type:'Individual',segment:'Accumulators',adviser:'alex',since:'2024',email:'priya.raman@example.test',phone:'0433 555 303',city:'Richmond VIC',nextReview:day(40),ofa:day(4),fee:3850,
+  {id:'raman',name:'Priya Raman',type:'Individual',segment:'Accumulators',adviser:'alex',since:'2024',email:'priya.raman@example.test',phone:'0433 555 303',city:'Richmond VIC',nextReview:day(40),ofa:day(4),fee:3850,feeType:'Ongoing',
    notes:'Salary sacrificing to the cap. Has a small old Hostplus account from a university job.',
    profile:{version:1,status:'draft',asAt:'31 Aug 2026',risk:'High Growth',
     scope:{Super:'in','Salary sacrifice':'in',Insurance:'in',Retirement:'out'},
@@ -357,7 +382,7 @@ function seed(){
     flags:[{s:'block',m:'Two different Rest balances for the same date: the portal screenshot shows $96,410 and the emailed statement shows $91,870 (both 31 Aug 2026). Neither is newer.'},{s:'warn',m:'The Hostplus balance is from June 2025 and may be out of date.'}],
     gaps:['No PDS or fee statement for Hostplus','Smoker status not stated'],
     docs:['Fact Finder - Raman.xlsx','KYC File Note - Raman.docx','Rest portal screenshot.png','Email from Priya - Rest statement.eml']}},
-  {id:'okafor',name:'Daniel & Ruth Okafor',type:'Couple',segment:'Families',adviser:'alex',since:'2022',email:'dokafor@example.test',phone:'0402 555 404',city:'Brunswick VIC',nextReview:day(3),ofa:day(33),fee:5500,
+  {id:'okafor',name:'Daniel & Ruth Okafor',type:'Couple',segment:'Families',adviser:'alex',since:'2022',email:'dokafor@example.test',phone:'0402 555 404',city:'Brunswick VIC',nextReview:day(3),ofa:day(33),fee:5500,feeType:'Ongoing',
    notes:'Daniel is a self-employed electrician. Carry-forward concessional contributions after a strong year.',
    profile:{version:2,status:'confirmed',by:'Alex Morgan',when:day(-30),asAt:'30 Jun 2026',risk:'Growth',
     scope:{Super:'in',Insurance:'in','Salary sacrifice':'in',Retirement:'in','Estate planning':'out'},
@@ -365,12 +390,12 @@ function seed(){
     people:[{n:'Daniel Okafor',role:'Client',dob:'1972',job:'Electrician (self-employed)',income:155000},{n:'Ruth Okafor',role:'Partner',dob:'1975',job:'Secondary teacher',income:108000}],
     accounts:[
      {p:'HUB24',prod:'Super · Choice',owner:'Daniel',kind:'Super',bal:521300,asAt:'30 Jun 2026',src:'HUB24 Super statement FY26',hold:[['DASH','Pearl X Growth model',503100],['Cash','HUB24 cash',18200]]},
-     {p:'UniSuper',prod:'Accumulation 1 · Balanced',owner:'Ruth',kind:'Super',bal:402750,asAt:'30 Jun 2026',src:'UniSuper statement FY26',ins:'Death & TPD $300,000 (group)'}],
+     {p:'Australian Retirement Trust',prod:'Super Savings · Balanced',owner:'Ruth',kind:'Super',bal:402750,asAt:'30 Jun 2026',src:'ART statement FY26 (Ruth)',ins:'Death & TPD $300,000 (group)'}],
     policies:['TAL income protection (Daniel): $7,500/month, 30-day wait, to age 65, $3,120 p.a.'],
     assets:[['Family home, Brunswick','Joint',1280000],['Investment unit, Footscray','Joint',610000]],liabs:[['Home loan','Joint',395000],['Investment loan','Joint',420000]],
     flags:[{s:'info',m:'The TAL policy was entered in a fund column of the Fact Finder; it is recorded as a standalone policy.'}],gaps:[],
-    docs:['Fact Finder - Okafor.xlsx','KYC File Note - Okafor.docx','HUB24 Super statement FY26.pdf','UniSuper statement FY26.pdf','TAL policy schedule.pdf']}},
-  {id:'chen',name:'Mei Chen',type:'Individual',segment:'Business owners',adviser:'alex',since:'2023',email:'mei.chen@example.test',phone:'0421 555 505',city:'Fitzroy VIC',nextReview:day(55),ofa:day(80),fee:7700,
+    docs:['Fact Finder - Okafor.xlsx','KYC File Note - Okafor.docx','HUB24 Super statement FY26.pdf','ART statement FY26 - Ruth.pdf','TAL policy schedule.pdf']}},
+  {id:'chen',name:'Mei Chen',type:'Individual',segment:'Business owners',adviser:'alex',since:'2023',email:'mei.chen@example.test',phone:'0421 555 505',city:'Fitzroy VIC',nextReview:day(55),ofa:day(80),fee:7700,feeType:'Ongoing',
    notes:'Architect, owns her practice. Signed the authority to proceed for the platform switch.',
    profile:{version:1,status:'confirmed',by:'Sam Rivera',when:day(-9),asAt:'30 Jun 2026',risk:'High Growth',
     scope:{Super:'in',Investments:'in',Insurance:'out','Estate planning':'out'},
@@ -517,7 +542,7 @@ function summaryFor(t,c){
 
 /* ================= state ================= */
 let S=seed();
-let UI={signedIn:false,me:'alex',view:'dashboard',params:{},tab:'overview',emailId:1,emailFilter:'all',channel:'para',taskScope:'mine'};
+let UI={signedIn:false,me:'alex',view:'dashboard',params:{},tab:'overview',emailId:1,emailFilter:'all',channel:'para',taskScope:'mine',filters:{},filterFrom:null};
 const me=()=>USERS[UI.me];
 const client=id=>S.clients.find(c=>c.id===id);
 const fum=c=>c.profile.accounts.reduce((s,a)=>s+a.bal,0);
@@ -558,23 +583,254 @@ function render(){
   const n=counts();const active=['client'].includes(UI.view)?'clients':['tool','run','tools'].includes(UI.view)?'tools':UI.view;
   const navBtn=(id,label,cnt)=>`<button class="nav" data-go="${id}" ${active===id?'aria-current="page"':''}>${svg(id)}${esc(label)}${cnt?`<span class="count">${cnt}</span>`:''}</button>`;
   app.innerHTML=`<div class="shell"><aside class="rail"><div class="brand">${flower('r',34)}<b>brightday</b></div>
-  <nav><div class="group">Portal</div>${NAV.map(([id,l])=>navBtn(id,l,n[id])).join('')}<div class="group">Advice</div>${navBtn('tools','Advice tools',n.tools)}</nav>
+  <nav><div class="group">Portal</div>${NAV.map(([id,l])=>navBtn(id,l,n[id])).join('')}<div class="group">Advice</div><button class="nav" data-go="ask" ${active==='ask'?'aria-current="page"':''}>${brightlyMark('nv',16)}Ask Brightly</button>${navBtn('tools','Advice tools',n.tools)}</nav>
   <div class="foot"><div class="who"><span class="av">${initials(me().name)}</span><div><b>${esc(me().name)}</b><span>${esc(me().role)}</span></div></div>
   <label class="switch" for="as">View the prototype as<select id="as">${Object.values(USERS).map(u=>`<option value="${u.id}" ${u.id===UI.me?'selected':''}>${esc(u.name)} · ${esc(u.title)}</option>`).join('')}</select></label>
   <button class="nav" id="signout" style="padding-left:0">Sign out</button></div></aside>
-  <div class="main"><header class="top"><div class="crumb" id="crumb"></div><div class="sp"></div><div class="search">${svg('search')}<input id="q" placeholder="Search clients" aria-label="Search clients"></div><button class="btn btn-sm btn-quiet" id="theme" type="button">Theme</button></header>
+  <div class="main"><header class="top"><div class="crumb" id="crumb"></div><div class="sp"></div><div class="search">${svg('search')}<input id="q" placeholder="Search clients or ask Brightly" aria-label="Search clients or ask Brightly"><button class="ask-btn" id="askbtn" type="button" title="Ask Brightly" aria-label="Ask Brightly">${brightlyMark('sq',36,ASK.status==='thinking')}</button></div><button class="btn btn-sm btn-quiet" id="theme" type="button">Theme</button></header>
   <main class="page" id="page"></main></div></div>`;
   $$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
   $('#as').onchange=e=>{UI.me=e.target.value;toast('Now viewing as '+me().name);render()};
   $('#signout').onclick=()=>{UI.signedIn=false;render()};
   $('#theme').onclick=()=>{const r=document.documentElement;const cur=r.getAttribute('data-theme');const dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.setAttribute('data-theme',dark?'light':'dark')};
-  $('#q').onkeydown=e=>{if(e.key==='Enter'){const q=e.target.value.toLowerCase();const c=S.clients.find(c=>c.name.toLowerCase().includes(q));if(c)go('client',{id:c.id});else go('clients',{q})}};
-  const V={dashboard:vDashboard,clients:vClients,client:vClient,tasks:vTasks,calendar:vCalendar,email:vEmail,chat:vChat,tools:vTools,tool:vTool,run:vRun}[UI.view]||vDashboard;
+  const ask=v=>{v=v.trim();if(!v)return go('ask');const q=v.toLowerCase();const c=v.split(/\s+/).length<=3&&S.clients.find(c=>c.name.toLowerCase().includes(q));if(c)return go('client',{id:c.id});runAsk(v)};
+  $('#q').onkeydown=e=>{if(e.key==='Enter')ask(e.target.value)};$('#askbtn').onclick=()=>ask($('#q').value);
+  const V={dashboard:vDashboard,clients:vClients,client:vClient,tasks:vTasks,calendar:vCalendar,email:vEmail,chat:vChat,tools:vTools,tool:vTool,run:vRun,ask:vAsk}[UI.view]||vDashboard;
   V();
 }
 const crumb=(parts)=>{$('#crumb').innerHTML=parts.map((p,i)=>i<parts.length-1?`<a data-crumb="${i}">${esc(p[0])}</a><span class="sep">/</span>`:esc(p[0])).join('');$$('[data-crumb]').forEach(a=>{const p=parts[+a.dataset.crumb];a.onclick=()=>go(p[1],p[2]||{})})};
 const P=html=>{$('#page').innerHTML=html};
 const bindGo=()=>{$$('[data-client]').forEach(b=>b.onclick=e=>{e.stopPropagation();go('client',{id:b.dataset.client,tab:b.dataset.tab})});$$('[data-run]').forEach(b=>b.onclick=e=>{e.stopPropagation();go('run',{id:b.dataset.run})});$$('[data-tool]').forEach(b=>b.onclick=()=>go('tool',{id:b.dataset.tool,client:b.dataset.for}))};
+
+/* ================= Ask Brightly: filters, opportunities and Pearl research ================= */
+/* Pearl ratings here are made up for the prototype; the real portal would read the licensee's research feed. */
+const PEARL={
+  CSL:{name:'CSL Limited',type:'Share',rating:'Buy',upside:.18,date:day(-6),note:'Trading below Pearl’s valuation.'},
+  WDS:{name:'Woodside Energy',type:'Share',rating:'Sell',upside:-.09,date:day(-11),note:'Pearl expects weaker LNG pricing from FY27.'},
+  A2M:{name:'a2 Milk Company',type:'Share',rating:'Accumulate',upside:.12,date:day(-20),note:'Margin outlook improved at the last result.'},
+  MQG:{name:'Macquarie Group',type:'Share',rating:'Buy',upside:.15,date:day(-3),note:'New Buy idea; no client holds it yet.'},
+  MGOC:{name:'Magellan Global Fund',type:'Fund',rating:'Sell',upside:null,date:day(-35),note:'Downgraded to Not approved; Pearl prefers a passive global core.'},
+  VGS:{name:'Vanguard International Shares ETF',type:'ETF',rating:'Accumulate',upside:null,date:day(-40),note:'Preferred global core holding.'},
+  VAS:{name:'Vanguard Australian Shares ETF',type:'ETF',rating:'Hold',upside:null,date:day(-40),note:'Core Australian equity; fee competitive.'},
+  IVV:{name:'iShares S&P 500 ETF',type:'ETF',rating:'Hold',upside:null,date:day(-40),note:'Core US equity.'},
+  IAF:{name:'iShares Core Composite Bond ETF',type:'ETF',rating:'Hold',upside:null,date:day(-40),note:'Core fixed interest.'},
+  VAF:{name:'Vanguard Australian Fixed Interest ETF',type:'ETF',rating:'Hold',upside:null,date:day(-40),note:'Core fixed interest.'},
+};
+const RATINGS=['Buy','Accumulate','Hold','Reduce','Sell'];
+const ratingCls=r=>['Buy','Accumulate'].includes(r)?'good':['Reduce','Sell'].includes(r)?'bad':'';
+const pearlChip=code=>PEARL[code]?chip('Pearl '+PEARL[code].rating,ratingCls(PEARL[code].rating)):'';
+const holdings=c=>c.profile.accounts.flatMap(a=>(a.hold||[]).map(([code,name,val])=>({code,name,val,acct:a})));
+const providers=()=>[...new Set(S.clients.flatMap(c=>c.profile.accounts.map(a=>a.p)))].sort();
+const pct1=x=>(x*100).toFixed(1).replace(/\.0$/,'')+'%';
+const inFlight=cid=>S.runs.find(r=>r.client===cid&&['review','running','queued'].includes(r.status));
+const emailClient=e=>e.c||(S.clients.find(c=>c.name.split(/[\s&]+/).includes(e.from.split(' ').pop()))||{}).id||null;
+
+/* Rule checks over profiles, research, email and tasks. Brightly (Claude) ranks and explains these; without
+   Claude they are shown as they are. */
+function signals(){
+  const out=[];const add=o=>out.push({id:o.c+':'+o.key,...o});
+  for(const c of S.clients){const p=c.profile,H=holdings(c),run=inFlight(c.id);const first=c.name.split(/[\s&]+/)[0];
+    if(p.parcels&&p.realised>0){const h=harvest(c);if(h.lossTotal>0){
+      const keep=h.losses.filter(r=>['Buy','Accumulate'].includes(PEARL[r.code]?.rating));
+      add({c:c.id,key:'harvest',kind:'Tax',score:92,tool:'tax-optimisation',value:h.saved,
+        title:`Harvest ${money(h.lossTotal)} of losses against ${money(p.realised)} of gains this year`,
+        why:`About ${money(h.saved)} of tax saved on the fund’s ${pct1(h.accShare)} accumulation share, for roughly ${money(h.costs)} of brokerage.`,
+        ev:[...h.losses.map(r=>`${r.code}: ${money(r.g)} unrealised, bought ${r.acq}${PEARL[r.code]?`, Pearl ${PEARL[r.code].rating}`:''}`),
+          ...keep.map(r=>`${r.code} is rated ${PEARL[r.code].rating} by Pearl: consider keeping it, or allow for wash-sale rules before buying back.`)]})}}
+    for(const h of H){const r=PEARL[h.code];if(!r||!['Sell','Reduce'].includes(r.rating))continue;
+      const parcel=(p.parcels||[]).find(x=>x[0]===h.code);const loss=parcel&&parcel[5]<parcel[4]?parcel[4]-parcel[5]:0;
+      add({c:c.id,key:'pearl-'+h.code,kind:'Research',score:run?35:loss?80:70,tool:'soa-roa',value:h.val,
+        title:`Pearl rates ${h.code} ${r.rating}: ${money(h.val)} held`,
+        why:run?`${r.note} The platform switch already waiting for sign-off sells it, so mention the rating in that ROA.`:loss?`${r.note} Selling also realises a ${money(loss)} capital loss.`:`${r.note} A buy/sell ROA would cover the switch.`,
+        ev:[`${h.name} in ${h.acct.p} · ${h.acct.prod}`,`Pearl ${r.rating}, ${fmtShort(r.date)}`]})}
+    for(const a of p.accounts){const cash=(a.hold||[]).find(h=>h[0]==='Cash');if(cash&&cash[2]>10000&&cash[2]/a.bal>.05)
+      add({c:c.id,key:'cash-'+a.p,kind:'Cash',score:run?30:45,tool:'soa-roa',value:cash[2],
+        title:`${money(cash[2])} sitting in cash (${pct1(cash[2]/a.bal)} of ${a.p})`,
+        why:run?'The platform switch in progress will reinvest it.':'Above a working-cash buffer; check whether it is set aside for something before investing it.',ev:[`${a.p} · ${a.prod}, ${money(a.bal)} at ${a.asAt}`]})}
+    const supers=p.accounts.filter(a=>a.kind==='Super');const small=supers.filter(a=>a.bal<20000&&supers.some(b=>b!==a&&b.owner===a.owner));
+    for(const a of small)add({c:c.id,key:'consolidate',kind:'Super',score:55,tool:'fee-comparison',value:a.bal,
+      title:`Consolidate the ${money(a.bal)} ${a.p} account`,why:`${a.owner} has a second super fund still charging fees; check for insurance inside it before rolling it over.`,ev:[`${a.p} · ${a.prod}, ${money(a.bal)} at ${a.asAt}`,...p.goals.filter(g=>/consolidat/i.test(g))]});
+    const debt=(p.liabs||[]).reduce((s,l)=>s+l[2],0);const cover=p.accounts.reduce((s,a)=>{const m=(a.ins||'').match(/Death[^$]*\$([\d,]+)/);return s+(m?+m[1].replace(/,/g,''):0)},0);
+    if(debt>0&&debt>cover)add({c:c.id,key:'insurance',kind:'Insurance',score:65,tool:null,value:debt-cover,
+      title:`${money(debt)} of debt against ${money(cover)} of death cover`,why:`${first}’s cover would leave ${money(debt-cover)} of loans unpaid; worth a protection conversation.`,ev:[...p.liabs.map(l=>`${l[0]}: ${money(l[2])}`),...p.accounts.filter(a=>a.ins).map(a=>`${a.p}: ${a.ins}`)]});
+    if(p.goals.some(g=>/carry-forward/i.test(g))){const e=S.emails.find(e=>emailClient(e)===c.id&&/carry-forward/i.test(e.s+e.body));
+      add({c:c.id,key:'carry',kind:'Contributions',score:78,tool:'soa-roa',value:null,email:e?.id,
+        title:'Carry-forward concessional contributions this year',why:'After a strong year a larger deductible contribution could cut tax at the marginal rate; confirm unused cap amounts from ATO online first.',
+        ev:[...p.goals.filter(g=>/carry-forward/i.test(g)),...(e?[`Email from ${e.from}: “${e.s}”, ${rel(e.when)}`]:[])]})}
+    const retiring=p.people.find(x=>+x.dob<=NOW.getFullYear()-60&&x.income>0&&p.goals.some(g=>/retire/i.test(g)&&g.includes(x.n.split(' ')[0])));
+    if(retiring){const e=S.emails.find(e=>emailClient(e)===c.id&&e.unread);
+      add({c:c.id,key:'retire',kind:'Retirement',score:84,tool:'soa-roa',value:null,email:e?.id,
+        title:`${retiring.n.split(' ')[0]} retires soon: pension start and salary sacrifice`,why:`${retiring.n.split(' ')[0]} is ${NOW.getFullYear()-retiring.dob} and plans to retire; the pension start, the last salary-sacrifice window and cash flow are worth planning now.`,
+        ev:[...p.goals.filter(g=>/retire/i.test(g)),...(e?[`Unanswered email: “${e.s}”, ${rel(e.when)}`]:[])]})}
+    for(const e of S.emails.filter(e=>e.unread&&emailClient(e)===c.id&&!out.some(s=>s.email===e.id)))
+      add({c:c.id,key:'email-'+e.id,kind:'Contact',score:62,tool:null,value:null,email:e.id,
+        title:`Reply to ${e.from.split(' ')[0]}: “${e.s}”`,why:e.body.split('\n').filter(Boolean).slice(1,2).join(' ')||e.body.slice(0,140),ev:[`${e.c?'Filed to':'Not yet filed; matched by name to'} ${c.name}`,`Received ${rel(e.when)}`]});
+    if(daysTo(c.ofa)<=14)add({c:c.id,key:'ofa',kind:'Review',score:58,tool:'annual-review',value:c.fee,
+      title:`OFA renewal in ${daysTo(c.ofa)} days: show the year’s value`,why:`A renewal is a natural time to recap what the ${money(c.fee)} fee delivered and what is planned next.`,ev:[`Ongoing fee ${money(c.fee)} a year`,`Renewal due ${fmtShort(c.ofa)}`]});
+    if(p.goals.some(g=>/passes to|estate/i.test(g))&&p.scope['Estate planning']==='in')add({c:c.id,key:'estate',kind:'Estate',score:40,tool:null,value:null,
+      title:'Estate plan for the fund’s property',why:'The trustees want to plan how the property passes to the children; binding nominations and the fund deed are worth a review with their lawyer.',ev:p.goals.filter(g=>/passes to|estate/i.test(g))});
+    for(const f of p.flags.filter(f=>f.s==='block'))add({c:c.id,key:'block',kind:'Data',score:32,tool:'client-profile',value:null,
+      title:`Resolve ${first}’s profile before advice`,why:f.m,ev:['The profile cannot be confirmed until this is answered.']});
+  }
+  return out.sort((a,b)=>b.score-a.score);
+}
+
+/* Filters shared by the Clients page and Brightly. */
+const ALIAS={art:'Australian Retirement Trust','aus super':'AustralianSuper','australian super':'AustralianSuper',bt:'BT Panorama',panorama:'BT Panorama',rest:'Rest'};
+const FEE_TYPES=['Ongoing','Fixed term'],RISKS=['Balanced','Growth','High Growth'],CTYPES=['Individual','Couple','SMSF'],KINDS=['Super','SMSF','Wrap','Property'];
+const NUMF=['minBalance','maxBalance','minFunds','reviewWithinDays','ofaWithinDays'];
+const pick=(v,list)=>list.find(x=>x.toLowerCase()===String(v).trim().toLowerCase())||null;
+function parseMoney(v){const m=String(v).replace(/[\s,$]/g,'').match(/^(\d+(?:\.\d+)?)(k|m|mil|million)?$/i);if(!m)return null;return Math.round(+m[1]*({k:1e3,m:1e6,mil:1e6,million:1e6}[(m[2]||'').toLowerCase()]||1))}
+const shortMoney=n=>n>=1e6?+(n/1e6).toFixed(2)+'m':n>=1e3?+(n/1e3).toFixed(1)+'k':String(n);
+function cleanFilters(f){const o={};if(!f||typeof f!=='object')return o;
+  if(typeof f.provider==='string'&&f.provider.trim()){const s=f.provider.trim();o.provider=ALIAS[s.toLowerCase()]||pick(s,providers())||s}
+  for(const[k,list]of[['accountKind',KINDS],['feeType',FEE_TYPES],['risk',RISKS],['clientType',CTYPES],['pearl',RATINGS],['profile',['confirmed','draft']]])if(f[k]!=null&&pick(f[k],list))o[k]=pick(f[k],list);
+  if(typeof f.holding==='string'&&f.holding.trim())o.holding=f.holding.trim().toUpperCase();
+  for(const k of NUMF)if(f[k]!=null&&f[k]!==''){const n=typeof f[k]==='number'?f[k]:parseMoney(f[k]);if(Number.isFinite(n)&&n>=0)o[k]=n}
+  return o}
+const acctCrit=f=>!!(f.provider||f.accountKind||f.minBalance!=null||f.maxBalance!=null);
+function matchClient(c,f){const p=c.profile;
+  const provOk=a=>{const q=f.provider.toLowerCase();return a.p.toLowerCase().includes(q)||a.prod.toLowerCase().includes(q)};
+  const accts=p.accounts.filter(a=>(!f.provider||provOk(a))&&(!f.accountKind||a.kind===f.accountKind)&&(f.minBalance==null||a.bal>=f.minBalance)&&(f.maxBalance==null||a.bal<f.maxBalance));
+  if(acctCrit(f)&&!accts.length)return null;
+  const H=holdings(c).filter(h=>(!f.holding||h.code===f.holding)&&(!f.pearl||PEARL[h.code]?.rating===f.pearl));
+  if((f.holding||f.pearl)&&!H.length)return null;
+  if(f.minFunds!=null&&fum(c)<f.minFunds)return null;
+  if(f.feeType&&c.feeType!==f.feeType)return null;
+  if(f.risk&&p.risk!==f.risk)return null;
+  if(f.clientType&&c.type!==f.clientType)return null;
+  if(f.reviewWithinDays!=null&&daysTo(c.nextReview)>f.reviewWithinDays)return null;
+  if(f.ofaWithinDays!=null&&daysTo(c.ofa)>f.ofaWithinDays)return null;
+  if(f.profile&&p.status!==f.profile)return null;
+  return{accts:acctCrit(f)?accts:[],H:(f.holding||f.pearl)?H:[]}}
+
+/* The built-in reading of a question, used when Claude is not available in this view. */
+function localAnswer(q){const s=q.toLowerCase();const sig=signals();
+  const asItems=list=>list.map(x=>({...x,size:x.score>=75?'high':x.score>=50?'medium':'low'}));
+  if(/tax|harvest|30 june|capital gain|cgt/.test(s))return{kind:'insights',title:'Tax opportunities',items:asItems(sig.filter(x=>['Tax','Contributions'].includes(x.kind)))};
+  if(/opportunit|value|connect|priorit|idea|who should i|reach out|call first|focus/.test(s))return{kind:'insights',title:'Opportunities to connect and add value',items:asItems(sig.slice(0,6))};
+  if(/email|repl|respond|unanswered/.test(s)){const un=S.emails.filter(e=>e.unread&&emailClient(e));return{kind:'answer',title:'Waiting for a reply',text:un.length?un.map(e=>`${e.from} (${client(emailClient(e)).name}): “${e.s}”, ${rel(e.when)}.`).join('\n'):'Every client email has been read.',clients:[...new Set(un.map(emailClient))]}}
+  const f={};
+  for(const[k,v]of Object.entries(ALIAS))if(new RegExp('\\b'+k+'\\b').test(s))f.provider=v;
+  for(const p of providers())if(s.includes(p.toLowerCase()))f.provider=p;
+  const m=s.match(/(under|below|less than|over|above|more than|at least|greater than)?\s*\$\s?(\d[\d,.]*\s*(?:k|m|million)?)|(under|below|less than|over|above|more than|at least|greater than)?\s*\b(\d[\d,.]*\s*(?:k|m|million))\b/);
+  if(m){const amt=parseMoney(m[2]||m[4]);const dir=m[1]||m[3]||'';if(amt){const k=/under|below|less/.test(dir)?(f.provider||/account/.test(s)?'maxBalance':null):(f.provider||/account|balance/.test(s)?'minBalance':'minFunds');if(k)f[k]=amt}}
+  if(/ongoing/.test(s))f.feeType='Ongoing';else if(/fixed[- ]term/.test(s))f.feeType='Fixed term';
+  if(/high growth/.test(s))f.risk='High Growth';else if(/\bgrowth\b/.test(s))f.risk='Growth';else if(/\bbalanced\b/.test(s))f.risk='Balanced';
+  if(/\bsmsf/.test(s))f.clientType='SMSF';else if(/couple/.test(s))f.clientType='Couple';
+  const codes=[...new Set(S.clients.flatMap(c=>holdings(c).map(h=>h.code)))].filter(x=>x!=='Cash');
+  for(const code of codes)if(new RegExp('\\b'+code+'\\b','i').test(q))f.holding=code;
+  if(/pearl|rated|rating|research|indicator/.test(s)){const r=s.match(/(?:rates?|rated|rating|pearl)\s+(?:it\s+|them\s+|as\s+|a\s+)?(buy|accumulate|hold|reduce|sell)\b|\b(buy|accumulate|hold|reduce|sell)[- ]rated/)||s.match(/\b(buy|accumulate|reduce|sell)\b/);if(r)f.pearl=pick(r[1]||r[2],RATINGS)}
+  const d=s.match(/(\d+)\s*days/);const wk=/this month|next month/.test(s)?30:null;
+  if(/renewal|ofa/.test(s))f.ofaWithinDays=d?+d[1]:wk||30;else if(/review/.test(s))f.reviewWithinDays=d?+d[1]:wk||30;
+  if(/draft|unconfirmed|to confirm/.test(s))f.profile='draft';
+  const clean=cleanFilters(f);
+  if(Object.keys(clean).length)return{kind:'filter',title:q,explain:'',filters:clean};
+  const named=S.clients.filter(c=>c.name.toLowerCase().split(/[\s&]+/).some(w=>w.length>2&&s.includes(w)));
+  if(named.length)return{kind:'answer',title:'Clients mentioned',text:'Open a client to see their profile, email, tasks and advice runs.',clients:named.map(c=>c.id)};
+  return{kind:'answer',title:'Try asking another way',text:'Without Claude, Brightly understands filters (provider, balance, fee arrangement, risk profile, holdings, Pearl ratings, review and renewal dates) and questions about opportunities, tax and email. Try one of the suggestions above.',clients:[]}}
+
+/* What Brightly (Claude) reads: the practice's data, the rule checks and the output contract. */
+function snapshot(){return{today:fmtDate(NOW),adviser:me().name,
+  tools:TOOLS.map(t=>({id:t.id,name:t.name})),
+  clients:S.clients.map(c=>{const p=c.profile;return{id:c.id,name:c.name,type:c.type,segment:c.segment,feeArrangement:c.feeType,adviceFeePerYear:c.fee,nextReviewInDays:daysTo(c.nextReview),ofaRenewalInDays:daysTo(c.ofa),notes:c.notes,
+    profile:{status:p.status,asAt:p.asAt,risk:p.risk,goals:p.goals,people:p.people.map(x=>({name:x.n,role:x.role,born:+x.dob,job:x.job,income:x.income})),
+      accounts:p.accounts.map(a=>({provider:a.p,product:a.prod,owner:a.owner,kind:a.kind,balance:a.bal,asAt:a.asAt,insurance:a.ins||null,holdings:(a.hold||[]).map(h=>({code:h[0],name:h[1],value:h[2]}))})),
+      policies:p.policies||[],assets:p.assets.map(x=>({name:x[0],owner:x[1],value:x[2]})),liabilities:p.liabs.map(x=>({name:x[0],owner:x[1],value:x[2]})),
+      parcels:(p.parcels||[]).map(x=>({code:x[0],acquired:x[2],units:x[3],cost:x[4],value:x[5],unrealised:x[5]-x[4]})),realisedGainsThisYear:p.realised??null,pensionShare:p.pensionShare??null,
+      flags:p.flags.map(f=>f.s+': '+f.m),gaps:p.gaps}}}),
+  research:{source:'Pearl (sample ratings for this prototype)',ratings:Object.entries(PEARL).map(([code,r])=>({code,name:r.name,type:r.type,rating:r.rating,upsideToTarget:r.upside,date:fmtShort(r.date),note:r.note}))},
+  signals:signals().map(s=>({id:s.id,client:s.c,kind:s.kind,title:s.title,why:s.why,evidence:s.ev,tool:s.tool})),
+  email:S.emails.map(e=>({from:e.from,client:emailClient(e),subject:e.s,received:rel(e.when),unread:e.unread,body:e.body.slice(0,300)})),
+  openTasks:S.tasks.filter(t=>!t.done).map(t=>({task:t.t,client:t.c,dueInDays:daysTo(t.due)})),
+  waitingForSignOff:S.runs.filter(r=>r.status==='review').map(r=>({tool:r.tool,client:r.client}))}}
+const BRIGHTLY=`You are Brightly, the assistant inside Brightday's adviser portal (an Australian financial advice practice). An adviser typed a question into the portal. Answer it from DATA only.
+
+Reply with only one JSON object, in one of these shapes:
+
+1. The question asks to show, list or find clients by attributes:
+{"kind":"filter","title":"<short title>","explain":"<one sentence on how you read the question>","filters":{...}}
+Filter keys (only those the question needs): provider (an account provider as written in DATA; ART = Australian Retirement Trust), accountKind ("Super"|"SMSF"|"Wrap"|"Property"), minBalance and maxBalance (dollars, for one account; they combine with provider and accountKind on the same account), minFunds (dollars, a client's total), feeType ("Ongoing"|"Fixed term"), risk ("Balanced"|"Growth"|"High Growth"), clientType ("Individual"|"Couple"|"SMSF"), holding (a holding code, e.g. "CSL"), pearl ("Buy"|"Accumulate"|"Hold"|"Reduce"|"Sell": holds a security Pearl rates that way), reviewWithinDays, ofaWithinDays (numbers), profile ("confirmed"|"draft").
+Example: "show me all the ART clients with 200k balance on ongoing fees" -> {"kind":"filter","title":"ART accounts of $200k+ on ongoing fees","explain":"An Australian Retirement Trust account of at least $200,000, for clients on an ongoing fee arrangement.","filters":{"provider":"Australian Retirement Trust","minBalance":200000,"feeType":"Ongoing"}}
+
+2. The question asks for opportunities, priorities, ideas, or who to contact:
+{"kind":"insights","title":"<short title>","items":[{"client":"<client id>","title":"<the opportunity, one line>","why":"<one or two plain-English sentences with the figures from DATA>","evidence":["<fact from DATA>"],"tool":"<tool id or null>","signal":"<signal id or null>","size":"high"|"medium"|"low"}]}
+Up to 6 items, best first. Start from DATA.signals (the portal's rule checks), but judge them: merge duplicates, drop weak ones, add what they miss. Rank by value to the client and timeliness. Say where a Pearl rating matters.
+
+3. Anything else:
+{"kind":"answer","title":"<short title>","text":"<plain-English answer, at most 120 words>","clients":["<client id>"]}
+
+Rules: use only figures in DATA and never invent a balance, price or rating. Pearl ratings are sample data. Write for the adviser. Say what to look at, not "you should buy".`;
+function cleanAnswer(r){if(!r||typeof r!=='object')return null;
+  if(r.kind==='filter'){const f=cleanFilters(r.filters);return Object.keys(f).length?{kind:'filter',title:String(r.title||''),explain:String(r.explain||''),filters:f}:null}
+  if(r.kind==='insights'&&Array.isArray(r.items)){const sig=signals();
+    const items=r.items.filter(i=>i&&client(i.client)).slice(0,8).map(i=>{const s=sig.find(x=>x.id===i.signal);return{c:i.client,kind:s?.kind||'Idea',title:String(i.title||s?.title||''),why:String(i.why||s?.why||''),
+      ev:Array.isArray(i.evidence)?i.evidence.map(String).slice(0,5):(s?.ev||[]),tool:TOOL[i.tool]?i.tool:(s?.tool||null),email:s?.email,size:['high','medium','low'].includes(i.size)?i.size:'medium'}}).filter(i=>i.title);
+    return items.length?{kind:'insights',title:String(r.title||'Opportunities'),items}:null}
+  if(r.kind==='answer'&&typeof r.text==='string')return{kind:'answer',title:String(r.title||'Answer'),text:r.text,clients:(Array.isArray(r.clients)?r.clients:[]).filter(id=>client(id))};
+  return null}
+
+/* Claude, when this page is opened inside Claude; otherwise the built-in rules answer. */
+let SAMPLER,CLAUDE_OFF=false;
+(async()=>{try{SAMPLER=window.claude&&window.claude.use?await window.claude.use('sample'):null}catch{SAMPLER=null}if(UI.signedIn&&UI.view==='ask'&&ASK.status!=='thinking')render()})();
+const ASK={q:'',status:'idle',result:null,source:null,note:'',ctl:null};
+const claudeOn=()=>!!SAMPLER&&!CLAUDE_OFF;
+async function runAsk(q){q=String(q||'').trim();if(!q)return;ASK.q=q;ASK.note='';ASK.result=null;ASK.ctl?.abort();
+  if(!claudeOn())return finishAsk(localAnswer(q),'rules');
+  const ctl=ASK.ctl=new AbortController();ASK.status='thinking';if(UI.view!=='ask')go('ask');else render();
+  try{const raw=await SAMPLER.json(BRIGHTLY+'\n\nDATA:\n'+JSON.stringify(snapshot())+'\n\nQUESTION: '+q,{signal:ctl.signal});
+    if(ctl!==ASK.ctl)return;const r=cleanAnswer(raw);if(!r)throw{code:'invalid_json'};finishAsk(r,'claude')}
+  catch(e){if(ctl!==ASK.ctl)return;const code=e&&e.code;if(code==='cancelled'){ASK.status='idle';return render()}
+    if(['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired'].includes(code))CLAUDE_OFF=true;
+    ASK.note={not_granted:'Claude wasn’t allowed for this page, so Brightly’s built-in rules answered.',rate_limited:'Claude is busy right now, so Brightly’s built-in rules answered. Try again in a minute.',invalid_json:'Claude’s answer couldn’t be read, so the built-in rules answered. Try rephrasing.',refused:'Claude declined that question, so the built-in rules answered.'}[code]||'Claude couldn’t answer just now, so Brightly’s built-in rules answered.';
+    finishAsk(localAnswer(q),'rules',true)}}
+function finishAsk(r,source,keepNote){ASK.status='done';ASK.source=source;if(!keepNote)ASK.note='';ASK.ctl=null;
+  if(r.kind==='filter'){UI.filters=r.filters;UI.filterFrom={q:ASK.q,source,explain:r.explain,note:ASK.note};ASK.status='idle';return go('clients')}
+  ASK.result=r;if(UI.view!=='ask')go('ask');else render()}
+
+const SUGGEST=['Show me all the ART clients with 200k balance on ongoing fees','Show me the biggest opportunities to connect with my clients and offer value','Which clients hold shares Pearl rates Sell?','Where can I save a client tax before 30 June?','Clients with a review in the next 30 days','Who is waiting for a reply to their email?'];
+const brightlyMark=(id,size,spin)=>`<span class="bmark${spin?' spin':''}">${flower(id,size)}</span>`;
+function oppHTML(o,i){const c=client(o.c);return`<div class="opp"><span class="rank">${i+1}</span><div class="ob">
+  <div class="row" style="gap:8px">${chip(o.kind||'Idea',o.size==='high'?'brand':'')}<a data-client="${c.id}">${esc(c.name)}</a></div>
+  <h3>${esc(o.title)}</h3><p class="why">${esc(o.why)}</p>${o.ev&&o.ev.length?`<ul class="ev">${o.ev.map(e=>`<li>${esc(e)}</li>`).join('')}</ul>`:''}
+  <div class="acts">${o.tool&&TOOL[o.tool]?`<button class="btn btn-sm btn-primary" data-tool="${o.tool}" data-for="${c.id}">${esc(TOOL[o.tool].name)}</button>`:''}${o.email?`<button class="btn btn-sm" data-email="${o.email}">Open email</button>`:''}<button class="btn btn-sm" data-addtask="${esc(o.title)}" data-c="${c.id}">Add task</button></div></div></div>`}
+function researchTable(){const held={};for(const c of S.clients)for(const h of holdings(c))if(PEARL[h.code])(held[h.code]=held[h.code]||[]).push({c,val:h.val});
+  const rows=Object.entries(PEARL).sort((a,b)=>RATINGS.indexOf(a[1].rating)-RATINGS.indexOf(b[1].rating));
+  return`<section class="card"><div class="card-head"><h2>Pearl research on client holdings</h2><span class="label">Sample ratings</span></div><div class="table-wrap"><table><thead><tr><th>Security</th><th>Rating</th><th class="r">To target</th><th>Held by</th><th class="r">Value held</th><th>Note</th></tr></thead><tbody>
+  ${rows.map(([code,r])=>{const hs=held[code]||[];return`<tr><td><b>${esc(code)}</b><div class="small muted">${esc(r.name)} · ${esc(r.type)}</div></td><td>${chip(r.rating,ratingCls(r.rating))}<div class="small muted">${fmtShort(r.date)}</div></td><td class="r">${r.upside==null?'—':(r.upside>0?'+':'')+pct1(r.upside)}</td>
+  <td>${hs.length?hs.map(h=>`<a data-client="${h.c.id}">${esc(h.c.name)}</a>`).join('<br>'):'<span class="muted">Not held</span>'}</td><td class="r">${hs.length?money(hs.reduce((s,h)=>s+h.val,0)):'—'}</td><td class="small">${esc(r.note)}</td></tr>`}).join('')}
+  </tbody></table></div></section>`}
+function askOut(){const A=ASK;
+  if(A.status==='thinking')return`<section class="card"><div class="thinking">${brightlyMark('th',30,true)}<div><b>Brightly is reading ${S.clients.length} client profiles, Pearl research, email and tasks…</b><div class="small muted">Claude usually takes 10 to 40 seconds.</div></div><button class="btn btn-sm" id="askstop">Stop</button></div></section>`;
+  const note=A.note?`<div class="aibar warn">${esc(A.note)}</div>`:'';
+  const src=A.source==='claude'?chip('Answered by Claude','brand'):chip('Built-in rules');
+  if(A.result&&A.result.kind==='insights')return note+`<section class="card"><div class="card-head"><h2>${esc(A.result.title)}</h2>${src}</div><div class="opps">${A.result.items.map(oppHTML).join('')}</div></section>`+researchTable();
+  if(A.result&&A.result.kind==='answer')return note+`<section class="card"><div class="card-head"><h2>${esc(A.result.title)}</h2>${src}</div><div class="answer">${A.result.text.split(/\n+/).map(p=>`<p>${esc(p)}</p>`).join('')}${A.result.clients.length?`<div class="row">${A.result.clients.map(id=>`<button class="btn btn-sm" data-client="${id}">${esc(client(id).name)}</button>`).join('')}</div>`:''}</div></section>`;
+  const sig=signals().slice(0,6).map(s=>({...s,size:s.score>=75?'high':s.score>=50?'medium':'low'}));
+  return`<section class="card"><div class="card-head"><h2>Opportunities the portal found</h2>${claudeOn()?`<button class="btn btn-sm" data-sugg="${esc(SUGGEST[1])}">Ask Brightly to rank these</button>`:'<span class="label">From profiles, research and email</span>'}</div><div class="opps">${sig.map(oppHTML).join('')}</div></section>`+researchTable()}
+function vAsk(){crumb([['Ask Brightly']]);
+  const status=SAMPLER===undefined?'Connecting to Claude…':claudeOn()?'Brightly sends your question and this practice’s (made-up) data to Claude on your account. The page then applies filters and figures itself, so every number comes from the client records.':'Claude isn’t available in this view, so Brightly’s built-in rules answer. Open the published page in Claude to ask Claude.';
+  P(`<div class="head"><div><h1 class="row" style="gap:12px">${brightlyMark('ah',34)}Ask Brightly</h1><p class="sub">Ask about your clients in plain English. Brightly filters the client list, finds opportunities, and reads Pearl research against what clients hold.</p></div></div>
+  <section class="card"><form class="ask-box" id="askf"><input class="input" id="askq" placeholder="e.g. Show me all the ART clients with 200k balance on ongoing fees" value="${esc(ASK.q)}" autocomplete="off" aria-label="Ask Brightly"><button class="btn btn-primary" ${ASK.status==='thinking'?'disabled':''}><span class="bdisc">${brightlyMark('pb',24,ASK.status==='thinking')}</span>Ask Brightly</button></form>
+  <div class="sugg">${SUGGEST.map(s=>`<button type="button" data-sugg="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+  <p class="src-note">${esc(status)}</p></section><div id="askout" class="stack">${askOut()}</div>`);
+  $('#askf').onsubmit=e=>{e.preventDefault();runAsk($('#askq').value)};
+  $$('[data-sugg]').forEach(b=>b.onclick=()=>{$('#askq').value=b.dataset.sugg;runAsk(b.dataset.sugg)});
+  const stop=$('#askstop');if(stop)stop.onclick=()=>ASK.ctl&&ASK.ctl.abort();
+  bindOpps();}
+function bindOpps(){bindGo();
+  $$('[data-email]').forEach(b=>b.onclick=()=>{UI.emailId=+b.dataset.email;go('email')});
+  $$('[data-addtask]').forEach(b=>b.onclick=()=>{S.tasks.push({id:Math.max(...S.tasks.map(t=>t.id))+1,t:b.dataset.addtask,c:b.dataset.c,who:UI.me,due:day(7),done:false});toast('Task added for '+client(b.dataset.c).name);b.disabled=true;b.textContent='Task added'})}
+function filterPanel(f){
+  const sel=(k,label,opts)=>{const o=opts.map(x=>Array.isArray(x)?x:[x,x]);if(f[k]!=null&&!o.some(x=>String(x[0])===String(f[k])))o.push([f[k],String(f[k])]);
+    return`<div class="field"><label for="f-${k}">${label}</label><select class="select" id="f-${k}" data-f="${k}"><option value="">Any</option>${o.map(([v,l])=>`<option value="${esc(v)}" ${String(f[k]??'')===String(v)?'selected':''}>${esc(l)}</option>`).join('')}</select></div>`};
+  const inp=(k,label,ph)=>`<div class="field"><label for="f-${k}">${label}</label><input class="input" id="f-${k}" data-f="${k}" placeholder="${ph}" value="${f[k]!=null?shortMoney(f[k]):''}" inputmode="decimal"></div>`;
+  const codes=[...new Set(S.clients.flatMap(c=>holdings(c).map(h=>h.code)))].filter(x=>x!=='Cash').sort();
+  const days=[[14,'14 days'],[30,'30 days'],[60,'60 days'],[90,'90 days']];
+  return`<section class="card"><div class="card-head"><h2>Filter</h2><div class="row">${Object.keys(f).length?`<span class="small muted">${plural(Object.keys(f).length,'filter')} on</span><button class="btn btn-sm btn-quiet" id="fclear">Clear</button>`:'<span class="small muted">or ask Brightly in the search bar</span>'}</div></div>
+  <div class="fgrid">${sel('provider','Provider',providers())}${sel('accountKind','Account type',KINDS)}${inp('minBalance','Account balance from','e.g. 200k')}${inp('minFunds','Total funds from','e.g. 1m')}
+  ${sel('feeType','Fee arrangement',FEE_TYPES)}${sel('risk','Risk profile',RISKS)}${sel('clientType','Client type',CTYPES)}${sel('holding','Holds',codes)}
+  ${sel('pearl','Pearl rating held',RATINGS)}${sel('reviewWithinDays','Review within',days)}${sel('ofaWithinDays','OFA renewal within',days)}${sel('profile','Profile',[['confirmed','Confirmed'],['draft','To confirm']])}</div></section>`}
 
 /* ================= views ================= */
 const plural=(n,w)=>`${n} ${w}${n===1?'':'s'}`;
@@ -610,6 +866,7 @@ function vDashboard(){
    <section class="card"><div class="card-head"><h2>Needs your sign-off</h2><a data-go2="tools">All runs</a></div><ul class="list">${waiting.map(r=>`<li><button class="item" data-run="${r.id}"><span class="b"><span class="t">${esc(TOOL[r.tool].name)} · ${esc(client(r.client).name)}</span><span class="s">Started by ${esc(r.by)} ${rel(r.at)}</span></span><span class="m">${runChip(r)}</span></button></li>`).join('')||'<li class="empty">Nothing waiting.</li>'}</ul></section>
    <section class="card"><div class="card-head"><h2>Your tasks this week</h2><a data-go2="tasks">All tasks</a></div><ul class="list">${myTasks.map(t=>`<li><button class="item" ${t.c?`data-client="${t.c}" data-tab="tasks"`:''}><span class="b"><span class="t">${esc(t.t)}</span><span class="s">${t.c?esc(client(t.c).name):'Practice'}</span></span><span class="m" style="color:var(${daysTo(t.due)<0?'--bad':'--ink-3'})">${due(t.due)}</span></button></li>`).join('')||'<li class="empty">Nothing due this week.</li>'}</ul></section>
    <section class="card"><div class="card-head"><h2>Reviews and OFA renewals</h2><span class="label">Next 45 days</span></div><ul class="list">${reviews.map(x=>`<li><button class="item" data-client="${x.c.id}"><span class="av alt">${initials(x.c.name)}</span><span class="b"><span class="t">${esc(x.c.name)}</span><span class="s">${x.what} · fee ${money(x.c.fee)} a year</span></span><span class="m">${chip(due(x.d),daysTo(x.d)<=7?'warn':'')}</span></button></li>`).join('')}</ul></section>
+   <section class="card"><div class="card-head"><h2 class="row" style="gap:10px">${brightlyMark('dq',22)}Opportunities</h2><a data-go2="ask">Ask Brightly</a></div><ul class="list">${signals().slice(0,4).map(x=>`<li><button class="item" data-client="${x.c}"><span class="b"><span class="t">${esc(x.title)}</span><span class="s">${esc(client(x.c).name)} · ${esc(x.kind)}</span></span><span class="m">${x.score>=75?chip('High','brand'):''}</span></button></li>`).join('')}</ul></section>
    <section class="card"><div class="card-head"><h2>Unread client email</h2><a data-go2="email">Inbox</a></div><ul class="list">${unread.map(e=>`<li><button class="item" data-email="${e.id}"><span class="b"><span class="t">${esc(e.s)}</span><span class="s">${esc(e.from)} · ${esc(client(e.c).name)}</span></span><span class="m">${rel(e.when)}</span></button></li>`).join('')||'<li class="empty">All caught up.</li>'}</ul></section>
   </div>`);
   bindGo();$$('[data-go2]').forEach(b=>b.onclick=()=>go(b.dataset.go2));$$('[data-email]').forEach(b=>b.onclick=()=>{UI.emailId=+b.dataset.email;go('email')});
@@ -618,13 +875,19 @@ function runChip(r){const t=TOOL[r.tool];if(r.status==='review')return chip(t.ap
 function profileChip(c){const p=c.profile;if(p.status==='confirmed')return chip('Profile v'+p.version,'good');if(p.status==='draft')return chip('Profile to confirm','warn');return chip('No profile','bad')}
 
 function vClients(){
-  crumb([['Clients']]);const q=(UI.params.q||'').toLowerCase();
-  const rows=S.clients.filter(c=>!q||c.name.toLowerCase().includes(q));
-  P(`<div class="head"><div><h1>Clients</h1><p class="sub">${S.clients.length} active clients · ${big(S.clients.reduce((s,c)=>s+fum(c),0))} under advice. Balances come from each client’s confirmed profile.</p></div><div class="actions"><button class="btn btn-primary" id="addc">New client</button></div></div>
-  <section class="card"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Type</th><th>Adviser</th><th>Platforms</th><th class="r">Funds</th><th>Next review</th><th>OFA renewal</th><th>Profile</th></tr></thead><tbody>
-  ${rows.map(c=>`<tr class="click" data-client="${c.id}"><td><div class="row" style="flex-wrap:nowrap"><span class="av alt">${initials(c.name)}</span><div><b>${esc(c.name)}</b><div class="small muted">${esc(c.segment)} · ${esc(c.city)}</div></div></div></td><td>${esc(c.type)}</td><td>${esc(USERS[c.adviser].name)}</td><td>${esc([...new Set(c.profile.accounts.map(a=>a.p))].join(', '))}</td><td class="r">${money(fum(c))}</td><td>${due(c.nextReview)}</td><td>${daysTo(c.ofa)<=7?chip(due(c.ofa),'warn'):due(c.ofa)}</td><td>${profileChip(c)}</td></tr>`).join('')}
+  crumb([['Clients']]);const q=(UI.params.q||'').toLowerCase();const f=UI.filters||{};const from=UI.filterFrom;
+  const rows=S.clients.map(c=>({c,m:matchClient(c,f)})).filter(x=>x.m&&(!q||x.c.name.toLowerCase().includes(q)));
+  const showM=acctCrit(f)||f.holding||f.pearl;const on=Object.keys(f).length>0;
+  const matched=m=>[...m.accts.map(a=>`${esc(a.p)} · ${esc(a.owner)} · <b>${money(a.bal)}</b>`),...m.H.map(h=>`${esc(h.code)} ${money(h.val)} ${pearlChip(h.code)}`)].join('<br>');
+  P(`<div class="head"><div><h1>Clients</h1><p class="sub">${on?`${rows.length} of ${plural(S.clients.length,'client')} match`:`${S.clients.length} active clients`} · ${big(rows.reduce((s,x)=>s+fum(x.c),0))} under advice. Balances come from each client’s confirmed profile.</p></div><div class="actions"><button class="btn" data-go2="ask" style="display:inline-flex;align-items:center"><span class="bdisc" style="background:transparent">${brightlyMark('cb',24)}</span>Ask Brightly</button><button class="btn btn-primary" id="addc">New client</button></div></div>
+  ${from?`<div class="aibar">${brightlyMark('fb',26)}<div><b>${from.source==='claude'?'Brightly (Claude)':'Brightly’s built-in rules'} read “${esc(from.q)}” as the filters below.</b>${from.explain?`<div>${esc(from.explain)}</div>`:''}${from.note?`<div class="small">${esc(from.note)}</div>`:''}<div class="small muted">Change any filter to refine the list.</div></div></div>`:''}
+  ${filterPanel(f)}
+  <section class="card"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Type</th>${showM?'<th>Matched</th>':'<th>Platforms</th>'}<th>Fee</th><th class="r">Funds</th><th>Next review</th><th>OFA renewal</th><th>Profile</th></tr></thead><tbody>
+  ${rows.map(({c,m})=>`<tr class="click" data-client="${c.id}"><td><div class="row" style="flex-wrap:nowrap"><span class="av alt">${initials(c.name)}</span><div><b>${esc(c.name)}</b><div class="small muted">${esc(c.segment)} · ${esc(c.city)}</div></div></div></td><td>${esc(c.type)}</td><td class="matched">${showM?matched(m):esc([...new Set(c.profile.accounts.map(a=>a.p))].join(', '))}</td><td>${esc(c.feeType)}<div class="small muted">${money(c.fee)} a year</div></td><td class="r">${money(fum(c))}</td><td>${due(c.nextReview)}</td><td>${daysTo(c.ofa)<=7?chip(due(c.ofa),'warn'):due(c.ofa)}</td><td>${profileChip(c)}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">No clients match these filters.</td></tr>`}
   </tbody></table></div></section>`);
-  bindGo();$('#addc').onclick=()=>toast('In the portal this opens the new client form.');
+  bindGo();$('#addc').onclick=()=>toast('In the portal this opens the new client form.');$$('[data-go2]').forEach(b=>b.onclick=()=>go(b.dataset.go2));
+  $$('[data-f]').forEach(el=>el.onchange=()=>{const nf={...(UI.filters||{})};const v=el.value.trim();if(v)nf[el.dataset.f]=NUMF.includes(el.dataset.f)?parseMoney(v):v;else delete nf[el.dataset.f];UI.filters=cleanFilters(nf);render()});
+  const cl=$('#fclear');if(cl)cl.onclick=()=>{UI.filters={};UI.filterFrom=null;render()};
 }
 
 function vClient(){
@@ -636,7 +899,7 @@ function vClient(){
   if(UI.tab==='overview'){
     body=`<div class="split"><div class="stack">
     <section class="card"><div class="card-head"><h2>Accounts</h2><span class="label">Position at ${esc(p.asAt)}</span></div><div class="table-wrap"><table><thead><tr><th>Account</th><th>Owner</th><th class="r">Balance</th><th>Source</th></tr></thead><tbody>
-    ${p.accounts.map(a=>`<tr><td><b>${esc(a.p)}</b> · ${esc(a.prod)}${a.ins?`<div class="small muted">Cover: ${esc(a.ins)}</div>`:''}${a.hold?`<div class="small muted">${a.hold.length} holdings: ${a.hold.map(h=>esc(h[0])).join(', ')}</div>`:''}</td><td>${esc(a.owner)}</td><td class="r">${money(a.bal)}</td><td class="small muted"><span class="src" title="As at ${esc(a.asAt)}">${esc(a.src)}</span></td></tr>`).join('')}
+    ${p.accounts.map(a=>`<tr><td><b>${esc(a.p)}</b> · ${esc(a.prod)}${a.ins?`<div class="small muted">Cover: ${esc(a.ins)}</div>`:''}${a.hold?`<div class="small muted">${a.hold.length} holdings: ${a.hold.map(h=>esc(h[0])+(PEARL[h[0]]?` <span class="pearl ${ratingCls(PEARL[h[0]].rating)}">${PEARL[h[0]].rating}</span>`:'')).join(', ')}</div>`:''}</td><td>${esc(a.owner)}</td><td class="r">${money(a.bal)}</td><td class="small muted"><span class="src" title="As at ${esc(a.asAt)}">${esc(a.src)}</span></td></tr>`).join('')}
     <tr class="tot"><td>Total</td><td></td><td class="r">${money(fum(c))}</td><td></td></tr></tbody></table></div></section>
     ${(p.policies||[]).length?`<section class="card"><div class="card-head"><h2>Insurance outside super</h2></div><ul class="list">${p.policies.map(x=>`<li class="item">${esc(x)}</li>`).join('')}</ul></section>`:''}
     ${p.assets.length||p.liabs.length?`<section class="card"><div class="card-head"><h2>Assets and liabilities</h2></div><div class="table-wrap"><table><tbody>${p.assets.map(a=>`<tr><td>${esc(a[0])}</td><td class="muted">${esc(a[1])}</td><td class="r">${money(a[2])}</td></tr>`).join('')}${p.liabs.map(l=>`<tr><td>${esc(l[0])}</td><td class="muted">${esc(l[1])}</td><td class="r" style="color:var(--bad)">${money(-l[2])}</td></tr>`).join('')}</tbody></table></div></section>`:''}
@@ -818,6 +1081,6 @@ function vRun(){
   $$('[data-bf]').forEach(f=>{$('[data-bx]',f).onclick=()=>f.hidden=true;f.onsubmit=e=>{e.preventDefault();const cm=$('textarea',f).value.trim();if(!cm)return $('textarea',f).focus();const d=run.docs[+f.dataset.bf];d.st='rejected';d.by=me().name;d.comment=cm;toast('Sent back');render()}});
 }
 
-$('#reset').onclick=()=>{S=seed();seedRuns();UI={...UI,view:'dashboard',params:{},tab:'overview'};toast('Prototype reset');render()};
+$('#reset').onclick=()=>{S=seed();seedRuns();UI={...UI,view:'dashboard',params:{},tab:'overview',filters:{},filterFrom:null};Object.assign(ASK,{q:'',status:'idle',result:null,note:''});toast('Prototype reset');render()};
 render();
 </script>
