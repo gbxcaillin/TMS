@@ -52,7 +52,7 @@ const login = async (email) => (await req('POST', '/auth/login', { body: { email
     await R.fill('#chat-form textarea', '');
     // The bell notice arrived with a deep link; following it opens the DM.
     const attn = await R.evaluate(() => ({ card: !!document.querySelector('.toast.notice'), cardText: (document.querySelector('.toast.notice b') || {}).textContent, badge: document.querySelector('#notif-pip').textContent, alert: document.querySelector('#notif-btn').classList.contains('alert'), title: document.title }));
-    t('live arrival: notice card, red count 1 on the bell, title (1)', attn.card && /Jordan sent you a message/.test(attn.cardText) && attn.badge === '1' && attn.alert && attn.title === '(1) Brightday Portal');
+    t('live arrival: notice card, red count 1 on the bell, title (1)', attn.card && /Jordan sent you a message/.test(attn.cardText) && attn.badge === '1' && attn.alert && attn.title === '(1) Brightly');
     // Connected-mailbox layout: two panes, conversation takes the rest of the width.
     await R.evaluate(() => { window.fetchMail = () => {}; NET.features.mailbox = true; MAIL.accounts = [{ email: 'sam@x.com' }]; MAIL.loaded = true; location.hash = '#/email'; try { route(); } catch (e) { window.__err = e.message; } });
     await sleep(400);

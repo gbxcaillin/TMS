@@ -1,6 +1,6 @@
 {
   "version": "2026-09-29",
-  "intro": "Step-by-step training for every part of Brightday Portal. Screens show sample data, never real clients. Each module lists what the screen is for, the steps to use it, and what happens behind the scenes. Modules are updated with every change to the CRM; see What's new for the latest.",
+  "intro": "Step-by-step training for every part of Brightly. Screens show sample data, never real clients. Each module lists what the screen is for, the steps to use it, and what happens behind the scenes. Modules are updated with every change to the CRM; see What's new for the latest.",
   "groups": [
     "Getting started",
     "Work",
@@ -14,7 +14,7 @@
       "id": "start",
       "group": "Getting started",
       "title": "Signing in and finding your way",
-      "summary": "Brightday Portal lives at portal.brightday.com.au. It is a web app that also installs on your phone. This module covers signing in, the layout on desktop and phone, search, and the notification bell.",
+      "summary": "Brightly lives at portal.brightday.com.au. It is a web app that also installs on your phone. This module covers signing in, the layout on desktop and phone, search, and the notification bell.",
       "image": "dashboard.jpg",
       "caption": "Desktop layout: navigation rail on the left, search and New lead at the top, the notification bell on the right.",
       "steps": [
@@ -883,7 +883,7 @@
       "id": "capabilities",
       "group": "Reference",
       "title": "Capabilities statement",
-      "summary": "The full description of what Brightday Portal does, how it connects to brightday.com.au, the integrations, running costs and the plan for scaling to 20 users and 1,000 leads a month. Kept up to date alongside this training.",
+      "summary": "The full description of what Brightly does, how it connects to brightday.com.au, the integrations, running costs and the plan for scaling to 20 users and 1,000 leads a month. Kept up to date alongside this training.",
       "steps": [
         {
           "t": "Read it here",
@@ -919,6 +919,12 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-29",
+      "title": "The portal is now Brightly",
+      "body": "The portal's name is now Brightly: in the browser tab, the installed app, notifications and emails. Brightday stays the name of the practice.",
+      "modules": []
+    },
     {
       "date": "2026-09-29",
       "title": "Client profile",
@@ -1109,7 +1115,7 @@
     {
       "date": "2026-09-28",
       "title": "Fix: Research opens on older workspaces; teal title bar",
-      "body": "Research failed to open on a workspace that was set up before the Research section existed, because the page expected a saved watchlist that such workspaces never had. Any settings document a workspace is missing now starts empty at sign-in and is saved on the next change, so every section opens. The installed app's title bar is now teal instead of black, and it reads \"Brightday Portal - 2 unread\" rather than repeating the app name; in a browser tab the title stays \"(2) Brightday Portal\". The number is your own count of unread notifications, so it differs from person to person.",
+      "body": "Research failed to open on a workspace that was set up before the Research section existed, because the page expected a saved watchlist that such workspaces never had. Any settings document a workspace is missing now starts empty at sign-in and is saved on the next change, so every section opens. The installed app's title bar is now teal instead of black, and it reads \"Brightly - 2 unread\" rather than repeating the app name; in a browser tab the title stays \"(2) Brightly\". The number is your own count of unread notifications, so it differs from person to person.",
       "modules": [
         "research",
         "start"

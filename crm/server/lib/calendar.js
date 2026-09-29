@@ -42,7 +42,7 @@ function fromGraph(ev) {
 // CRM event -> Outlook body.
 function toGraph(e) {
   const deal = e.deal ? D.getRecord('deals', e.deal) : null;
-  const body = [e.notes || '', deal ? 'Deal: ' + deal.practice : '', 'From Brightday Portal: ' + BASE + '/#/calendar'].filter(Boolean).join('\n\n');
+  const body = [e.notes || '', deal ? 'Deal: ' + deal.practice : '', 'From Brightly: ' + BASE + '/#/calendar'].filter(Boolean).join('\n\n');
   const start = e.allDay ? e.start.slice(0, 10) + 'T00:00:00' : e.start.slice(0, 16) + ':00';
   const end = e.allDay ? addDays((e.end || e.start).slice(0, 10), 1) + 'T00:00:00' : (e.end || e.start).slice(0, 16) + ':00';
   return { subject: e.title || 'Event', isAllDay: !!e.allDay, start: { dateTime: start, timeZone: TZ }, end: { dateTime: end, timeZone: TZ }, body: { contentType: 'text', content: body }, showAs: e.kind === 'Out of office' ? 'oof' : 'busy' };

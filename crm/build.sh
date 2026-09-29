@@ -12,7 +12,7 @@ cat > index.html <<'EOF'
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#990A4E">
 <meta name="color-scheme" content="light dark">
-<meta name="application-name" content="Brightday Portal">
+<meta name="application-name" content="Brightly">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">

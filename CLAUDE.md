@@ -1,4 +1,4 @@
-# Brightday Portal
+# Brightly
 
 Two apps behind one address: `crm/` (the portal; its own rules are in `crm/CLAUDE.md` and apply to anything under
 `crm/`) and `tools/` (the advice tools at `/tools/`). `deploy/` wires them together behind Caddy and Cloudflare.

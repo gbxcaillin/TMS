@@ -1,6 +1,6 @@
 # Security
 
-How Brightday Portal protects the client and financial data it holds, what each
+How Brightly protects the client and financial data it holds, what each
 control costs, and what to do when something goes wrong. Everything in the
 "built in" column ships with the app and costs nothing beyond the VPS and
 the Microsoft 365 licences BD already pays for.

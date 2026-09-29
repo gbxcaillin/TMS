@@ -34,7 +34,7 @@ Add the `crm:` service to `/root/familyoffice/docker-compose.yml` (from
 cd /root/familyoffice
 docker compose up -d --build crm
 docker compose up -d --force-recreate caddy   # picks up the edited Caddyfile
-docker compose logs -f crm      # look for: [boot] Brightday Portal on :3000 · dist ok
+docker compose logs -f crm      # look for: [boot] Brightly on :3000 · dist ok
 ```
 
 Use `--force-recreate caddy` (not `caddy reload`) after editing the Caddyfile: it

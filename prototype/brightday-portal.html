@@ -1,9 +1,10 @@
-<title>Brightday Portal</title>
+<title>Brightly</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@400;500;600;700&family=Ubuntu+Mono:wght@400;700&display=swap">
 <style>
 /* Layout: fixed Space Cadet navigation rail, cool work area; raspberry only for actions, the active item and figures that matter. */
 :root{
   --raspberry:#F50D74;--garnet:#990A4E;--cadet:#123559;
+  --primary:#123559;--primary-hover:#1B4470;--logo-bg:#123559;
   --accent:#F50D74;--accent-hover:#D90B66;--accent-ink:#990A4E;--accent-tint:#FDE7F1;--accent-tint-2:#FBCDE1;
   --rail:#123559;--rail-2:#1B4470;--rail-text:#A9BAD0;--rail-line:rgba(255,255,255,.09);
   --bg:#F4F6FA;--surface:#FFFFFF;--surface-2:#EDF1F6;--surface-3:#E3E9F1;--line:#DFE5EE;--line-2:#C7D1DE;
@@ -13,6 +14,7 @@
   --font-head:'Ubuntu',system-ui,sans-serif;--font-body:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;--font-mono:'Ubuntu Mono',ui-monospace,Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --primary:#2A5C8F;--primary-hover:#3A6DA3;--logo-bg:#123559;
   --accent:#FF2F86;--accent-hover:#FF5A9E;--accent-ink:#FF84B8;--accent-tint:#3A1330;--accent-tint-2:#4C1A3F;
   --rail:#0B1D31;--rail-2:#13304F;
   --bg:#0A1726;--surface:#102339;--surface-2:#15304D;--surface-3:#1B3A5C;--line:#1F3A58;--line-2:#2C4D72;
@@ -21,6 +23,7 @@
   --overlay:rgba(0,0,0,.6);color-scheme:dark;
 }}
 :root[data-theme="dark"]{
+  --primary:#2A5C8F;--primary-hover:#3A6DA3;--logo-bg:#123559;
   --accent:#FF2F86;--accent-hover:#FF5A9E;--accent-ink:#FF84B8;--accent-tint:#3A1330;--accent-tint-2:#4C1A3F;
   --rail:#0B1D31;--rail-2:#13304F;
   --bg:#0A1726;--surface:#102339;--surface-2:#15304D;--surface-3:#1B3A5C;--line:#1F3A58;--line-2:#2C4D72;
@@ -75,7 +78,7 @@ a{color:var(--accent-ink);text-decoration:none;cursor:pointer}a:hover{text-decor
 .who b{display:block;font-size:13px;font-weight:600;color:#fff}.who span{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--rail-text)}
 .switch{font-size:11.5px;color:var(--rail-text);display:flex;flex-direction:column;gap:4px}
 .switch select{background:var(--rail-2);color:#fff;border:1px solid var(--rail-line);padding:5px 6px;font-size:12px}
-.av{width:30px;height:30px;border-radius:50%;background:var(--raspberry);color:#fff;display:inline-grid;place-items:center;font-size:11px;font-weight:700;flex:none}
+.av{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:inline-grid;place-items:center;font-size:11px;font-weight:700;flex:none}
 .av.alt{background:var(--surface-3);color:var(--ink)}
 .main{min-width:0;display:flex;flex-direction:column}
 .top{height:54px;display:flex;align-items:center;gap:12px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
@@ -102,7 +105,7 @@ a{color:var(--accent-ink);text-decoration:none;cursor:pointer}a:hover{text-decor
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 14px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 .btn:hover{background:var(--surface-2);text-decoration:none}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
 .btn-good{background:var(--good);border-color:var(--good);color:var(--on-good)}.btn-good:hover{background:var(--good);filter:brightness(1.07)}
 .btn-quiet{border-color:transparent;background:transparent}
 .btn-sm{height:28px;padding:0 10px;font-size:10.5px}
@@ -233,7 +236,7 @@ mark{background:var(--warn-tint);color:var(--warn);padding:0 2px}
 .day:first-child{border-left:0}
 .day header{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:baseline}
 .day header b{font-family:var(--font-head);font-size:20px;font-weight:400}
-.day.today header b{background:var(--accent);color:#fff;padding:0 8px;min-width:32px;text-align:center}
+.day.today header b{background:var(--primary);color:#fff;padding:0 8px;min-width:32px;text-align:center}
 .day .evs{display:flex;flex-direction:column;gap:6px;padding:8px}
 .ev{padding:7px 9px;background:var(--surface-2);border-left:3px solid var(--line-2);font-size:12.5px;text-align:left;display:flex;flex-direction:column;gap:1px;color:var(--ink);width:100%}
 .ev.client{background:var(--accent-tint);border-left-color:var(--accent)}
@@ -252,7 +255,7 @@ mark{background:var(--warn-tint);color:var(--warn);padding:0 2px}
 .chans button{display:flex;align-items:center;gap:6px;padding:7px 10px;font-weight:600;color:var(--ink-2);text-align:left}
 .chans button:hover{background:var(--surface-2)}
 .chans button[aria-current="true"]{background:var(--accent-tint);color:var(--accent-ink)}
-.chans .count{margin-left:auto;background:var(--accent);color:#fff;border-radius:9px;padding:0 6px;font-size:10.5px}
+.chans .count{margin-left:auto;background:var(--primary);color:#fff;border-radius:9px;padding:0 6px;font-size:10.5px}
 .thread{display:flex;flex-direction:column;min-width:0;min-height:0}
 .msgs{flex:1;overflow:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
 .msg{display:flex;gap:10px}.msg .t{font-weight:700;font-size:13px}.msg .t time{font-weight:400;color:var(--ink-3);margin-left:6px;font-size:12px}
@@ -263,19 +266,21 @@ mark{background:var(--warn-tint);color:var(--warn);padding:0 2px}
 
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--cadet);color:#fff;padding:10px 16px;font-size:13px;z-index:50;max-width:calc(100vw - 32px)}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px 14px;padding:14px 18px 18px}
-.aibar{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--accent-tint);border-left:3px solid var(--accent);color:var(--ink)}
+.aibar{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:var(--surface-2);border-left:3px solid var(--primary);color:var(--ink)}
 .aibar.warn{background:var(--warn-tint);border-left-color:var(--warn)}
-.bmark{display:inline-grid;place-items:center;flex:none;line-height:0}.bmark.spin svg{animation:bspin 2.4s linear infinite}@keyframes bspin{to{transform:rotate(360deg)}}
+.bmark{display:inline-grid;place-items:center;flex:none;line-height:0;background:var(--logo-bg);border-radius:50%;padding:2px}.rail .bmark{padding:0}
+.rail .who .av{background:#fff;color:var(--cadet)}
+.bdisc{display:inline-grid;place-items:center;line-height:0;margin:-4px 8px -4px -6px}.bmark.spin svg{animation:bspin 2.4s linear infinite}@keyframes bspin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.bmark.spin svg{animation:none}}
 .search .sdrop{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;background:var(--surface);border:1px solid var(--line-2);box-shadow:0 8px 24px rgba(18,53,89,.18);display:flex;flex-direction:column;min-width:320px}
 .sopt{display:flex;align-items:center;gap:10px;padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);flex-wrap:wrap}.sopt:hover,.sopt.first{background:var(--surface-2)}
 .sopt .sl{font-weight:700;font-size:12.5px;width:100%}.schips{display:flex;flex-wrap:wrap;gap:4px}.schips .chip{text-transform:none;letter-spacing:0;font-weight:600}
-.sopt.ask{color:var(--accent-ink);font-weight:600;flex-wrap:nowrap}.sopt.ask .bdisc{background:transparent;margin:-4px 0}
+.sopt.ask{color:var(--accent-ink);font-weight:600;flex-wrap:nowrap}.sopt.ask .bdisc{margin:-4px 0}
 .brightly-offer{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 [data-askfull] .bmark{margin-right:6px}
 .shint{padding:8px 12px;font-size:11.5px;color:var(--ink-3);line-height:1.4}
-.bbtn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 4px;border-radius:18px;background:var(--cadet);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;flex:none}
-.bbtn:hover,.bbtn[aria-current="page"]{background:var(--garnet)}.bbtn .bdisc{width:30px;height:30px;margin:0}
+.bbtn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 4px;border-radius:18px;background:var(--primary);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;flex:none}
+.bbtn:hover,.bbtn[aria-current="page"]{background:var(--primary-hover)}.bbtn .bdisc{margin:0}
 .aibar.search-bar{background:var(--surface-2);border-left-color:var(--cadet)}.aibar.search-bar>svg{width:18px;height:18px;stroke:var(--ink-2);fill:none;stroke-width:1.5;flex:none;margin-top:2px}
 @media (max-width:760px){.bbtn .bl{display:none}.bbtn{padding:0 3px}}
 .nav .bmark{width:16px;height:16px}
@@ -588,7 +593,7 @@ function render(){
   if(!UI.signedIn){app.innerHTML=vLogin();bindLogin();return}
   const n=counts();const active=['client'].includes(UI.view)?'clients':['tool','run','tools'].includes(UI.view)?'tools':UI.view;
   const navBtn=(id,label,cnt)=>`<button class="nav" data-go="${id}" ${active===id?'aria-current="page"':''}>${svg(id)}${esc(label)}${cnt?`<span class="count">${cnt}</span>`:''}</button>`;
-  app.innerHTML=`<div class="shell"><aside class="rail"><div class="brand">${flower('r',34)}<b>brightday</b></div>
+  app.innerHTML=`<div class="shell"><aside class="rail"><div class="brand">${brightlyMark('r',34)}<b>brightly</b></div>
   <nav><div class="group">Portal</div>${NAV.map(([id,l])=>navBtn(id,l,n[id])).join('')}<div class="group">Advice</div><button class="nav" data-go="ask" ${active==='ask'?'aria-current="page"':''}>${brightlyMark('nv',16)}Ask Brightly</button>${navBtn('tools','Advice tools',n.tools)}</nav>
   <div class="foot"><div class="who"><span class="av">${initials(me().name)}</span><div><b>${esc(me().name)}</b><span>${esc(me().role)}</span></div></div>
   <label class="switch" for="as">View the prototype as<select id="as">${Object.values(USERS).map(u=>`<option value="${u.id}" ${u.id===UI.me?'selected':''}>${esc(u.name)} · ${esc(u.title)}</option>`).join('')}</select></label>
@@ -755,7 +760,7 @@ function snapshot(){return{today:fmtDate(NOW),adviser:me().name,
   email:S.emails.map(e=>({from:e.from,client:emailClient(e),subject:e.s,received:rel(e.when),unread:e.unread,body:e.body.slice(0,300)})),
   openTasks:S.tasks.filter(t=>!t.done).map(t=>({task:t.t,client:t.c,dueInDays:daysTo(t.due)})),
   waitingForSignOff:S.runs.filter(r=>r.status==='review').map(r=>({tool:r.tool,client:r.client}))}}
-const BRIGHTLY=`You are Brightly, the assistant inside Brightday's adviser portal (an Australian financial advice practice). An adviser typed a question into the portal. Answer it from DATA only.
+const BRIGHTLY=`You are Brightly, the assistant inside Brightly, the adviser portal of Brightday (an Australian financial advice practice). An adviser typed a question into the portal. Answer it from DATA only.
 
 Reply with only one JSON object, in one of these shapes:
 
@@ -877,8 +882,8 @@ function filterPanel(f){
 /* ================= views ================= */
 const plural=(n,w)=>`${n} ${w}${n===1?'':'s'}`;
 function vLogin(){return`<div class="login"><div class="login-form"><form class="login-card" id="login">
-  <div class="row">${flower('l',44)}<b style="font-family:var(--font-head);font-size:26px;letter-spacing:-.02em">brightday</b></div>
-  <div><h1 style="font-size:26px">Sign in</h1><p class="muted" style="margin-top:6px">Brightday Portal</p></div>
+  <div class="row">${brightlyMark('l',44)}<b style="font-family:var(--font-head);font-size:26px;letter-spacing:-.02em">brightly</b></div>
+  <div><h1 style="font-size:26px">Sign in</h1><p class="muted" style="margin-top:6px">Brightday’s adviser portal</p></div>
   <button class="btn btn-ms" type="submit"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="0" y="0" width="8.5" height="8.5" fill="#F25022"/><rect x="9.5" y="0" width="8.5" height="8.5" fill="#7FBA00"/><rect x="0" y="9.5" width="8.5" height="8.5" fill="#00A4EF"/><rect x="9.5" y="9.5" width="8.5" height="8.5" fill="#FFB900"/></svg>Sign in with Microsoft 365</button>
   <div class="row muted small" style="justify-content:center">or with your email</div>
   <div class="field"><label for="le">Work email</label><input class="input" id="le" value="alex@brightday.com.au" autocomplete="off"></div>

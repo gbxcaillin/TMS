@@ -1,4 +1,4 @@
-# Brightday Portal server
+# Brightly server
 
 Plain Node 22 (`node:http`, `node:sqlite`), no framework. Three runtime
 dependencies: `web-push`, `qrcode`, `yahoo-finance2`. Email goes out through the Resend HTTP API.

@@ -1,4 +1,4 @@
-# Brightday Portal: Node server (API + shared SQLite state) serving the built PWA.
+# Brightly: Node server (API + shared SQLite state) serving the built PWA.
 FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production PORT=3000 DATA_DIR=/app/data TZ=Australia/Melbourne

@@ -1,4 +1,4 @@
-# Brightday advice tools: Node server + the Claude Agent SDK, with Python for the skills' document work.
+# Brightly advice tools: Node server + the Claude Agent SDK, with Python for the skills' document work.
 # Debian (glibc) rather than Alpine: the Agent SDK ships a native Claude Code binary built for glibc.
 FROM node:22-bookworm-slim
 WORKDIR /app

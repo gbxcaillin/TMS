@@ -1,4 +1,4 @@
-// Brightday advice tools: a small service mounted beside the CRM at /tools/ on the same host. It signs people in
+// Brightly advice tools: a small service mounted beside the CRM at /tools/ on the same host. It signs people in
 // through the CRM's session, reads client records from the CRM as that person, runs the practice's skills with the
 // Claude Agent SDK, and keeps the runs, their progress and the documents they produce.
 import http from 'node:http';
@@ -245,6 +245,6 @@ server.requestTimeout = 0; // uploads and event streams can be long
 server.listen(PORT, '0.0.0.0', () => {
   runner.resume();
   const i = runner.info();
-  console.log(`[boot] Brightday advice tools on :${PORT}${BASE}/ · db ${store.DB_PATH} · ${i.fake ? 'DEMO agent (AGENT_FAKE=1)' : 'model ' + i.model} · skills: ${i.skills.join(', ') || 'none yet (add them to agent/skills)'}`);
+  console.log(`[boot] Brightly advice tools on :${PORT}${BASE}/ · db ${store.DB_PATH} · ${i.fake ? 'DEMO agent (AGENT_FAKE=1)' : 'model ' + i.model} · skills: ${i.skills.join(', ') || 'none yet (add them to agent/skills)'}`);
 });
 process.on('unhandledRejection', (e) => console.error('[unhandled]', e));

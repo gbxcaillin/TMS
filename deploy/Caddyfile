@@ -1,4 +1,4 @@
-# Brightday Portal behind Cloudflare. One host: /tools/* goes to the advice tools, everything else to the CRM.
+# Brightly behind Cloudflare. One host: /tools/* goes to the advice tools, everything else to the CRM.
 # Replace portal.brightday.com.au if the portal lives elsewhere (also APP_URL in crm.env).
 {
 	servers {

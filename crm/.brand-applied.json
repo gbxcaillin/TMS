@@ -2,7 +2,7 @@
   "_help": "Edit this file, then run: node tools/rebrand.js  (see START-HERE.md). Every value is replaced wherever the current one appears: app, server, emails, PDFs, docs and tests.",
   "company": "Brightday",
   "legal": "Brightday Pty Ltd",
-  "product": "Brightday Portal",
+  "product": "Brightly",
   "short": "BD",
   "slug": "brightday",
   "monogram": "B",

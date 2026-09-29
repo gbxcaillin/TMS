@@ -1,4 +1,4 @@
-# Brightday Portal
+# Brightly
 
 The adviser portal for Brightday: client list, tasks, calendar and inbox synced with Outlook, practice chat, and
 the advice tools (fee comparison, product feature comparison, tax minimisation and loss harvesting, annual review

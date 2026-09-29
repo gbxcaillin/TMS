@@ -36,7 +36,7 @@ cd /root/familyoffice
 docker compose config >/dev/null && echo compose OK
 docker compose up -d --build crm
 docker compose up -d --force-recreate caddy   # picks up the edited Caddyfile
-docker compose logs -f crm           # "[boot] Brightday Portal on :3000 · db /app/data/crm.db · dist ok"
+docker compose logs -f crm           # "[boot] Brightly on :3000 · db /app/data/crm.db · dist ok"
 ```
 
 **Applying Caddyfile changes:** the Caddyfile is a read-only single-file bind

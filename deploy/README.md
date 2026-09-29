@@ -1,4 +1,4 @@
-# Deploying Brightday Portal
+# Deploying Brightly
 
 One VPS runs three containers behind Cloudflare:
 
@@ -62,8 +62,8 @@ cd /opt/brightday/deploy
 mkdir -p crm-data tools-data && chown -R 1000:1000 crm-data tools-data && chmod 700 crm-data tools-data   # both containers run as uid 1000
 docker compose up -d --build
 docker compose logs -f crm tools
-# crm:   [boot] Brightday Portal on :3000 · db /app/data/crm.db · dist ok
-# tools: [boot] Brightday advice tools on :3100/tools/ · … · skills: annual-review, fee-comparison, …
+# crm:   [boot] Brightly on :3000 · db /app/data/crm.db · dist ok
+# tools: [boot] Brightly advice tools on :3100/tools/ · … · skills: annual-review, fee-comparison, …
 ```
 
 Open https://portal.brightday.com.au. The empty database shows **Create the first admin**; as an admin you set

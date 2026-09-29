@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Brightday Portal - Claude lead scorer (host-side, stdlib only).
+"""Brightly - Claude lead scorer (host-side, stdlib only).
 
 Runs headless Claude Code (`claude -p`, subscription auth, NO API key) to score
 new CRM leads and write the score back as an AI activity - the external agent the

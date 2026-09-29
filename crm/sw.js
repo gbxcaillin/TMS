@@ -1,4 +1,4 @@
-/* Brightday Portal service worker — caches the app shell so the CRM opens instantly
+/* Brightly service worker — caches the app shell so the CRM opens instantly
    from the home screen and still loads with a flaky connection. Data calls
    (the real API, Microsoft Graph, ad webhooks) are always network-first and
    never cached here. */
@@ -71,8 +71,8 @@ self.addEventListener('message', (e) => {
 // { title, body, url, tag, kind: 'lead'|'task'|'mention'|'system', id, actions:[{action,title}], renotify }
 self.addEventListener('push', (e) => {
   let d = {};
-  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { title: 'Brightday Portal', body: e.data ? e.data.text() : '' }; }
-  const title = d.title || 'Brightday Portal';
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { title: 'Brightly', body: e.data ? e.data.text() : '' }; }
+  const title = d.title || 'Brightly';
   const opts = {
     body: d.body || '',
     icon: './icons/icon-192.png',

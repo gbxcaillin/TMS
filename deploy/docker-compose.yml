@@ -1,4 +1,4 @@
-# Brightday Portal: the CRM, the advice tools and Caddy on one VPS, with Cloudflare in front.
+# Brightly: the CRM, the advice tools and Caddy on one VPS, with Cloudflare in front.
 #
 #   cd /opt/brightday/deploy && docker compose up -d --build
 #

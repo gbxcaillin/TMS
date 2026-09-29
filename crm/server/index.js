@@ -1,5 +1,5 @@
 'use strict';
-// Brightday Portal server: serves the built PWA from dist/ and the JSON API under /api/v1.
+// Brightly server: serves the built PWA from dist/ and the JSON API under /api/v1.
 const http = require('node:http');
 const path = require('node:path');
 const fs = require('node:fs');
@@ -51,7 +51,7 @@ const server = http.createServer(async (req, res) => {
   }
 });
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`[boot] Brightday Portal on :${PORT} · db ${D.DB_PATH} · dist ${fs.existsSync(path.join(DIST, 'index.html')) ? 'ok' : 'MISSING (run build.sh)'}`);
+  console.log(`[boot] Brightly on :${PORT} · db ${D.DB_PATH} · dist ${fs.existsSync(path.join(DIST, 'index.html')) ? 'ok' : 'MISSING (run build.sh)'}`);
   jobs.start();
   // A company list that was still being added when the server stopped picks up where it left off (done codes are skipped).
   for (const f of require('./lib/refdata').status().files) if (f.kind === 'list' && f.progress && /queued|running/.test(f.progress.state)) require('./lib/market').startList(f.name, 'refdata');

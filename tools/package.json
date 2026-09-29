@@ -2,7 +2,7 @@
   "name": "brightday-advice-tools",
   "version": "0.1.0",
   "private": true,
-  "description": "Brightday advice tools: runs the practice's Claude skills (fee and product comparisons, tax, annual reviews, SOA/ROA) beside the CRM",
+  "description": "Brightly advice tools: runs the practice's Claude skills (fee and product comparisons, tax, annual reviews, SOA/ROA) beside the CRM",
   "type": "module",
   "main": "server/index.js",
   "engines": { "node": ">=22.13" },

@@ -59,7 +59,7 @@ change is one extra redirect URI. Allow 15 minutes.
    ```
    cd /root/familyoffice && docker compose up -d crm && docker compose logs --tail=20 crm
    ```
-   The last lines should include `[boot] Brightday Portal on :3000`.
+   The last lines should include `[boot] Brightly on :3000`.
 
 ## Part C: check it
 

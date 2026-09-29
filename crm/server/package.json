@@ -2,7 +2,7 @@
   "name": "brightday-portal-server",
   "version": "1.0.0",
   "private": true,
-  "description": "Brightday Portal CRM server: auth, shared state, lead webhooks, push, email, SharePoint, market data",
+  "description": "Brightly CRM server: auth, shared state, lead webhooks, push, email, SharePoint, market data",
   "main": "index.js",
   "engines": {
     "node": ">=22.13"

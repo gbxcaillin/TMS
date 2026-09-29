@@ -55,7 +55,7 @@ and has nothing to renew.
 Cloudflare **Zero Trust** dashboard -> Access -> Applications -> **Add an
 application** -> **Self-hosted**:
 
-- Application name: `Brightday Portal CRM`
+- Application name: `Brightly CRM`
 - Session duration: e.g. 24 hours
 - Application domain: `portal.brightday.com.au` (path left blank = the whole site)
 - Identity: add a login method under Settings -> Authentication first. Use
