@@ -29,6 +29,7 @@ const FUNCTIONS = [
   { id: 'invoices', label: 'Invoices', group: 'Sections' },
   { id: 'reports', label: 'Reports', group: 'Sections' },
   { id: 'research', label: 'Research and models', group: 'Sections' },
+  { id: 'tools', label: 'Advice tools (fee and product comparisons, tax, annual reviews, SOA/ROA)', group: 'Sections' },
   { id: 'integrations', label: 'Integrations', group: 'Configure' },
   { id: 'workspace', label: 'Workspace settings (fields, stages, invoicing, research, storage)', group: 'Configure' },
   { id: 'routing', label: 'Lead routing', group: 'Configure' },
@@ -41,9 +42,9 @@ const on = (...ids) => Object.fromEntries(FN_IDS.map((id) => [id, ids.includes(i
 // Starting points only; the owner sets the real matrix under Settings, Access levels.
 const DEFAULTS = {
   admin: on(...FN_IDS),
-  manager: on('dashboard', 'pipeline', 'clients', 'tasks', 'calendar', 'email', 'calls', 'chat', 'mailing', 'nurture', 'files', 'invoices', 'reports', 'research', 'integrations', 'workspace', 'allRecords', 'deleteRecords', 'exportData'),
-  paraplanner: on('dashboard', 'pipeline', 'clients', 'tasks', 'calendar', 'email', 'calls', 'chat', 'files', 'reports', 'research', 'allRecords', 'exportData'),
-  clientmanager: on('dashboard', 'pipeline', 'clients', 'tasks', 'calendar', 'email', 'calls', 'chat', 'files', 'invoices'),
+  manager: on('dashboard', 'pipeline', 'clients', 'tasks', 'calendar', 'email', 'calls', 'chat', 'mailing', 'nurture', 'files', 'invoices', 'reports', 'research', 'integrations', 'workspace', 'allRecords', 'deleteRecords', 'exportData', 'tools'),
+  paraplanner: on('dashboard', 'pipeline', 'clients', 'tasks', 'calendar', 'email', 'calls', 'chat', 'files', 'reports', 'research', 'allRecords', 'exportData', 'tools'),
+  clientmanager: on('dashboard', 'pipeline', 'clients', 'tasks', 'calendar', 'email', 'calls', 'chat', 'files', 'invoices', 'tools'),
   basic: on('dashboard', 'pipeline', 'clients', 'tasks', 'calendar', 'email', 'calls', 'chat', 'mailing', 'files', 'invoices', 'allRecords', 'exportData'),
 };
 

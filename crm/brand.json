@@ -86,6 +86,7 @@
     "invoices": true,
     "reports": true,
     "research": true,
-    "integrations": true
+    "integrations": true,
+    "tools": true
   }
 }

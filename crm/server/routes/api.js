@@ -205,6 +205,9 @@ r.get('/auth/microsoft/callback', async (req, res) => {
 });
 
 /* ---------- sessions ---------- */
+// Who is signed in, and what they may use. Services mounted beside the CRM on the same host (the advice tools at
+// /tools/) forward the browser's session cookie here instead of keeping their own sign-in.
+r.get('/auth/me', (req, res) => { const u = session(req); ok(res, { user: D.users.public(u), perms: state.perms(u) }); });
 r.get('/auth/sessions', (req, res) => { const u = session(req, { allowLimited: true }); ok(res, { sessions: auth.listSessions(u.id, req.sessionId) }); });
 r.delete('/auth/sessions/:id', (req, res) => { const u = session(req, { allowLimited: true }); if (!auth.revokeSession(u.id, req.params.id)) throw err(404, 'No such session'); audit(req, u.id, 'session.revoke', req.params.id, ''); ok(res, { sessions: auth.listSessions(u.id, req.sessionId) }); });
 r.post('/auth/sessions/revoke-others', (req, res) => { const u = session(req, { allowLimited: true }); const n = auth.revokeOtherSessions(u.id, req.sessionId); audit(req, u.id, 'session.revoke', 'others', n + ' sessions'); ok(res, { revoked: n, sessions: auth.listSessions(u.id, req.sessionId) }); });

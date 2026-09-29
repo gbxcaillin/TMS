@@ -23,7 +23,7 @@ const SERVER_SETTINGS = (s) => {
   for (const e of ((s.notifyPrefs || {}).events || [])) if (e && e.id === 'lead_any' && /unassigned/.test(e.label || '')) e.label = 'Any new lead arrives (admins only)';
   return s;
 };
-function features() { return { mail: mail.enabled(), mailMode: mail.mode(), sharepoint: graph.enabled(), mailbox: require('./mailbox').enabled(), market: true, push: true, webAnalytics: cloudflare.enabled(), aiAssist: claude.enabled(), bookings: require('./bookings').enabled(), calls: require('./calls').enabled(), callProviders: require('./calls').providers, bookingUrl: require('./nurture').bookingUrl(), demo: process.env.DEMO_DATA === '1' }; }
+function features() { return { mail: mail.enabled(), mailMode: mail.mode(), sharepoint: graph.enabled(), mailbox: require('./mailbox').enabled(), market: true, push: true, webAnalytics: cloudflare.enabled(), aiAssist: claude.enabled(), bookings: require('./bookings').enabled(), calls: require('./calls').enabled(), callProviders: require('./calls').providers, bookingUrl: require('./nurture').bookingUrl(), demo: process.env.DEMO_DATA === '1', tools: process.env.TOOLS_URL || '/tools/' }; }
 
 /* ---------- visibility: Admins and Managers see everything; Members see the deals and clients they own ---------- */
 const access = require('./access');
