@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://brightday.com.au/schemas/client-profile/1.0",
+  "title": "Brightday client profile",
+  "description": "One client's current position, assembled from their documents. Money is AUD dollars as numbers. Every *_pct field is a DECIMAL (0.0058 = 0.58%), matching the fee engine. Dates are YYYY-MM-DD.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "client", "as_at", "people", "accounts", "documents", "provenance", "flags", "gaps"],
+  "$defs": {
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "money": { "type": "number" },
+    "pct": { "type": "number", "minimum": -1, "maximum": 1 },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+    "scope": { "enum": ["in", "out", "unknown"] },
+    "cover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cover_type"],
+      "properties": {
+        "cover_type": { "enum": ["life", "tpd", "ip", "trauma"] },
+        "sum_insured": { "$ref": "#/$defs/money" },
+        "monthly_benefit": { "$ref": "#/$defs/money" },
+        "waiting_period": { "type": "string" },
+        "benefit_period": { "type": "string" },
+        "premium_pa": { "$ref": "#/$defs/money" },
+        "structure": { "enum": ["group", "underwritten", "unknown"] },
+        "linked_to": { "type": "string" },
+        "commenced": { "$ref": "#/$defs/date" }
+      }
+    },
+    "flag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "message"],
+      "properties": {
+        "id": { "type": "string" },
+        "severity": { "enum": ["block", "warn", "info"] },
+        "message": { "type": "string" },
+        "source_values": { "type": "object" },
+        "chosen_value": {},
+        "field": { "type": "string" }
+      }
+    }
+  },
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "crm_id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "enum": ["individual", "couple", "smsf", "trust", "company"] }
+      }
+    },
+    "as_at": { "$ref": "#/$defs/date", "description": "Date of the most recent document relied on." },
+    "people": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role", "first_name", "last_name"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "role": { "enum": ["client", "partner"] },
+          "title": { "type": "string" },
+          "first_name": { "type": "string" },
+          "middle_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "preferred_name": { "type": "string" },
+          "dob": { "$ref": "#/$defs/date" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "address": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "line1": { "type": "string" }, "suburb": { "type": "string" }, "state": { "type": "string" }, "postcode": { "type": "string" } }
+          },
+          "marital_status": { "type": "string" },
+          "smoker": { "type": "boolean" },
+          "employment": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "status": { "type": "string" }, "occupation": { "type": "string" }, "job_title": { "type": "string" }, "employer": { "type": "string" } }
+          },
+          "income": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "gross_pa": { "$ref": "#/$defs/money" },
+              "sgc_pct": { "$ref": "#/$defs/pct" },
+              "salary_sacrifice_pa": { "$ref": "#/$defs/money" },
+              "personal_deductible_pa": { "$ref": "#/$defs/money" },
+              "non_concessional_pa": { "$ref": "#/$defs/money" },
+              "other_income_pa": { "$ref": "#/$defs/money" }
+            }
+          },
+          "super_access_age": { "type": "integer" },
+          "retirement_age": { "type": "integer" }
+        }
+      }
+    },
+    "dependants": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["name"],
+        "properties": { "name": { "type": "string" }, "dob": { "$ref": "#/$defs/date" }, "relationship": { "type": "string" }, "dependent_until_age": { "type": "integer" } }
+      }
+    },
+    "objectives": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "summary": { "type": "array", "items": { "type": "string" }, "description": "Verbatim dot points from the KYC note's Client Goals Summary." },
+        "by_topic": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "super": { "type": "string" }, "insurance": { "type": "string" }, "salary_sacrifice": { "type": "string" },
+            "estate_planning": { "type": "string" }, "retirement": { "type": "string" }, "investment": { "type": "string" }, "tax": { "type": "string" }
+          }
+        }
+      }
+    },
+    "risk_profile": {
+      "type": "object", "additionalProperties": false, "required": ["profile"],
+      "properties": {
+        "profile": { "enum": ["Conservative", "Moderately Conservative", "Moderate", "Balanced", "Growth", "High Growth", "High Conviction"] },
+        "assessed_on": { "$ref": "#/$defs/date" }
+      }
+    },
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "super": { "$ref": "#/$defs/scope" }, "insurance": { "$ref": "#/$defs/scope" }, "salary_sacrifice": { "$ref": "#/$defs/scope" },
+        "estate_planning": { "$ref": "#/$defs/scope" }, "retirement": { "$ref": "#/$defs/scope" }, "investments": { "$ref": "#/$defs/scope" }, "tax": { "$ref": "#/$defs/scope" }
+      }
+    },
+    "accounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "owner", "kind", "provider", "product", "balance", "as_at"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "owner": { "type": "string", "description": "A people[].id, or 'joint'." },
+          "kind": { "enum": ["super", "pension", "ttr_pension", "idps", "wrap", "managed_fund", "direct_shares", "bank", "term_deposit", "smsf", "other"] },
+          "account_type": { "type": "string", "description": "Fact Finder 'Fund Type (Accumulation/Defined Benefit)' verbatim, for super. Blank means Accumulation." },
+          "provider": { "type": "string", "description": "Fund or platform operator, e.g. 'Australian Retirement Trust', 'HUB24'. Never an insurer." },
+          "product": { "type": "string", "description": "Product as named on the document, e.g. 'Super Savings - Accumulation', 'HUB24 Super Choice'." },
+          "account_number_masked": { "type": "string", "pattern": "^[*xX]*[0-9A-Za-z]{0,4}$" },
+          "investment_option": { "type": "string" },
+          "balance": { "$ref": "#/$defs/money" },
+          "as_at": { "$ref": "#/$defs/date" },
+          "cash_pct": { "$ref": "#/$defs/pct" },
+          "holdings": {
+            "type": "array",
+            "items": {
+              "type": "object", "additionalProperties": false, "required": ["name"],
+              "properties": {
+                "name": { "type": "string" },
+                "ticker": { "type": "string" },
+                "apir": { "type": "string" },
+                "asset_class": { "type": "string" },
+                "units": { "type": "number" },
+                "price": { "type": "number" },
+                "value": { "$ref": "#/$defs/money" },
+                "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+                "cost_base": { "$ref": "#/$defs/money" },
+                "parcels": {
+                  "type": "array",
+                  "items": {
+                    "type": "object", "additionalProperties": false, "required": ["acquired", "units"],
+                    "properties": {
+                      "acquired": { "$ref": "#/$defs/date" }, "units": { "type": "number" }, "cost_base": { "$ref": "#/$defs/money" },
+                      "value": { "$ref": "#/$defs/money" }, "unrealised_gain": { "$ref": "#/$defs/money" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "contributions": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "receiving": { "type": "boolean" }, "employer_pa": { "$ref": "#/$defs/money" }, "salary_sacrifice_pa": { "$ref": "#/$defs/money" }, "personal_pa": { "$ref": "#/$defs/money" } }
+          },
+          "fees_on_statement": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "period_from": { "$ref": "#/$defs/date" }, "period_to": { "$ref": "#/$defs/date" },
+              "admin": { "$ref": "#/$defs/money" }, "investment": { "$ref": "#/$defs/money" }, "insurance_premiums": { "$ref": "#/$defs/money" },
+              "adviser": { "$ref": "#/$defs/money" }, "other": { "$ref": "#/$defs/money" }
+            }
+          },
+          "performance": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "return_1yr_pct": { "$ref": "#/$defs/pct" }, "return_5yr_pa_pct": { "$ref": "#/$defs/pct" } }
+          },
+          "insurance": { "type": "array", "items": { "$ref": "#/$defs/cover" } },
+          "beneficiary_nomination": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "type": { "enum": ["binding", "non_lapsing_binding", "non_binding", "reversionary", "none", "unknown"] },
+              "expires": { "$ref": "#/$defs/date" },
+              "beneficiaries": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "adviser_fee": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "ongoing_pct": { "$ref": "#/$defs/pct" }, "ongoing_fixed_pa": { "$ref": "#/$defs/money" } }
+          }
+        }
+      }
+    },
+    "policies": {
+      "description": "Standalone insurance held outside super (newsoatool entity_model.make_policy). Never merged with a fund.",
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "insurer", "insured", "cover"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "insurer": { "type": "string" },
+          "policy_number": { "type": "string" },
+          "insured": { "type": "string", "description": "people[].id" },
+          "policy_owner": { "type": "string" },
+          "premium_funding_method": { "type": "string" },
+          "cover": { "type": "array", "items": { "$ref": "#/$defs/cover" } }
+        }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "kind", "value"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "kind": { "enum": ["home", "investment_property", "cash", "vehicle", "contents", "business", "other"] },
+          "description": { "type": "string" }, "owner": { "type": "string" },
+          "value": { "$ref": "#/$defs/money" }, "as_at": { "$ref": "#/$defs/date" }, "income_pa": { "$ref": "#/$defs/money" }
+        }
+      }
+    },
+    "liabilities": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "kind", "balance"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "kind": { "enum": ["home_loan", "investment_loan", "personal_loan", "car_loan", "credit_card", "hecs_help", "margin_loan", "other"] },
+          "description": { "type": "string" }, "owner": { "type": "string" },
+          "balance": { "$ref": "#/$defs/money" }, "rate_pct": { "$ref": "#/$defs/pct" }, "repayment_pa": { "$ref": "#/$defs/money" },
+          "secured_against": { "type": "string", "description": "assets[].id" }, "as_at": { "$ref": "#/$defs/date" }
+        }
+      }
+    },
+    "cashflow": {
+      "type": "object", "additionalProperties": false,
+      "properties": { "living_expenses_pa": { "$ref": "#/$defs/money" }, "surplus_pa": { "$ref": "#/$defs/money" } }
+    },
+    "estate": {
+      "type": "object", "additionalProperties": false,
+      "properties": { "has_will": { "type": "boolean" }, "will_date": { "$ref": "#/$defs/date" }, "has_poa": { "type": "boolean" }, "notes": { "type": "string" } }
+    },
+    "tax": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "financial_year": { "type": "string", "pattern": "^FY\\d{2}$" },
+        "marginal_rate_pct": { "$ref": "#/$defs/pct" },
+        "realised_gains": { "$ref": "#/$defs/money" },
+        "carried_forward_losses": { "$ref": "#/$defs/money" }
+      }
+    },
+    "advice_arrangement": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "ongoing_fee_pa": { "$ref": "#/$defs/money" }, "ongoing_fee_pct": { "$ref": "#/$defs/pct" },
+        "ofa_renewal_date": { "$ref": "#/$defs/date" }, "initial_fee": { "$ref": "#/$defs/money" }
+      }
+    },
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "file", "type", "used"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^d[0-9]+$" },
+          "file": { "type": "string" },
+          "type": { "enum": ["fact_finder", "kyc_note", "super_statement", "platform_report", "holdings_report", "cgt_report", "transaction_report", "insurance_policy", "insurance_quote", "inscalc", "pds", "soa", "tax_return", "payslip", "bank_statement", "email", "screenshot", "crm_record", "previous_profile", "other"] },
+          "as_at": { "$ref": "#/$defs/date" },
+          "issuer": { "type": "string" },
+          "about": { "type": "string", "description": "people[].id the document is about, if one person." },
+          "used": { "type": "boolean" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "description": "JSON pointer (e.g. /accounts/0/balance) -> where the value came from.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object", "additionalProperties": false, "required": ["doc", "where"],
+        "properties": {
+          "doc": { "type": "string" },
+          "where": { "type": "string", "description": "Sheet!Cell, page and label, table row — enough for a person to find it." },
+          "quote": { "type": "string", "description": "The text as it appears in the document." },
+          "derived": { "type": "string", "description": "How it was calculated, when not read directly." }
+        }
+      }
+    },
+    "flags": { "type": "array", "items": { "$ref": "#/$defs/flag" } },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["field", "message"],
+        "properties": { "field": { "type": "string" }, "message": { "type": "string" }, "needed_for": { "type": "array", "items": { "type": "string" } } }
+      }
+    },
+    "overrides": {
+      "description": "Hand corrections (shared/overrides.py shape). Carried forward on every update; the last entry for a field wins.",
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["field", "value", "who", "date", "reason"],
+        "properties": { "field": { "type": "string" }, "value": {}, "who": { "type": "string" }, "date": { "$ref": "#/$defs/date" }, "reason": { "type": "string" } }
+      }
+    },
+    "changes": {
+      "description": "What changed since the previous confirmed profile.",
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["field", "to"],
+        "properties": { "field": { "type": "string" }, "from": {}, "to": {}, "doc": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,479 @@
+{
+  "schema_version": "1.0",
+  "client": {
+    "crm_id": "1",
+    "name": "Jane & Tom Citizen",
+    "type": "couple"
+  },
+  "as_at": "2026-06-30",
+  "people": [
+    {
+      "id": "p1",
+      "role": "client",
+      "title": "Ms",
+      "first_name": "Jane",
+      "last_name": "Citizen",
+      "dob": "1978-04-12",
+      "email": "jane@example.test",
+      "phone": "0400 000 000",
+      "address": {
+        "line1": "1 Example St",
+        "suburb": "Carlton",
+        "state": "VIC",
+        "postcode": "3053"
+      },
+      "marital_status": "Married",
+      "smoker": false,
+      "employment": {
+        "status": "Employed full time",
+        "occupation": "Registered nurse",
+        "employer": "Example Health"
+      },
+      "income": {
+        "gross_pa": 105000,
+        "sgc_pct": 0.12,
+        "salary_sacrifice_pa": 1300
+      },
+      "super_access_age": 60,
+      "retirement_age": 65
+    },
+    {
+      "id": "p2",
+      "role": "partner",
+      "first_name": "Tom",
+      "last_name": "Citizen",
+      "dob": "1976-09-02",
+      "employment": {
+        "status": "Self-employed",
+        "occupation": "Carpenter"
+      },
+      "income": {
+        "gross_pa": 82000
+      }
+    }
+  ],
+  "dependants": [
+    {
+      "name": "Mia Citizen",
+      "dob": "2012-02-20",
+      "relationship": "daughter",
+      "dependent_until_age": 18
+    }
+  ],
+  "objectives": {
+    "summary": [
+      "Retire at 65 and keep our current lifestyle",
+      "Pay off the home loan before retirement",
+      "Make sure the family is covered if something happens to either of us"
+    ],
+    "by_topic": {
+      "super": "Consolidate and grow super with lower fees",
+      "insurance": "Keep Life and TPD, review IP"
+    }
+  },
+  "risk_profile": {
+    "profile": "High Growth",
+    "assessed_on": "2026-06-18"
+  },
+  "scope": {
+    "super": "in",
+    "insurance": "in",
+    "salary_sacrifice": "out",
+    "estate_planning": "out",
+    "retirement": "in",
+    "investments": "in",
+    "tax": "out"
+  },
+  "accounts": [
+    {
+      "id": "a1",
+      "owner": "p1",
+      "kind": "super",
+      "account_type": "Accumulation",
+      "provider": "Australian Retirement Trust",
+      "product": "Super Savings - Accumulation",
+      "account_number_masked": "****4821",
+      "investment_option": "Balanced",
+      "balance": 275812.34,
+      "as_at": "2026-06-30",
+      "contributions": {
+        "receiving": true,
+        "employer_pa": 12600,
+        "salary_sacrifice_pa": 1300
+      },
+      "fees_on_statement": {
+        "period_from": "2025-07-01",
+        "period_to": "2026-06-30",
+        "admin": 690.4,
+        "investment": 1601.21,
+        "insurance_premiums": 1124.8
+      },
+      "performance": {
+        "return_1yr_pct": 0.091,
+        "return_5yr_pa_pct": 0.071
+      },
+      "insurance": [
+        {
+          "cover_type": "life",
+          "sum_insured": 350000,
+          "premium_pa": 612.4,
+          "structure": "group"
+        },
+        {
+          "cover_type": "tpd",
+          "sum_insured": 350000,
+          "premium_pa": 512.4,
+          "structure": "group",
+          "linked_to": "life"
+        }
+      ],
+      "beneficiary_nomination": {
+        "type": "binding",
+        "expires": "2027-03-01",
+        "beneficiaries": [
+          "Tom Citizen"
+        ]
+      }
+    },
+    {
+      "id": "a2",
+      "owner": "p2",
+      "kind": "wrap",
+      "provider": "HUB24",
+      "product": "HUB24 Invest Choice",
+      "account_number_masked": "****0193",
+      "balance": 150000,
+      "as_at": "2026-06-30",
+      "cash_pct": 0.02,
+      "holdings": [
+        {
+          "name": "Vanguard Australian Shares Index ETF",
+          "ticker": "VAS",
+          "asset_class": "Australian shares",
+          "units": 600,
+          "price": 98.5,
+          "value": 59100,
+          "weight": 0.402,
+          "cost_base": 51200,
+          "parcels": [
+            {
+              "acquired": "2021-08-10",
+              "units": 400,
+              "cost_base": 34000,
+              "value": 39400,
+              "unrealised_gain": 5400
+            },
+            {
+              "acquired": "2025-11-03",
+              "units": 200,
+              "cost_base": 17200,
+              "value": 19700,
+              "unrealised_gain": 2500
+            }
+          ]
+        },
+        {
+          "name": "iShares S&P 500 ETF",
+          "ticker": "IVV",
+          "asset_class": "International shares",
+          "units": 1400,
+          "price": 62.9,
+          "value": 88060,
+          "weight": 0.598,
+          "cost_base": 91000,
+          "parcels": [
+            {
+              "acquired": "2025-02-14",
+              "units": 1400,
+              "cost_base": 91000,
+              "value": 88060,
+              "unrealised_gain": -2940
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "pol1",
+      "insurer": "TAL",
+      "policy_number": "****7710",
+      "insured": "p2",
+      "policy_owner": "Personal",
+      "premium_funding_method": "Personal (non-super)",
+      "cover": [
+        {
+          "cover_type": "ip",
+          "monthly_benefit": 4500,
+          "waiting_period": "30 days",
+          "benefit_period": "To age 65",
+          "premium_pa": 2380,
+          "structure": "underwritten"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "h1",
+      "kind": "home",
+      "description": "Family home, Carlton",
+      "owner": "joint",
+      "value": 1150000
+    },
+    {
+      "id": "c1",
+      "kind": "cash",
+      "description": "Offset and savings",
+      "owner": "joint",
+      "value": 42000
+    }
+  ],
+  "liabilities": [
+    {
+      "id": "l1",
+      "kind": "home_loan",
+      "description": "Home loan",
+      "owner": "joint",
+      "balance": 468000,
+      "rate_pct": 0.0619,
+      "secured_against": "h1"
+    },
+    {
+      "id": "l2",
+      "kind": "car_loan",
+      "description": "Car loan",
+      "owner": "p2",
+      "balance": 18500
+    }
+  ],
+  "tax": {
+    "financial_year": "FY26",
+    "realised_gains": 3100
+  },
+  "advice_arrangement": {
+    "ongoing_fee_pa": 4400,
+    "ofa_renewal_date": "2026-11-01"
+  },
+  "documents": [
+    {
+      "id": "d1",
+      "file": "inputs/documents/Fact Finder - Citizen.xlsx",
+      "type": "fact_finder",
+      "as_at": "2026-05-20",
+      "used": true
+    },
+    {
+      "id": "d2",
+      "file": "inputs/documents/KYC File Note - Citizen.docx",
+      "type": "kyc_note",
+      "as_at": "2026-06-18",
+      "used": true
+    },
+    {
+      "id": "d3",
+      "file": "inputs/documents/ART statement 2026.pdf",
+      "type": "super_statement",
+      "issuer": "Australian Retirement Trust",
+      "as_at": "2026-06-30",
+      "about": "p1",
+      "used": true
+    },
+    {
+      "id": "d4",
+      "file": "inputs/documents/HUB24 portfolio valuation.csv",
+      "type": "holdings_report",
+      "issuer": "HUB24",
+      "as_at": "2026-06-30",
+      "about": "p2",
+      "used": true
+    },
+    {
+      "id": "d5",
+      "file": "inputs/documents/HUB24 CGT report.pdf",
+      "type": "cgt_report",
+      "issuer": "HUB24",
+      "as_at": "2026-06-30",
+      "about": "p2",
+      "used": true
+    },
+    {
+      "id": "d6",
+      "file": "inputs/documents/Old statement.pdf",
+      "type": "super_statement",
+      "used": false,
+      "notes": "Password-protected: ask the client for an unlocked copy"
+    }
+  ],
+  "provenance": {
+    "/people/0/dob": {
+      "doc": "d1",
+      "where": "Fact Finder!B15"
+    },
+    "/people/0/income/gross_pa": {
+      "doc": "d2",
+      "where": "Section 'Income', para 2",
+      "quote": "Jane's salary is now $105,000 following her promotion; the Fact Finder figure is outdated"
+    },
+    "/people/0/income/salary_sacrifice_pa": {
+      "doc": "d2",
+      "where": "Section 'Super', para 3",
+      "quote": "$50/fortnight (~$1,300 p.a.) should be treated as current"
+    },
+    "/people/1/dob": {
+      "doc": "d1",
+      "where": "Fact Finder!B47"
+    },
+    "/people/1/income/gross_pa": {
+      "doc": "d1",
+      "where": "Fact Finder!B49"
+    },
+    "/risk_profile/profile": {
+      "doc": "d2",
+      "where": "Section 'Risk profile'",
+      "quote": "assessed as High Growth"
+    },
+    "/accounts/0/balance": {
+      "doc": "d3",
+      "where": "p.1 'Your account balance at 30 June 2026'",
+      "quote": "$275,812.34"
+    },
+    "/accounts/0/investment_option": {
+      "doc": "d3",
+      "where": "p.2 'Your investment option'"
+    },
+    "/accounts/0/account_type": {
+      "doc": "d1",
+      "where": "Fact Finder!B91"
+    },
+    "/accounts/0/insurance/0/sum_insured": {
+      "doc": "d3",
+      "where": "p.3 'Your insurance cover', Death"
+    },
+    "/accounts/0/insurance/0/premium_pa": {
+      "doc": "d3",
+      "where": "p.3 'Your insurance cover', Death premium"
+    },
+    "/accounts/0/insurance/1/sum_insured": {
+      "doc": "d3",
+      "where": "p.3 'Your insurance cover', TPD"
+    },
+    "/accounts/0/insurance/1/premium_pa": {
+      "doc": "d3",
+      "where": "p.3 'Your insurance cover', TPD premium"
+    },
+    "/accounts/1/balance": {
+      "doc": "d4",
+      "where": "row 'Portfolio total'",
+      "quote": "150,000.00"
+    },
+    "/accounts/1/holdings/0/value": {
+      "doc": "d4",
+      "where": "row 3 (VAS)"
+    },
+    "/accounts/1/holdings/0/units": {
+      "doc": "d4",
+      "where": "row 3 (VAS)"
+    },
+    "/accounts/1/holdings/0/weight": {
+      "doc": "d4",
+      "where": "rows 3-5",
+      "derived": "value / (balance - cash)"
+    },
+    "/accounts/1/holdings/0/cost_base": {
+      "doc": "d5",
+      "where": "p.1 VAS total cost base"
+    },
+    "/accounts/1/holdings/1/value": {
+      "doc": "d4",
+      "where": "row 4 (IVV)"
+    },
+    "/accounts/1/holdings/1/units": {
+      "doc": "d4",
+      "where": "row 4 (IVV)"
+    },
+    "/accounts/1/holdings/1/weight": {
+      "doc": "d4",
+      "where": "rows 3-5",
+      "derived": "value / (balance - cash)"
+    },
+    "/accounts/1/holdings/1/cost_base": {
+      "doc": "d5",
+      "where": "p.1 IVV total cost base"
+    },
+    "/accounts/1/cash_pct": {
+      "doc": "d4",
+      "where": "row 5 (Cash account)",
+      "derived": "2,840 / 150,000"
+    },
+    "/policies/0/cover/0/monthly_benefit": {
+      "doc": "d1",
+      "where": "Fact Finder!D104"
+    },
+    "/policies/0/cover/0/premium_pa": {
+      "doc": "d1",
+      "where": "Fact Finder!D107"
+    },
+    "/assets/0/value": {
+      "doc": "d1",
+      "where": "Fact Finder!B73"
+    },
+    "/assets/1/value": {
+      "doc": "d1",
+      "where": "Fact Finder!B71"
+    },
+    "/liabilities/0/balance": {
+      "doc": "d1",
+      "where": "Fact Finder!B74"
+    },
+    "/liabilities/1/balance": {
+      "doc": "d1",
+      "where": "Fact Finder!B81"
+    },
+    "/tax/realised_gains": {
+      "doc": "d5",
+      "where": "p.2 'Net capital gain FY26'"
+    },
+    "/advice_arrangement/ongoing_fee_pa": {
+      "doc": "d2",
+      "where": "Section 'Fees'"
+    }
+  },
+  "flags": [
+    {
+      "id": "income_conflict_p1",
+      "severity": "warn",
+      "field": "/people/0/income/gross_pa",
+      "message": "Jane's income differs between the Fact Finder and the KYC note; the KYC note's corrected figure is used.",
+      "source_values": {
+        "d1 Fact Finder!B32": 95000,
+        "d2 KYC note": 105000
+      },
+      "chosen_value": 105000
+    },
+    {
+      "id": "tal_policy_in_fund_column",
+      "severity": "info",
+      "message": "The TAL income protection policy was entered in a fund column of the Fact Finder; it is recorded as a standalone policy, not a super fund."
+    }
+  ],
+  "gaps": [
+    {
+      "field": "/people/1/smoker",
+      "message": "Tom's smoker status is not stated in any document.",
+      "needed_for": [
+        "insurance needs analysis"
+      ]
+    },
+    {
+      "field": "/people/1/dob",
+      "message": "Tom's date of birth in the Fact Finder has no supporting ID or statement; confirm before quoting insurance.",
+      "needed_for": [
+        "insurance needs analysis"
+      ]
+    }
+  ],
+  "overrides": [],
+  "changes": []
+}
