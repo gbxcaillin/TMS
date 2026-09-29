@@ -1,0 +1,2704 @@
+{
+ "models": {
+  "Pearl X Conservative": [
+   [
+    "BetaShares Australia 200",
+    0.072
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.03
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.018
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.0325
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.0175
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.0175
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.0325
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.01
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.01
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.009
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.005
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.009
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.009
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.004
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.004
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.06
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.06
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.15
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.06
+   ],
+   [
+    "iShares Government Inflation",
+    0.06
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.06
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.06
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.09
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.036
+   ],
+   [
+    "Platform Cash",
+    0.048
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.036
+   ]
+  ],
+  "Pearl X Moderate": [
+   [
+    "BetaShares Australia 200",
+    0.108
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.045
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.027
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.04875
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.02625
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.02625
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.04875
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.015
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.015
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.009
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.005
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.009
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.009
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.004
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.004
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.005
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.005
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.005
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.005
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.048
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.048
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.12
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.048
+   ],
+   [
+    "iShares Government Inflation",
+    0.048
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.048
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.048
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.072
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.03
+   ],
+   [
+    "Platform Cash",
+    0.04
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.03
+   ]
+  ],
+  "Pearl X Balanced": [
+   [
+    "BetaShares Australia 200",
+    0.144
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.06
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.036
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.06825
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.03675
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.03675
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.06825
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.015
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.015
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.01125
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.00625
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.01125
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.01125
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.005
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.005
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.0075
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.0075
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.0075
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.0075
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.036
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.036
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.09
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.036
+   ],
+   [
+    "iShares Government Inflation",
+    0.036
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.036
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.036
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.054
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.024
+   ],
+   [
+    "Platform Cash",
+    0.032
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.024
+   ]
+  ],
+  "Pearl X Growth": [
+   [
+    "BetaShares Australia 200",
+    0.192
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.08
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.048
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.08775
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.04725
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.04725
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.08775
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.025
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.025
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.0135
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.0075
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.0135
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.0135
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.006
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.006
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.0125
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.0125
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.0125
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.0125
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.02
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.02
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.05
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.02
+   ],
+   [
+    "iShares Government Inflation",
+    0.02
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.02
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.02
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.03
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.015
+   ],
+   [
+    "Platform Cash",
+    0.02
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.015
+   ]
+  ],
+  "Pearl X High Growth": [
+   [
+    "BetaShares Australia 200",
+    0.21
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.0875
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.0525
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.08775
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.04725
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.04725
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.08775
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.025
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.025
+   ],
+   [
+    "Hyperion Global Growth Companies",
+    0.02
+   ],
+   [
+    "PM Capital Global Companies",
+    0.02
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.01575
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.00875
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.01575
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.01575
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.007
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.007
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.0125
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.0125
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.0125
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.0125
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.013
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.013
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.0325
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.013
+   ],
+   [
+    "iShares Government Inflation",
+    0.013
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.013
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.013
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.0195
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.012
+   ],
+   [
+    "Platform Cash",
+    0.016
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.012
+   ]
+  ],
+  "Pearl X High Conviction": [
+   [
+    "BetaShares Australia 200",
+    0.204
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.085
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.051
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.0845
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.0455
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.0455
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.0845
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.025
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.025
+   ],
+   [
+    "Hyperion Global Growth Companies",
+    0.07
+   ],
+   [
+    "PM Capital Global Companies",
+    0.07
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.01125
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.00625
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.01125
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.01125
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.005
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.005
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.0125
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.0125
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.0125
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.0125
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.007
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.007
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.0175
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.007
+   ],
+   [
+    "iShares Government Inflation",
+    0.007
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.007
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.007
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.0105
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.012
+   ],
+   [
+    "Platform Cash",
+    0.016
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.012
+   ]
+  ],
+  "Pearl Plus Conservative": [
+   [
+    "BetaShares Australia 200",
+    0.024
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.01
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.006
+   ],
+   [
+    "Aristocrat Leisure",
+    0.004
+   ],
+   [
+    "CSL Limited",
+    0.004
+   ],
+   [
+    "Fisher & Paykel Health",
+    0.004
+   ],
+   [
+    "Graincorp Limited",
+    0.004
+   ],
+   [
+    "Megaport Limited",
+    0.004
+   ],
+   [
+    "Macquarie Group Limited",
+    0.004
+   ],
+   [
+    "QBE Insurance Group",
+    0.004
+   ],
+   [
+    "Resmed Inc",
+    0.004
+   ],
+   [
+    "South32",
+    0.004
+   ],
+   [
+    "Wisetech Global",
+    0.004
+   ],
+   [
+    "Develop Global Ltd",
+    0.00308
+   ],
+   [
+    "Firefly Metals",
+    0.00308
+   ],
+   [
+    "Karoon Energy",
+    0.00308
+   ],
+   [
+    "Kina Securities",
+    0.00308
+   ],
+   [
+    "LGI Limited",
+    0.00308
+   ],
+   [
+    "Lifestyle Communications",
+    0.00308
+   ],
+   [
+    "MA Financial",
+    0.00308
+   ],
+   [
+    "Peter Warren Australia Automotive Holdings",
+    0.00308
+   ],
+   [
+    "Ooria Ltd",
+    0.00308
+   ],
+   [
+    "Ridley Corporation",
+    0.00308
+   ],
+   [
+    "Symal Group Limited",
+    0.00308
+   ],
+   [
+    "Tasmea Limited",
+    0.00308
+   ],
+   [
+    "Univeral Store",
+    0.00308
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.0325
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.0175
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.0175
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.0325
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.01
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.01
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.009
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.005
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.009
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.009
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.004
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.004
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.06
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.06
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.15
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.06
+   ],
+   [
+    "iShares Government Inflation",
+    0.06
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.09
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.06
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.06
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.036
+   ],
+   [
+    "Platform Cash",
+    0.048
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.036
+   ]
+  ],
+  "Pearl Plus Moderate": [
+   [
+    "BetaShares Australia 200",
+    0.036
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.015
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.009
+   ],
+   [
+    "Aristocrat Leisure",
+    0.006
+   ],
+   [
+    "CSL Limited",
+    0.006
+   ],
+   [
+    "Fisher & Paykel Health",
+    0.006
+   ],
+   [
+    "Graincorp Limited",
+    0.006
+   ],
+   [
+    "Megaport Limited",
+    0.006
+   ],
+   [
+    "Macquarie Group Limited",
+    0.006
+   ],
+   [
+    "QBE Insurance Group",
+    0.006
+   ],
+   [
+    "Resmed Inc",
+    0.006
+   ],
+   [
+    "South32",
+    0.006
+   ],
+   [
+    "Wisetech Global",
+    0.006
+   ],
+   [
+    "Develop Global Ltd",
+    0.00462
+   ],
+   [
+    "Firefly Metals",
+    0.00462
+   ],
+   [
+    "Karoon Energy",
+    0.00461
+   ],
+   [
+    "Kina Securities",
+    0.00461
+   ],
+   [
+    "LGI Limited",
+    0.00461
+   ],
+   [
+    "Lifestyle Communications",
+    0.00461
+   ],
+   [
+    "MA Financial",
+    0.00461
+   ],
+   [
+    "Peter Warren Australia Automotive Holdings",
+    0.00461
+   ],
+   [
+    "Ooria Ltd",
+    0.00462
+   ],
+   [
+    "Ridley Corporation",
+    0.00461
+   ],
+   [
+    "Symal Group Limited",
+    0.00461
+   ],
+   [
+    "Tasmea Limited",
+    0.00461
+   ],
+   [
+    "Univeral Store",
+    0.00461
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.04875
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.02625
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.02625
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.04875
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.015
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.015
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.009
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.005
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.009
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.009
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.004
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.004
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.005
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.005
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.005
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.005
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.048
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.048
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.12
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.048
+   ],
+   [
+    "iShares Government Inflation",
+    0.048
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.072
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.048
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.048
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.03
+   ],
+   [
+    "Platform Cash",
+    0.04
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.03
+   ]
+  ],
+  "Pearl Plus Balanced": [
+   [
+    "BetaShares Australia 200",
+    0.048
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.02
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.012
+   ],
+   [
+    "Aristocrat Leisure",
+    0.008
+   ],
+   [
+    "CSL Limited",
+    0.008
+   ],
+   [
+    "Fisher & Paykel Health",
+    0.008
+   ],
+   [
+    "Graincorp Limited",
+    0.008
+   ],
+   [
+    "Megaport Limited",
+    0.008
+   ],
+   [
+    "Macquarie Group Limited",
+    0.008
+   ],
+   [
+    "QBE Insurance Group",
+    0.008
+   ],
+   [
+    "Resmed Inc",
+    0.008
+   ],
+   [
+    "South32",
+    0.008
+   ],
+   [
+    "Wisetech Global",
+    0.008
+   ],
+   [
+    "Develop Global Ltd",
+    0.00616
+   ],
+   [
+    "Firefly Metals",
+    0.00616
+   ],
+   [
+    "Karoon Energy",
+    0.00615
+   ],
+   [
+    "Kina Securities",
+    0.00615
+   ],
+   [
+    "LGI Limited",
+    0.00615
+   ],
+   [
+    "Lifestyle Communications",
+    0.00615
+   ],
+   [
+    "MA Financial",
+    0.00615
+   ],
+   [
+    "Peter Warren Australia Automotive Holdings",
+    0.00615
+   ],
+   [
+    "Ooria Ltd",
+    0.00616
+   ],
+   [
+    "Ridley Corporation",
+    0.00615
+   ],
+   [
+    "Symal Group Limited",
+    0.00615
+   ],
+   [
+    "Tasmea Limited",
+    0.00615
+   ],
+   [
+    "Univeral Store",
+    0.00615
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.06825
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.03675
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.03675
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.06825
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.015
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.015
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.01125
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.00625
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.01125
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.01125
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.005
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.005
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.0075
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.0075
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.0075
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.0075
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.036
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.036
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.09
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.036
+   ],
+   [
+    "iShares Government Inflation",
+    0.036
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.054
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.036
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.036
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.024
+   ],
+   [
+    "Platform Cash",
+    0.032
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.024
+   ]
+  ],
+  "Pearl Plus Growth": [
+   [
+    "BetaShares Australia 200",
+    0.06
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.025
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.015
+   ],
+   [
+    "Aristocrat Leisure",
+    0.01
+   ],
+   [
+    "CSL Limited",
+    0.01
+   ],
+   [
+    "Fisher & Paykel Health",
+    0.01
+   ],
+   [
+    "Graincorp Limited",
+    0.01
+   ],
+   [
+    "Megaport Limited",
+    0.01
+   ],
+   [
+    "Macquarie Group Limited",
+    0.01
+   ],
+   [
+    "QBE Insurance Group",
+    0.01
+   ],
+   [
+    "Resmed Inc",
+    0.01
+   ],
+   [
+    "South32",
+    0.01
+   ],
+   [
+    "Wisetech Global",
+    0.01
+   ],
+   [
+    "Develop Global Ltd",
+    0.00924
+   ],
+   [
+    "Firefly Metals",
+    0.00924
+   ],
+   [
+    "Karoon Energy",
+    0.00923
+   ],
+   [
+    "Kina Securities",
+    0.00923
+   ],
+   [
+    "LGI Limited",
+    0.00923
+   ],
+   [
+    "Lifestyle Communications",
+    0.00923
+   ],
+   [
+    "MA Financial",
+    0.00923
+   ],
+   [
+    "Peter Warren Australia Automotive Holdings",
+    0.00923
+   ],
+   [
+    "Ooria Ltd",
+    0.00924
+   ],
+   [
+    "Ridley Corporation",
+    0.00923
+   ],
+   [
+    "Symal Group Limited",
+    0.00923
+   ],
+   [
+    "Tasmea Limited",
+    0.00923
+   ],
+   [
+    "Univeral Store",
+    0.00923
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.08775
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.04725
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.04725
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.08775
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.025
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.025
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.0135
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.0075
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.0135
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.0135
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.006
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.006
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.0125
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.0125
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.0125
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.0125
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.02
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.02
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.05
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.02
+   ],
+   [
+    "iShares Government Inflation",
+    0.02
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.03
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.02
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.02
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.015
+   ],
+   [
+    "Platform Cash",
+    0.02
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.015
+   ]
+  ],
+  "Pearl Plus High Growth": [
+   [
+    "BetaShares Australia 200",
+    0.072
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.03
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.018
+   ],
+   [
+    "Aristocrat Leisure",
+    0.011
+   ],
+   [
+    "CSL Limited",
+    0.011
+   ],
+   [
+    "Fisher & Paykel Health",
+    0.011
+   ],
+   [
+    "Graincorp Limited",
+    0.011
+   ],
+   [
+    "Megaport Limited",
+    0.011
+   ],
+   [
+    "Macquarie Group Limited",
+    0.011
+   ],
+   [
+    "QBE Insurance Group",
+    0.011
+   ],
+   [
+    "Resmed Inc",
+    0.011
+   ],
+   [
+    "South32",
+    0.011
+   ],
+   [
+    "Wisetech Global",
+    0.011
+   ],
+   [
+    "Develop Global Ltd",
+    0.00924
+   ],
+   [
+    "Firefly Metals",
+    0.00924
+   ],
+   [
+    "Karoon Energy",
+    0.00923
+   ],
+   [
+    "Kina Securities",
+    0.00923
+   ],
+   [
+    "LGI Limited",
+    0.00923
+   ],
+   [
+    "Lifestyle Communications",
+    0.00923
+   ],
+   [
+    "MA Financial",
+    0.00923
+   ],
+   [
+    "Peter Warren Australia Automotive Holdings",
+    0.00923
+   ],
+   [
+    "Ooria Ltd",
+    0.00924
+   ],
+   [
+    "Ridley Corporation",
+    0.00923
+   ],
+   [
+    "Symal Group Limited",
+    0.00923
+   ],
+   [
+    "Tasmea Limited",
+    0.00923
+   ],
+   [
+    "Univeral Store",
+    0.00923
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.08775
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.04725
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.04725
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.08775
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.025
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.025
+   ],
+   [
+    "Hyperion Global Growth Companies",
+    0.02
+   ],
+   [
+    "PM Capital Global Companies",
+    0.02
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.01575
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.00875
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.01575
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.01575
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.007
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.007
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.0125
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.0125
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.0125
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.0125
+   ],
+   [
+    "Vaneck Emerging Inc Opportunities",
+    0.013
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.013
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.0325
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.013
+   ],
+   [
+    "iShares Government Inflation",
+    0.013
+   ],
+   [
+    "KKR Credit Income Fund",
+    0.0195
+   ],
+   [
+    "Betashares inflation protected US Treasury Bond Currency Hedged ETF",
+    0.013
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.013
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.012
+   ],
+   [
+    "Platform Cash",
+    0.016
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.012
+   ]
+  ],
+  "Pearl Lite High Conviction": [
+   [
+    "BetaShares Australia 200",
+    0.294
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.084
+   ],
+   [
+    "VanEck S&P/ASX MidCap",
+    0.021
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.021
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.119
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.068
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.034
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.119
+   ],
+   [
+    "Hyperion Global Growth Companies",
+    0.11
+   ],
+   [
+    "PM Capital Global Companies",
+    0.11
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.006
+   ],
+   [
+    "Platform Cash",
+    0.008
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.006
+   ]
+  ],
+  "Pearl Lite High Growth": [
+   [
+    "BetaShares Australia 200",
+    0.294
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.084
+   ],
+   [
+    "VanEck S&P/ASX MidCap",
+    0.021
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.021
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.119
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.068
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.034
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.119
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.01
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.01
+   ],
+   [
+    "Hyperion Global Growth Companies",
+    0.03
+   ],
+   [
+    "PM Capital Global Companies",
+    0.03
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.009
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.005
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.009
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.009
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.004
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.004
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.005
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.005
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.005
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.005
+   ],
+   [
+    "BetaShares Western Asset Australian Bond Fund",
+    0.014
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.014
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.014
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.0105
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.0105
+   ],
+   [
+    "Vanguard International Credit Securities Index (Hedged)",
+    0.007
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.009
+   ],
+   [
+    "Platform Cash",
+    0.012
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.009
+   ]
+  ],
+  "Pearl Lite Growth": [
+   [
+    "BetaShares Australia 200",
+    0.259
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.074
+   ],
+   [
+    "VanEck S&P/ASX MidCap",
+    0.0185
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.0185
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.119
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.068
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.034
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.119
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.01
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.01
+   ],
+   [
+    "Hyperion Global Growth Companies",
+    0.005
+   ],
+   [
+    "PM Capital Global Companies",
+    0.005
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.009
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.005
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.009
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.009
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.004
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.004
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.005
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.005
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.005
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.005
+   ],
+   [
+    "BetaShares Western Asset Australian Bond Fund",
+    0.032
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.032
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.032
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.024
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.024
+   ],
+   [
+    "Vanguard International Credit Securities Index (Hedged)",
+    0.016
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.012
+   ],
+   [
+    "Platform Cash",
+    0.016
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.012
+   ]
+  ],
+  "Pearl Lite Balanced": [
+   [
+    "BetaShares Australia 200",
+    0.196
+   ],
+   [
+    "BetaShares Australian Dividend Harvester Fund",
+    0.056
+   ],
+   [
+    "VanEck S&P/ASX MidCap",
+    0.014
+   ],
+   [
+    "VanEck Australian Equal Weight",
+    0.014
+   ],
+   [
+    "Betashares Global Shares ETF",
+    0.091
+   ],
+   [
+    "ETFS EURO STOXX 50",
+    0.052
+   ],
+   [
+    "BetaShares FTSE 100",
+    0.026
+   ],
+   [
+    "Betashares Global Shares Currency Hedged ETF",
+    0.091
+   ],
+   [
+    "Fidelity Global Emerging Markets",
+    0.01
+   ],
+   [
+    "iShares MSCI Emerging Markets",
+    0.01
+   ],
+   [
+    "Bloomberg Commodity Complex ETF",
+    0.0045
+   ],
+   [
+    "Global X Physical Precious Metal Basket",
+    0.0025
+   ],
+   [
+    "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+    0.0045
+   ],
+   [
+    "Magellan Infrastructure Unhedged",
+    0.0045
+   ],
+   [
+    "Resolution Capital Global Property Securities Fund",
+    0.002
+   ],
+   [
+    "VanEck FTSE International Property (Hedged)",
+    0.002
+   ],
+   [
+    "ETFS Battery Tech & Lithium",
+    0.005
+   ],
+   [
+    "BetaShares Global Agriculture Companies - Currency Hedged",
+    0.005
+   ],
+   [
+    "BetaShares Global Cybersecurity",
+    0.005
+   ],
+   [
+    "BetaShares Global Robotics and Artificial Intelligence",
+    0.005
+   ],
+   [
+    "BetaShares Western Asset Australian Bond Fund",
+    0.068
+   ],
+   [
+    "PIMCO EQT Wholesale Div Fixed Interest",
+    0.068
+   ],
+   [
+    "VanEck Australian Floating Rate",
+    0.068
+   ],
+   [
+    "BetaShares Active Australian Hybrids Fund",
+    0.051
+   ],
+   [
+    "Vanguard Global Aggregate Bond Index (Hedged)",
+    0.051
+   ],
+   [
+    "Vanguard International Credit Securities Index (Hedged)",
+    0.034
+   ],
+   [
+    "BetaSharesAustralian High Interest Cash",
+    0.018
+   ],
+   [
+    "Platform Cash",
+    0.024
+   ],
+   [
+    "iShares Enhanced Cash",
+    0.018
+   ]
+  ]
+ },
+ "alloc": {
+  "Pearl Lite High Conviction": [
+   [
+    "Cash",
+    0.02,
+    0.0396
+   ],
+   [
+    "Income",
+    0.0,
+    0.0
+   ],
+   [
+    "AU Equities",
+    0.42,
+    0.4214
+   ],
+   [
+    "Int'l Equities",
+    0.56,
+    0.539
+   ],
+   [
+    "Property",
+    0.0,
+    0.0
+   ],
+   [
+    "Alternatives",
+    0.0,
+    0.0
+   ]
+  ],
+  "Pearl Lite High Growth": [
+   [
+    "Cash",
+    0.03,
+    0.0328
+   ],
+   [
+    "Income",
+    0.07,
+    0.0974
+   ],
+   [
+    "AU Equities",
+    0.42,
+    0.42
+   ],
+   [
+    "Int'l Equities",
+    0.42,
+    0.4098
+   ],
+   [
+    "Property",
+    0.04,
+    0.026
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.014
+   ]
+  ],
+  "Pearl Lite Growth": [
+   [
+    "Cash",
+    0.04,
+    0.0408
+   ],
+   [
+    "Fixed Income",
+    0.16,
+    0.16
+   ],
+   [
+    "AU Equities",
+    0.37,
+    0.37
+   ],
+   [
+    "Int'l Equities",
+    0.37,
+    0.3892
+   ],
+   [
+    "Property",
+    0.04,
+    0.026
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.014
+   ]
+  ],
+  "Pearl Lite Balanced": [
+   [
+    "Cash",
+    0.06,
+    0.0598
+   ],
+   [
+    "Fixed Income",
+    0.34,
+    0.3402
+   ],
+   [
+    "AU Equities",
+    0.28,
+    0.28
+   ],
+   [
+    "Int'l Equities",
+    0.28,
+    0.3
+   ],
+   [
+    "Property",
+    0.02,
+    0.013
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.007
+   ]
+  ],
+  "Pearl X High Conviction": [
+   [
+    "Cash",
+    0.02,
+    0.0522
+   ],
+   [
+    "Income",
+    0.0,
+    0.07
+   ],
+   [
+    "AU Equities",
+    0.42,
+    0.3415
+   ],
+   [
+    "Int'l Equities",
+    0.56,
+    0.4863
+   ],
+   [
+    "Property",
+    0.0,
+    0.0437
+   ],
+   [
+    "Alternatives",
+    0.0,
+    0.0063
+   ]
+  ],
+  "Pearl X High Growth": [
+   [
+    "Cash",
+    0.03,
+    0.0498
+   ],
+   [
+    "Income",
+    0.07,
+    0.1402
+   ],
+   [
+    "AU Equities",
+    0.42,
+    0.3434
+   ],
+   [
+    "Int'l Equities",
+    0.42,
+    0.398
+   ],
+   [
+    "Property",
+    0.04,
+    0.06
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.0086
+   ]
+  ],
+  "Pearl X Growth": [
+   [
+    "Cash",
+    0.04,
+    0.069
+   ],
+   [
+    "Fixed Income",
+    0.16,
+    0.196
+   ],
+   [
+    "AU Equities",
+    0.37,
+    0.3136
+   ],
+   [
+    "Int'l Equities",
+    0.37,
+    0.3626
+   ],
+   [
+    "Property",
+    0.04,
+    0.0514
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.0074
+   ]
+  ],
+  "Pearl X Balanced": [
+   [
+    "Cash",
+    0.06,
+    0.08
+   ],
+   [
+    "Fixed Income",
+    0.34,
+    0.36
+   ],
+   [
+    "AU Equities",
+    0.28,
+    0.24
+   ],
+   [
+    "Int'l Equities",
+    0.28,
+    0.27
+   ],
+   [
+    "Property",
+    0.02,
+    0.0437
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.0063
+   ]
+  ],
+  "Pearl X Moderate": [
+   [
+    "Cash",
+    0.08,
+    0.118
+   ],
+   [
+    "Fixed Income",
+    0.47,
+    0.4704
+   ],
+   [
+    "AU Equities",
+    0.21,
+    0.1764
+   ],
+   [
+    "Int'l Equities",
+    0.22,
+    0.196
+   ],
+   [
+    "Property",
+    0.02,
+    0.0343
+   ],
+   [
+    "Alternatives",
+    0.0,
+    0.0049
+   ]
+  ],
+  "Pearl X Conservative": [
+   [
+    "Cash",
+    0.1,
+    0.1376
+   ],
+   [
+    "Fixed Income",
+    0.6,
+    0.588
+   ],
+   [
+    "AU Equities",
+    0.14,
+    0.1176
+   ],
+   [
+    "Int'l Equities",
+    0.14,
+    0.1176
+   ],
+   [
+    "Property",
+    0.02,
+    0.0343
+   ],
+   [
+    "Alternatives",
+    0.0,
+    0.0049
+   ]
+  ],
+  "Pearl Plus High Growth": [
+   [
+    "Cash",
+    0.03,
+    0.0435
+   ],
+   [
+    "Income",
+    0.07,
+    0.13
+   ],
+   [
+    "AU Equities",
+    0.42,
+    0.3504
+   ],
+   [
+    "Int'l Equities",
+    0.42,
+    0.4061
+   ],
+   [
+    "Property",
+    0.04,
+    0.0612
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.0088
+   ]
+  ],
+  "Pearl Plus Growth": [
+   [
+    "Cash",
+    0.04,
+    0.05
+   ],
+   [
+    "Fixed Income",
+    0.16,
+    0.2
+   ],
+   [
+    "AU Equities",
+    0.37,
+    0.32
+   ],
+   [
+    "Int'l Equities",
+    0.37,
+    0.37
+   ],
+   [
+    "Property",
+    0.04,
+    0.0525
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.0075
+   ]
+  ],
+  "Pearl Plus Balanced": [
+   [
+    "Cash",
+    0.06,
+    0.08
+   ],
+   [
+    "Fixed Income",
+    0.34,
+    0.36
+   ],
+   [
+    "AU Equities",
+    0.28,
+    0.24
+   ],
+   [
+    "Int'l Equities",
+    0.28,
+    0.27
+   ],
+   [
+    "Property",
+    0.02,
+    0.0437
+   ],
+   [
+    "Alternatives",
+    0.02,
+    0.0063
+   ]
+  ],
+  "Pearl Plus Moderate": [
+   [
+    "Cash",
+    0.08,
+    0.1
+   ],
+   [
+    "Fixed Income",
+    0.47,
+    0.48
+   ],
+   [
+    "AU Equities",
+    0.21,
+    0.18
+   ],
+   [
+    "Int'l Equities",
+    0.22,
+    0.2
+   ],
+   [
+    "Property",
+    0.02,
+    0.035
+   ],
+   [
+    "Alternatives",
+    0.0,
+    0.005
+   ]
+  ],
+  "Pearl Plus Conservative": [
+   [
+    "Cash",
+    0.1,
+    0.12
+   ],
+   [
+    "Fixed Income",
+    0.6,
+    0.6
+   ],
+   [
+    "AU Equities",
+    0.14,
+    0.12
+   ],
+   [
+    "Int'l Equities",
+    0.14,
+    0.12
+   ],
+   [
+    "Property",
+    0.02,
+    0.035
+   ],
+   [
+    "Alternatives",
+    0.0,
+    0.005
+   ]
+  ]
+ }
+}

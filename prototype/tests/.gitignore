@@ -1,0 +1,12 @@
+# written by the tests
+live.html
+doc.html
+*.png
+*.docx
+!testdocs/*.docx
+pack.json
+call*.txt
+answer*.txt
+!recorded/answer*.txt
+e2e.log
+e2e.out

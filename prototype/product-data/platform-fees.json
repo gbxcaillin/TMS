@@ -1,0 +1,772 @@
+{
+ "hub24_super_choice": {
+  "name": "HUB24 Super (Choice menu)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 250000,
+    "rate": 0.0036
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.0026
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.0016
+   },
+   {
+    "up_to": null,
+    "rate": 0.0006
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 180,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "as_at": "2026 (HUB24 Super PDS)",
+  "source": "HUB24 Super PDS Part I & II \u2014 Superfund PDS/Retail Funds/Hub24/Product Disclosure Statement (Part I and Part II).pdf"
+ },
+ "hub24_invest_choice": {
+  "name": "HUB24 Invest (IDPS, Choice menu)",
+  "type": "idps",
+  "admin_tiers": [
+   {
+    "up_to": 250000,
+    "rate": 0.003
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.002
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.001
+   },
+   {
+    "up_to": 5000000,
+    "rate": 0.0005
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 180,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "as_at": "2025 (indicative)",
+  "source": "HUB24 Invest IDPS Guide"
+ },
+ "netwealth_super_plus": {
+  "name": "Netwealth Super Accelerator Plus",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 250000,
+    "rate": 0.0037
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.0027
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.0017
+   },
+   {
+    "up_to": 2500000,
+    "rate": 0.0006
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 550,
+  "fixed_fee_pa": 240,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.00023,
+  "default_icr_pct": 0.006,
+  "as_at": "2025-10-01 (Netwealth Super Accelerator PDS)",
+  "source": "Netwealth Super Accelerator PDS (1 Oct 2025), p.25 \u2014 Superfund PDS/Retail Funds/Netwealth/Netwealth Accelerator PDS.pdf"
+ },
+ "netwealth_wealth_accelerator_plus": {
+  "name": "Netwealth Wealth Accelerator Plus (IDPS)",
+  "type": "idps",
+  "admin_tiers": [
+   {
+    "up_to": 250000,
+    "rate": 0.003
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.002
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.001
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "as_at": "2025 (indicative)",
+  "source": "Netwealth Wealth Accelerator IDPS Guide"
+ },
+ "cfs_edge_super": {
+  "name": "CFS Edge Super",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 500000,
+    "rate": 0.0025
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": 3000000,
+    "rate": 0.0005
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 60,
+  "expense_recovery_pct": 0.0002,
+  "default_icr_pct": 0.006,
+  "as_at": "2026 (CFS Edge Super & Pension PDS)",
+  "source": "CFS Edge Super & Pension PDS \u2014 Superfund PDS/Retail Funds/CFS/CFS Super & Pension part 1.pdf (+ part 2)"
+ },
+ "cfs_firstchoice_wholesale_super": {
+  "name": "CFS FirstChoice Wholesale Personal Super",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 100000,
+    "rate": 0.002
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.001
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "as_at": "2026 (CFS FirstChoice Wholesale PDS)",
+  "source": "CFS FirstChoice Wholesale Personal Super PDS Part 2, p.4 \u2014 Superfund PDS/Retail Funds/CFS/CFS Super & Pension part 2.pdf"
+ },
+ "bt_panorama_full": {
+  "name": "BT Panorama Super (Full menu)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 1000000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 540,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "as_at": "2026 (BT Panorama Super PDS)",
+  "source": "BT Panorama Super PDS, p.34 (bt.com.au, fetched 2026-08-20 \u2014 not in Superfund PDS folder)"
+ },
+ "macquarie_consolidator2_super": {
+  "name": "Macquarie Wrap Consolidator II Super",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 250000,
+    "rate": 0.0025
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.0005
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 100,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "as_at": "2025 (indicative)",
+  "source": "Macquarie Wrap Consolidator II Super PDS"
+ },
+ "australiansuper_accum": {
+  "name": "AustralianSuper (accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.001
+   }
+  ],
+  "admin_fee_max_pa": 350,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 52,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.0052,
+  "as_at": "2025 (indicative)",
+  "source": "AustralianSuper PDS / Fees and costs guide"
+ },
+ "art_super_savings": {
+  "name": "Australian Retirement Trust Super Savings (accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.001
+   }
+  ],
+  "admin_fee_max_pa": 500,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 62.4,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.000496,
+  "default_icr_pct": 0.0051,
+  "as_at": "2025 (indicative)",
+  "source": "ART Super Savings PDS / Fee guide"
+ },
+ "hostplus_accum": {
+  "name": "Hostplus (accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.001
+   }
+  ],
+  "admin_fee_max_pa": 500,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 78,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 2.2e-05,
+  "default_icr_pct": 0.008,
+  "as_at": "2025 (indicative)",
+  "source": "Hostplus PDS / Fees handbook"
+ },
+ "dash_super_simplifier": {
+  "name": "DASH Super Simplifier",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 500000,
+    "rate": 0.00352
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0003,
+  "default_icr_pct": 0.004,
+  "as_at": "2024-12-18",
+  "source": "Super Simplifier PDS, 18 December 2024, Section 6"
+ },
+ "dash_wealth_simplifier": {
+  "name": "DASH Wealth Simplifier (Brightday)",
+  "type": "idps",
+  "admin_tiers": [
+   {
+    "up_to": 2000000,
+    "rate": 0.00165
+   }
+  ],
+  "admin_fee_max_pa": 3000,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.004,
+  "as_at": "2025-07-01",
+  "source": "Wealth Simplifier PDS, 1 July 2025, s.11 (Brightday-negotiated concessions applied)"
+ },
+ "aware_super_accum": {
+  "name": "Aware Super (Accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0015
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 52,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0001,
+  "default_icr_pct": 0.0052,
+  "as_at": "2026 (Aware Super Future Saver PDS)",
+  "source": "Aware Super Future Saver PDS \u2014 Superfund PDS/Industry Funds/Aware Super/Future-Saver-Employed n Personal.pdf"
+ },
+ "rest_super_accum": {
+  "name": "Rest Super (Accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0019
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 78,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.0047,
+  "as_at": "2026 (Rest Super fees page)",
+  "source": "Rest Super fees page (rest.com.au), verified 2026-08-20 (via PDS worked example)"
+ },
+ "cbus_accum": {
+  "name": "Cbus Super (Accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0019
+   }
+  ],
+  "admin_fee_max_pa": 1000,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 52,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0007,
+  "default_icr_pct": 0.0044,
+  "as_at": "2026 (Cbus Industry Super PDS)",
+  "source": "Cbus Industry Super PDS \u2014 Superfund PDS/Industry Funds/CBUS/Cbus-Industry-Super-PDS.pdf"
+ },
+ "praemium_supersma_super": {
+  "name": "Praemium SuperSMA",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 250000,
+    "rate": 0.003
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.0025
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": 3000000,
+    "rate": 0.001
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0002,
+  "default_icr_pct": 0.006,
+  "as_at": "2025 (indicative)",
+  "source": "Praemium SuperSMA PDS / Investment Menu (VERIFY)"
+ },
+ "unisuper_accum": {
+  "name": "UniSuper (Personal Account)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": 96,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 96,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.0043,
+  "as_at": "2026 (UniSuper Personal Account PDS)",
+  "source": "UniSuper Personal Account PDS \u2014 Superfund PDS/Industry Funds/UniSuper/personal-account-pds.pdf"
+ },
+ "hesta_accum": {
+  "name": "HESTA (accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 500000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 52,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0003,
+  "default_icr_pct": 0.0049,
+  "as_at": "2026 (HESTA Super PDS)",
+  "source": "HESTA Super PDS \u2014 Superfund PDS/Industry Funds/Hesta Super/HESTA-super-PDS.pdf"
+ },
+ "caresuper_accum": {
+  "name": "CareSuper (accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0015
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 67.6,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "as_at": "2026 (CareSuper Member PDS)",
+  "source": "CareSuper Member PDS \u2014 Superfund PDS/Industry Funds/CareSuper/member-pds.pdf"
+ },
+ "acclaim_amg_super": {
+  "name": "Acclaim Super (AMG Super wrap)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0054
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.004,
+  "as_at": "2026 (client-statement estimate)",
+  "source": "Acclaim Super client report 21/10/2024-04/05/2026"
+ },
+ "acclaim_super": {
+  "name": "Acclaim Super (accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 250000,
+    "rate": 0.0049
+   },
+   {
+    "up_to": 500000,
+    "rate": 0.0039
+   },
+   {
+    "up_to": 750000,
+    "rate": 0.0029
+   },
+   {
+    "up_to": 1000000,
+    "rate": 0.001
+   },
+   {
+    "up_to": 2000000,
+    "rate": 0.0003
+   },
+   {
+    "up_to": null,
+    "rate": 0.0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 220,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.0055,
+  "as_at": "2024-03 (PDS Mar 2024; Jul 2026 administrator change \u2014 fees to be re-verified)",
+  "source": "Acclaim Super & Pension PDS March 2024, p.5 (Section 6)"
+ },
+ "mediasuper_accum": {
+  "name": "Media Super (accumulation)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0019
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 52,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.0044,
+  "as_at": "2026 (PDS)",
+  "source": "Media Super Industry PDS \u2014 Superfund PDS/Industry Funds/MediaSuper/industry-pds.pdf"
+ },
+ "qsuper_accum": {
+  "name": "QSuper Accumulation (Lifetime Outlook)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0006
+   }
+  ],
+  "admin_fee_max_pa": 500,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 57.2,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.0041,
+  "as_at": "2026-07-01",
+  "source": "QSuper Accumulation Account PDS (1 July 2026)"
+ },
+ "mlc_super_accum": {
+  "name": "MLC MasterKey Super & Pension",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0021
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 78,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0006,
+  "default_icr_pct": 0.0089,
+  "as_at": "2026 (PDS)",
+  "source": "MLC Super & Pension PDS \u2014 Superfund PDS/Retail Funds/MLC Super/Super & Pension.pdf"
+ },
+ "vanguard_super_accum": {
+  "name": "Vanguard Super SaveSmart",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 300000,
+    "rate": 0.0028
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0005,
+  "default_icr_pct": 0.0021,
+  "as_at": "2026 (Vanguard Super SaveSmart PDS)",
+  "source": "Vanguard Super SaveSmart PDS \u2014 Superfund PDS/Retail Funds/Vanguard Super/Vanguard_Super-SaveSmart_PDS.pdf"
+ },
+ "amp_mynorth_super": {
+  "name": "AMP MyNorth Super (Choice menu)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.0028
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 180,
+  "fixed_fee_pa": 180,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.000119,
+  "default_icr_pct": 0.0085,
+  "as_at": "2026 (AMP MyNorth Super/Pension PDS)",
+  "source": "AMP MyNorth Super/Pension PDS \u2014 Superfund PDS/Retail Funds/Amp Mynorth/my-north-super-pension-pds Part A.pdf"
+ },
+ "australiansuper_pension": {
+  "name": "AustralianSuper (Choice Income / pension)",
+  "type": "pension",
+  "admin_tiers": [
+   {
+    "up_to": null,
+    "rate": 0.001
+   }
+  ],
+  "admin_fee_max_pa": 600,
+  "admin_fee_min_pa": 0,
+  "fixed_fee_pa": 52,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.0047,
+  "as_at": "2026-08-20",
+  "source": "AustralianSuper \u2014 australiansuper.com/why-choose-us/fees-costs"
+ },
+ "netwealth_super_core": {
+  "name": "Netwealth Super Accelerator Core",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 750000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": 225,
+  "fixed_fee_pa": 60,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.00023,
+  "default_icr_pct": 0.006,
+  "as_at": "2025-10-01 (Netwealth Super Accelerator PDS)",
+  "source": "Netwealth Super Accelerator PDS (1 Oct 2025), p.22 \u2014 Superfund PDS/Retail Funds/Netwealth/Netwealth Accelerator PDS.pdf"
+ },
+ "amp_super_fund": {
+  "name": "AMP Super Fund (SignatureSuper)",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 500000,
+    "rate": 0.0019
+   },
+   {
+    "up_to": null,
+    "rate": 0.0
+   }
+  ],
+  "admin_fee_max_pa": 950,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 78,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.00063,
+  "default_icr_pct": 0.0047,
+  "as_at": "2026-07-01",
+  "source": "AMP Super PDS dated 25 May 2026 + PDS update effective 1 July 2026 (trustee fee 0.015%\u21920.014%); investment guide for option-specific ICRs"
+ },
+ "fiducian_super": {
+  "name": "Fiducian Superannuation Service",
+  "type": "super",
+  "admin_tiers": [
+   {
+    "up_to": 51250,
+    "rate": 0.0033
+   },
+   {
+    "up_to": 300000,
+    "rate": 0.0043
+   },
+   {
+    "up_to": 750000,
+    "rate": 0.0033
+   },
+   {
+    "up_to": 1250000,
+    "rate": 0.0025
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 0,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0005,
+  "reg_pct": 0.0008,
+  "reg_above": 51250,
+  "reg_cap": 110,
+  "hold_fid_pm": 3.5,
+  "hold_other_pm": 5.15,
+  "hold_above": 51250,
+  "default_icr_pct": 0.01,
+  "notes": "Custody 0.05% shown as expense recovery. Operational Risk Reserve contribution (up to 0.05% every 6 months, capped at $300) not charged once a member has contributed for 3 years: assumed nil. Cash account indirect cost 0.85% on cash only: not included.",
+  "as_at": "13 Jul 2026",
+  "source": "Fiducian Superannuation Service PDS, 13 July 2026, section 6"
+ },
+ "fiducian_ids": {
+  "name": "Fiducian Investment Service",
+  "type": "idps",
+  "admin_tiers": [
+   {
+    "up_to": 51250,
+    "rate": 0.0033
+   },
+   {
+    "up_to": 300000,
+    "rate": 0.0043
+   },
+   {
+    "up_to": 750000,
+    "rate": 0.0033
+   },
+   {
+    "up_to": 1250000,
+    "rate": 0.0025
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 324,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0.0007,
+  "hold_fid_pm": 3.5,
+  "hold_other_pm": 5.15,
+  "hold_above": 51250,
+  "default_icr_pct": 0.01,
+  "notes": "Account fee $27 a month; custody 0.07% shown as expense recovery. Cash management fee 0.85% on cash only: not included.",
+  "as_at": "30 Jun 2026",
+  "source": "Fiducian Investment Service Investor Guide, 30 June 2026"
+ },
+ "bt_panorama_invest": {
+  "name": "BT Panorama Investments (Full menu)",
+  "type": "idps",
+  "admin_tiers": [
+   {
+    "up_to": 1000000,
+    "rate": 0.0015
+   },
+   {
+    "up_to": null,
+    "rate": 0
+   }
+  ],
+  "admin_fee_max_pa": null,
+  "admin_fee_min_pa": null,
+  "fixed_fee_pa": 540,
+  "expense_recovery_fixed_pa": 0,
+  "expense_recovery_pct": 0,
+  "default_icr_pct": 0.006,
+  "notes": "Full menu: account-based fee $540 pa ($400 if grouped) plus asset-based 0.15% to $1m, nil above (grouped: 0.15% to $500k, 0.10% to $1m, 0.03% to $2.5m). Focus $60 / Compact $240 account fee with $50 / $150 minimum asset fee. Custodial holdings option $300 pa only if selected. Asset-based fee not charged on the transaction account.",
+  "as_at": "fetched 29 Sep 2026",
+  "source": "BT Panorama Investments Investor Guide, Fees and costs summary (bt.com.au, fetched 29 Sep 2026)"
+ }
+}
