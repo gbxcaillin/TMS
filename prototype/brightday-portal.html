@@ -84,7 +84,7 @@ a{color:var(--accent-ink);text-decoration:none;cursor:pointer}a:hover{text-decor
 .top .sp{flex:1}
 .search{position:relative;width:min(400px,42vw)}
 .search input{width:100%;height:34px;border:1px solid var(--line-2);background:var(--surface);padding:0 10px 0 30px}
-.search svg{position:absolute;left:9px;top:9px;width:15px;height:15px;stroke:var(--ink-3);fill:none;stroke-width:1.5}
+.search>svg{position:absolute;left:9px;top:9px;width:15px;height:15px;stroke:var(--ink-3);fill:none;stroke-width:1.5}
 .page{padding:24px clamp(16px,3vw,32px) 56px;display:flex;flex-direction:column;gap:20px;max-width:1320px;width:100%}
 .head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .head .sub{color:var(--ink-2);margin-top:6px;max-width:74ch}
@@ -267,11 +267,15 @@ mark{background:var(--warn-tint);color:var(--warn);padding:0 2px}
 .aibar.warn{background:var(--warn-tint);border-left-color:var(--warn)}
 .bmark{display:inline-grid;place-items:center;flex:none;line-height:0}.bmark.spin svg{animation:bspin 2.4s linear infinite}@keyframes bspin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.bmark.spin svg{animation:none}}
-.search .ask-btn{position:absolute;right:-1px;top:-4px;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#fff;border:1px solid var(--line-2);box-shadow:0 1px 4px rgba(18,53,89,.18);transition:transform .15s}
-.search .ask-btn svg{position:static;width:36px;height:36px;stroke:none}
-.search .ask-btn:hover{transform:scale(1.06);border-color:var(--accent)}.search input{padding-right:48px}
-.bdisc{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fff;margin:-4px 8px -4px -4px;line-height:0}
-.ask-box .btn{display:inline-flex;align-items:center}
+.search .sdrop{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;background:var(--surface);border:1px solid var(--line-2);box-shadow:0 8px 24px rgba(18,53,89,.18);display:flex;flex-direction:column;min-width:320px}
+.sopt{display:flex;align-items:center;gap:10px;padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);flex-wrap:wrap}.sopt:hover,.sopt.first{background:var(--surface-2)}
+.sopt .sl{font-weight:700;font-size:12.5px;width:100%}.schips{display:flex;flex-wrap:wrap;gap:4px}.schips .chip{text-transform:none;letter-spacing:0;font-weight:600}
+.sopt.ask{color:var(--accent-ink);font-weight:600}.sopt.ask .bdisc{background:transparent;margin:-4px 0}
+.shint{padding:8px 12px;font-size:11.5px;color:var(--ink-3);line-height:1.4}
+.bbtn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 4px;border-radius:18px;background:var(--cadet);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;flex:none}
+.bbtn:hover,.bbtn[aria-current="page"]{background:var(--garnet)}.bbtn .bdisc{width:30px;height:30px;margin:0}
+.aibar.search-bar{background:var(--surface-2);border-left-color:var(--cadet)}.aibar.search-bar>svg{width:18px;height:18px;stroke:var(--ink-2);fill:none;stroke-width:1.5;flex:none;margin-top:2px}
+@media (max-width:760px){.bbtn .bl{display:none}.bbtn{padding:0 3px}}
 .nav .bmark{width:16px;height:16px}
 .ask-box{display:flex;gap:10px;padding:16px 18px 12px}.ask-box .input{height:44px;font-size:15px}.ask-box .btn{height:44px}
 .sugg{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 12px}
@@ -587,14 +591,14 @@ function render(){
   <div class="foot"><div class="who"><span class="av">${initials(me().name)}</span><div><b>${esc(me().name)}</b><span>${esc(me().role)}</span></div></div>
   <label class="switch" for="as">View the prototype as<select id="as">${Object.values(USERS).map(u=>`<option value="${u.id}" ${u.id===UI.me?'selected':''}>${esc(u.name)} · ${esc(u.title)}</option>`).join('')}</select></label>
   <button class="nav" id="signout" style="padding-left:0">Sign out</button></div></aside>
-  <div class="main"><header class="top"><div class="crumb" id="crumb"></div><div class="sp"></div><div class="search">${svg('search')}<input id="q" placeholder="Search clients or ask Brightly" aria-label="Search clients or ask Brightly"><button class="ask-btn" id="askbtn" type="button" title="Ask Brightly" aria-label="Ask Brightly">${brightlyMark('sq',36,ASK.status==='thinking')}</button></div><button class="btn btn-sm btn-quiet" id="theme" type="button">Theme</button></header>
+  <div class="main"><header class="top"><div class="crumb" id="crumb"></div><div class="sp"></div><div class="search">${svg('search')}<input id="q" placeholder="Smart search, e.g. ART 200k ongoing" aria-label="Smart search: client names, providers, balances, fees, holdings" autocomplete="off" value="${esc(UI.searchQ||'')}"><div class="sdrop" id="sdrop" hidden></div></div>
+  <button class="bbtn" id="askbtn" type="button" ${UI.view==='ask'?'aria-current="page"':''}><span class="bdisc">${brightlyMark('sq',28,ASK.status==='thinking')}</span><span class="bl">Ask Brightly</span></button><button class="btn btn-sm btn-quiet" id="theme" type="button">Theme</button></header>
   <main class="page" id="page"></main></div></div>`;
   $$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
   $('#as').onchange=e=>{UI.me=e.target.value;toast('Now viewing as '+me().name);render()};
   $('#signout').onclick=()=>{UI.signedIn=false;render()};
   $('#theme').onclick=()=>{const r=document.documentElement;const cur=r.getAttribute('data-theme');const dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.setAttribute('data-theme',dark?'light':'dark')};
-  const ask=v=>{v=v.trim();if(!v)return go('ask');const q=v.toLowerCase();const c=v.split(/\s+/).length<=3&&S.clients.find(c=>c.name.toLowerCase().includes(q));if(c)return go('client',{id:c.id});runAsk(v)};
-  $('#q').onkeydown=e=>{if(e.key==='Enter')ask(e.target.value)};$('#askbtn').onclick=()=>ask($('#q').value);
+  $('#askbtn').onclick=()=>go('ask');bindSearch();
   const V={dashboard:vDashboard,clients:vClients,client:vClient,tasks:vTasks,calendar:vCalendar,email:vEmail,chat:vChat,tools:vTools,tool:vTool,run:vRun,ask:vAsk}[UI.view]||vDashboard;
   V();
 }
@@ -678,7 +682,7 @@ function signals(){
 /* Filters shared by the Clients page and Brightly. */
 const ALIAS={art:'Australian Retirement Trust','aus super':'AustralianSuper','australian super':'AustralianSuper',bt:'BT Panorama',panorama:'BT Panorama',rest:'Rest'};
 const FEE_TYPES=['Ongoing','Fixed term'],RISKS=['Balanced','Growth','High Growth'],CTYPES=['Individual','Couple','SMSF'],KINDS=['Super','SMSF','Wrap','Property'];
-const NUMF=['minBalance','maxBalance','minFunds','reviewWithinDays','ofaWithinDays'];
+const NUMF=['minBalance','maxBalance','minFunds','maxFunds','reviewWithinDays','ofaWithinDays'];
 const pick=(v,list)=>list.find(x=>x.toLowerCase()===String(v).trim().toLowerCase())||null;
 function parseMoney(v){const m=String(v).replace(/[\s,$]/g,'').match(/^(\d+(?:\.\d+)?)(k|m|mil|million)?$/i);if(!m)return null;return Math.round(+m[1]*({k:1e3,m:1e6,mil:1e6,million:1e6}[(m[2]||'').toLowerCase()]||1))}
 const shortMoney=n=>n>=1e6?+(n/1e6).toFixed(2)+'m':n>=1e3?+(n/1e3).toFixed(1)+'k':String(n);
@@ -696,6 +700,7 @@ function matchClient(c,f){const p=c.profile;
   const H=holdings(c).filter(h=>(!f.holding||h.code===f.holding)&&(!f.pearl||PEARL[h.code]?.rating===f.pearl));
   if((f.holding||f.pearl)&&!H.length)return null;
   if(f.minFunds!=null&&fum(c)<f.minFunds)return null;
+  if(f.maxFunds!=null&&fum(c)>=f.maxFunds)return null;
   if(f.feeType&&c.feeType!==f.feeType)return null;
   if(f.risk&&p.risk!==f.risk)return null;
   if(f.clientType&&c.type!==f.clientType)return null;
@@ -705,26 +710,30 @@ function matchClient(c,f){const p=c.profile;
   return{accts:acctCrit(f)?accts:[],H:(f.holding||f.pearl)?H:[]}}
 
 /* The built-in reading of a question, used when Claude is not available in this view. */
+/* Smart search: key terms and numbers to filters, worked out in the page (no AI). */
+function smartFilters(q){
+  const s=q.toLowerCase();const f={};
+  for(const[k,v]of Object.entries(ALIAS))if(new RegExp('\\b'+k+'\\b').test(s))f.provider=v;
+  for(const p of providers())if(s.includes(p.toLowerCase()))f.provider=p;
+  if(/\bwrap\b|platform account/.test(s))f.accountKind='Wrap';else if(/propert/.test(s))f.accountKind='Property';else if(/\bsuper\b|superannuation/.test(s.replace(/australian ?super/g,'')))f.accountKind='Super';
+  const m=s.match(/(under|below|less than|over|above|more than|at least|greater than)?\s*\$\s?(\d[\d,.]*\s*(?:k|m|million)?)|(under|below|less than|over|above|more than|at least|greater than)?\s*\b(\d[\d,.]*\s*(?:k|m|million))\b/);
+  if(m){const amt=parseMoney(m[2]||m[4]);const dir=m[1]||m[3]||'';if(amt){const acct=f.provider||f.accountKind||/account|balance/.test(s);f[/under|below|less/.test(dir)?(acct?'maxBalance':'maxFunds'):(acct?'minBalance':'minFunds')]=amt}}
+  if(/ongoing/.test(s))f.feeType='Ongoing';else if(/fixed[- ]term/.test(s))f.feeType='Fixed term';
+  if(/high growth/.test(s))f.risk='High Growth';else if(/\bgrowth\b/.test(s))f.risk='Growth';else if(/\bbalanced\b/.test(s))f.risk='Balanced';
+  if(/\bsmsf/.test(s))f.clientType='SMSF';else if(/couple/.test(s))f.clientType='Couple';else if(/individual|single/.test(s))f.clientType='Individual';
+  const codes=[...new Set(S.clients.flatMap(c=>holdings(c).map(h=>h.code)))].filter(x=>x!=='Cash');
+  for(const code of codes)if(new RegExp('\\b'+code+'\\b','i').test(q))f.holding=code;
+  {const r=s.match(/(?:rates?|rated|rating|pearl)\s+(?:it\s+|them\s+|as\s+|a\s+)?(buy|accumulate|hold|reduce|sell)\b|\b(buy|accumulate|hold|reduce|sell)[- ]rated/)||s.match(/\b(buy|accumulate|reduce|sell)s?\b/);if(r)f.pearl=pick(r[1]||r[2],RATINGS)}
+  const d=s.match(/(\d+)\s*days/);const wk=/this month|next month/.test(s)?30:null;
+  if(/renewal|ofa/.test(s))f.ofaWithinDays=d?+d[1]:wk||30;else if(/review/.test(s))f.reviewWithinDays=d?+d[1]:wk||30;
+  if(/draft|unconfirmed|to confirm/.test(s))f.profile='draft';else if(/confirmed profile/.test(s))f.profile='confirmed';
+  return cleanFilters(f)}
 function localAnswer(q){const s=q.toLowerCase();const sig=signals();
   const asItems=list=>list.map(x=>({...x,size:x.score>=75?'high':x.score>=50?'medium':'low'}));
   if(/tax|harvest|30 june|capital gain|cgt/.test(s))return{kind:'insights',title:'Tax opportunities',items:asItems(sig.filter(x=>['Tax','Contributions'].includes(x.kind)))};
   if(/opportunit|value|connect|priorit|idea|who should i|reach out|call first|focus/.test(s))return{kind:'insights',title:'Opportunities to connect and add value',items:asItems(sig.slice(0,6))};
   if(/email|repl|respond|unanswered/.test(s)){const un=S.emails.filter(e=>e.unread&&emailClient(e));return{kind:'answer',title:'Waiting for a reply',text:un.length?un.map(e=>`${e.from} (${client(emailClient(e)).name}): “${e.s}”, ${rel(e.when)}.`).join('\n'):'Every client email has been read.',clients:[...new Set(un.map(emailClient))]}}
-  const f={};
-  for(const[k,v]of Object.entries(ALIAS))if(new RegExp('\\b'+k+'\\b').test(s))f.provider=v;
-  for(const p of providers())if(s.includes(p.toLowerCase()))f.provider=p;
-  const m=s.match(/(under|below|less than|over|above|more than|at least|greater than)?\s*\$\s?(\d[\d,.]*\s*(?:k|m|million)?)|(under|below|less than|over|above|more than|at least|greater than)?\s*\b(\d[\d,.]*\s*(?:k|m|million))\b/);
-  if(m){const amt=parseMoney(m[2]||m[4]);const dir=m[1]||m[3]||'';if(amt){const k=/under|below|less/.test(dir)?(f.provider||/account/.test(s)?'maxBalance':null):(f.provider||/account|balance/.test(s)?'minBalance':'minFunds');if(k)f[k]=amt}}
-  if(/ongoing/.test(s))f.feeType='Ongoing';else if(/fixed[- ]term/.test(s))f.feeType='Fixed term';
-  if(/high growth/.test(s))f.risk='High Growth';else if(/\bgrowth\b/.test(s))f.risk='Growth';else if(/\bbalanced\b/.test(s))f.risk='Balanced';
-  if(/\bsmsf/.test(s))f.clientType='SMSF';else if(/couple/.test(s))f.clientType='Couple';
-  const codes=[...new Set(S.clients.flatMap(c=>holdings(c).map(h=>h.code)))].filter(x=>x!=='Cash');
-  for(const code of codes)if(new RegExp('\\b'+code+'\\b','i').test(q))f.holding=code;
-  if(/pearl|rated|rating|research|indicator/.test(s)){const r=s.match(/(?:rates?|rated|rating|pearl)\s+(?:it\s+|them\s+|as\s+|a\s+)?(buy|accumulate|hold|reduce|sell)\b|\b(buy|accumulate|hold|reduce|sell)[- ]rated/)||s.match(/\b(buy|accumulate|reduce|sell)\b/);if(r)f.pearl=pick(r[1]||r[2],RATINGS)}
-  const d=s.match(/(\d+)\s*days/);const wk=/this month|next month/.test(s)?30:null;
-  if(/renewal|ofa/.test(s))f.ofaWithinDays=d?+d[1]:wk||30;else if(/review/.test(s))f.reviewWithinDays=d?+d[1]:wk||30;
-  if(/draft|unconfirmed|to confirm/.test(s))f.profile='draft';
-  const clean=cleanFilters(f);
+  const clean=smartFilters(q);
   if(Object.keys(clean).length)return{kind:'filter',title:q,explain:'',filters:clean};
   const named=S.clients.filter(c=>c.name.toLowerCase().split(/[\s&]+/).some(w=>w.length>2&&s.includes(w)));
   if(named.length)return{kind:'answer',title:'Clients mentioned',text:'Open a client to see their profile, email, tasks and advice runs.',clients:named.map(c=>c.id)};
@@ -750,7 +759,7 @@ Reply with only one JSON object, in one of these shapes:
 
 1. The question asks to show, list or find clients by attributes:
 {"kind":"filter","title":"<short title>","explain":"<one sentence on how you read the question>","filters":{...}}
-Filter keys (only those the question needs): provider (an account provider as written in DATA; ART = Australian Retirement Trust), accountKind ("Super"|"SMSF"|"Wrap"|"Property"), minBalance and maxBalance (dollars, for one account; they combine with provider and accountKind on the same account), minFunds (dollars, a client's total), feeType ("Ongoing"|"Fixed term"), risk ("Balanced"|"Growth"|"High Growth"), clientType ("Individual"|"Couple"|"SMSF"), holding (a holding code, e.g. "CSL"), pearl ("Buy"|"Accumulate"|"Hold"|"Reduce"|"Sell": holds a security Pearl rates that way), reviewWithinDays, ofaWithinDays (numbers), profile ("confirmed"|"draft").
+Filter keys (only those the question needs): provider (an account provider as written in DATA; ART = Australian Retirement Trust), accountKind ("Super"|"SMSF"|"Wrap"|"Property"), minBalance and maxBalance (dollars, for one account; they combine with provider and accountKind on the same account), minFunds and maxFunds (dollars, a client's total), feeType ("Ongoing"|"Fixed term"), risk ("Balanced"|"Growth"|"High Growth"), clientType ("Individual"|"Couple"|"SMSF"), holding (a holding code, e.g. "CSL"), pearl ("Buy"|"Accumulate"|"Hold"|"Reduce"|"Sell": holds a security Pearl rates that way), reviewWithinDays, ofaWithinDays (numbers), profile ("confirmed"|"draft").
 Example: "show me all the ART clients with 200k balance on ongoing fees" -> {"kind":"filter","title":"ART accounts of $200k+ on ongoing fees","explain":"An Australian Retirement Trust account of at least $200,000, for clients on an ongoing fee arrangement.","filters":{"provider":"Australian Retirement Trust","minBalance":200000,"feeType":"Ongoing"}}
 
 2. The question asks for opportunities, priorities, ideas, or who to contact:
@@ -818,9 +827,34 @@ function vAsk(){crumb([['Ask Brightly']]);
   $$('[data-sugg]').forEach(b=>b.onclick=()=>{$('#askq').value=b.dataset.sugg;runAsk(b.dataset.sugg)});
   const stop=$('#askstop');if(stop)stop.onclick=()=>ASK.ctl&&ASK.ctl.abort();
   bindOpps();}
+function bindSearch(){const inp=$('#q'),drop=$('#sdrop');let plan=[];
+  const doIt=(p,v)=>{drop.hidden=true;if(!p)return;UI.searchQ=v;
+    if(p.act==='filter'){UI.filters=p.f;UI.filterFrom={q:v,source:'search'};return go('clients')}
+    if(p.act==='client'){UI.searchQ='';return go('client',{id:p.c.id})}
+    UI.searchQ='';runAsk(v)};
+  const show=()=>{const v=inp.value;plan=searchPlan(v);if(!plan.length){drop.hidden=true;return}
+    drop.innerHTML=plan.map((p,i)=>p.act==='filter'?`<button class="sopt${i?'':' first'}" data-i="${i}"><span class="sl">Filter clients · ${p.n} ${p.n===1?'match':'matches'}</span><span class="schips">${describeFilters(p.f).map(d=>`<span class="chip">${esc(d)}</span>`).join('')}</span></button>`
+      :p.act==='client'?`<button class="sopt${i?'':' first'}" data-i="${i}"><span class="av alt">${initials(p.c.name)}</span><span><b>${esc(p.c.name)}</b><span class="small muted"> · ${esc(p.c.segment)}</span></span></button>`
+      :`${plan.length===1?'<div class="shint" style="padding-bottom:0">No client names or filters recognised.</div>':''}<button class="sopt ask" data-i="${i}"><span class="bdisc">${brightlyMark('sd',20)}</span>Ask Brightly “${esc(inp.value.trim())}”</button>`).join('')+`<div class="shint">Understands names, providers (ART, BT…), amounts (200k, $1.2m, under 50k), fee arrangement, risk profile, client type, holdings (CSL), Pearl ratings (sell rated), review or OFA within N days.</div>`;
+    drop.hidden=false;$$('#sdrop [data-i]').forEach(b=>b.onmousedown=e=>{e.preventDefault();doIt(plan[+b.dataset.i],inp.value.trim())})};
+  inp.oninput=show;inp.onfocus=()=>{if(inp.value.trim())show()};inp.onblur=()=>setTimeout(()=>drop.hidden=true,120);
+  inp.onkeydown=e=>{if(e.key==='Escape'){drop.hidden=true;inp.blur()}if(e.key==='Enter'){const v=inp.value.trim();if(!v)return;plan=searchPlan(v);
+    const p=plan.find(x=>x.act==='filter')||plan.filter(x=>x.act==='client').length===1&&plan.find(x=>x.act==='client')||plan.find(x=>x.act==='client');
+    if(p)doIt(p,v);else{UI.filters={};UI.filterFrom={q:v,source:'search',none:true};UI.searchQ=v;go('clients')}}}}
 function bindOpps(){bindGo();
   $$('[data-email]').forEach(b=>b.onclick=()=>{UI.emailId=+b.dataset.email;go('email')});
   $$('[data-addtask]').forEach(b=>b.onclick=()=>{S.tasks.push({id:Math.max(...S.tasks.map(t=>t.id))+1,t:b.dataset.addtask,c:b.dataset.c,who:UI.me,due:day(7),done:false});toast('Task added for '+client(b.dataset.c).name);b.disabled=true;b.textContent='Task added'})}
+function describeFilters(f){const d=[];
+  if(f.provider)d.push(f.provider);if(f.accountKind)d.push(f.accountKind+' account');
+  if(f.minBalance!=null)d.push('Account ≥ '+big(f.minBalance));if(f.maxBalance!=null)d.push('Account < '+big(f.maxBalance));
+  if(f.minFunds!=null)d.push('Total funds ≥ '+big(f.minFunds));if(f.maxFunds!=null)d.push('Total funds < '+big(f.maxFunds));if(f.feeType)d.push(f.feeType+' fees');if(f.risk)d.push(f.risk);
+  if(f.clientType)d.push(f.clientType);if(f.holding)d.push('Holds '+f.holding);if(f.pearl)d.push('Pearl '+f.pearl+' held');
+  if(f.reviewWithinDays!=null)d.push('Review within '+f.reviewWithinDays+' days');if(f.ofaWithinDays!=null)d.push('OFA renewal within '+f.ofaWithinDays+' days');
+  if(f.profile)d.push(f.profile==='draft'?'Profile to confirm':'Profile confirmed');return d}
+function searchPlan(v){const q=v.trim().toLowerCase();if(!q)return[];const out=[];const f=smartFilters(v);
+  if(Object.keys(f).length){const n=S.clients.filter(c=>matchClient(c,f)).length;out.push({act:'filter',f,n})}
+  for(const c of S.clients.filter(c=>c.name.toLowerCase().includes(q)||c.name.toLowerCase().split(/[\s&]+/).some(w=>w.length>2&&q.split(/\s+/).includes(w))).slice(0,5))out.push({act:'client',c});
+  out.push({act:'ask'});return out}
 function filterPanel(f){
   const sel=(k,label,opts)=>{const o=opts.map(x=>Array.isArray(x)?x:[x,x]);if(f[k]!=null&&!o.some(x=>String(x[0])===String(f[k])))o.push([f[k],String(f[k])]);
     return`<div class="field"><label for="f-${k}">${label}</label><select class="select" id="f-${k}" data-f="${k}"><option value="">Any</option>${o.map(([v,l])=>`<option value="${esc(v)}" ${String(f[k]??'')===String(v)?'selected':''}>${esc(l)}</option>`).join('')}</select></div>`};
@@ -828,7 +862,7 @@ function filterPanel(f){
   const codes=[...new Set(S.clients.flatMap(c=>holdings(c).map(h=>h.code)))].filter(x=>x!=='Cash').sort();
   const days=[[14,'14 days'],[30,'30 days'],[60,'60 days'],[90,'90 days']];
   return`<section class="card"><div class="card-head"><h2>Filter</h2><div class="row">${Object.keys(f).length?`<span class="small muted">${plural(Object.keys(f).length,'filter')} on</span><button class="btn btn-sm btn-quiet" id="fclear">Clear</button>`:'<span class="small muted">or ask Brightly in the search bar</span>'}</div></div>
-  <div class="fgrid">${sel('provider','Provider',providers())}${sel('accountKind','Account type',KINDS)}${inp('minBalance','Account balance from','e.g. 200k')}${inp('minFunds','Total funds from','e.g. 1m')}
+  <div class="fgrid">${sel('provider','Provider',providers())}${sel('accountKind','Account type',KINDS)}${inp('minBalance','Account balance from','e.g. 200k')}${inp('minFunds','Total funds from','e.g. 1m')}${inp('maxFunds','Total funds under','e.g. 500k')}
   ${sel('feeType','Fee arrangement',FEE_TYPES)}${sel('risk','Risk profile',RISKS)}${sel('clientType','Client type',CTYPES)}${sel('holding','Holds',codes)}
   ${sel('pearl','Pearl rating held',RATINGS)}${sel('reviewWithinDays','Review within',days)}${sel('ofaWithinDays','OFA renewal within',days)}${sel('profile','Profile',[['confirmed','Confirmed'],['draft','To confirm']])}</div></section>`}
 
@@ -879,15 +913,15 @@ function vClients(){
   const rows=S.clients.map(c=>({c,m:matchClient(c,f)})).filter(x=>x.m&&(!q||x.c.name.toLowerCase().includes(q)));
   const showM=acctCrit(f)||f.holding||f.pearl;const on=Object.keys(f).length>0;
   const matched=m=>[...m.accts.map(a=>`${esc(a.p)} · ${esc(a.owner)} · <b>${money(a.bal)}</b>`),...m.H.map(h=>`${esc(h.code)} ${money(h.val)} ${pearlChip(h.code)}`)].join('<br>');
-  P(`<div class="head"><div><h1>Clients</h1><p class="sub">${on?`${rows.length} of ${plural(S.clients.length,'client')} match`:`${S.clients.length} active clients`} · ${big(rows.reduce((s,x)=>s+fum(x.c),0))} under advice. Balances come from each client’s confirmed profile.</p></div><div class="actions"><button class="btn" data-go2="ask" style="display:inline-flex;align-items:center"><span class="bdisc" style="background:transparent">${brightlyMark('cb',24)}</span>Ask Brightly</button><button class="btn btn-primary" id="addc">New client</button></div></div>
-  ${from?`<div class="aibar">${brightlyMark('fb',26)}<div><b>${from.source==='claude'?'Brightly':'Brightly (quick mode)'} read “${esc(from.q)}” as the filters below.</b>${from.explain?`<div>${esc(from.explain)}</div>`:''}${from.note?`<div class="small">${esc(from.note)}</div>`:''}<div class="small muted">Change any filter to refine the list.</div></div></div>`:''}
+  P(`<div class="head"><div><h1>Clients</h1><p class="sub">${on?`${rows.length} of ${plural(S.clients.length,'client')} match`:`${S.clients.length} active clients`} · ${big(rows.reduce((s,x)=>s+fum(x.c),0))} under advice. Balances come from each client’s confirmed profile.</p></div><div class="actions"><button class="btn btn-primary" id="addc">New client</button></div></div>
+  ${from&&from.source==='search'?`<div class="aibar search-bar">${svg('search')}<div><b>${from.none?`Smart search found no filters or client names in “${esc(from.q)}”.`:`Smart search read “${esc(from.q)}” as: ${esc(describeFilters(f).join(' · ')||'no filters')}.`}</b><div class="small muted">${from.none?'Try a provider, an amount like 200k, a fee arrangement or a holding code, or use Ask Brightly for questions.':'Change any filter to refine the list.'}</div></div></div>`:from?`<div class="aibar">${brightlyMark('fb',26)}<div><b>${from.source==='claude'?'Brightly':'Brightly (quick mode)'} read “${esc(from.q)}” as the filters below.</b>${from.explain?`<div>${esc(from.explain)}</div>`:''}${from.note?`<div class="small">${esc(from.note)}</div>`:''}<div class="small muted">Change any filter to refine the list.</div></div></div>`:''}
   ${filterPanel(f)}
   <section class="card"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Type</th>${showM?'<th>Matched</th>':'<th>Platforms</th>'}<th>Fee</th><th class="r">Funds</th><th>Next review</th><th>OFA renewal</th><th>Profile</th></tr></thead><tbody>
   ${rows.map(({c,m})=>`<tr class="click" data-client="${c.id}"><td><div class="row" style="flex-wrap:nowrap"><span class="av alt">${initials(c.name)}</span><div><b>${esc(c.name)}</b><div class="small muted">${esc(c.segment)} · ${esc(c.city)}</div></div></div></td><td>${esc(c.type)}</td><td class="matched">${showM?matched(m):esc([...new Set(c.profile.accounts.map(a=>a.p))].join(', '))}</td><td>${esc(c.feeType)}<div class="small muted">${money(c.fee)} a year</div></td><td class="r">${money(fum(c))}</td><td>${due(c.nextReview)}</td><td>${daysTo(c.ofa)<=7?chip(due(c.ofa),'warn'):due(c.ofa)}</td><td>${profileChip(c)}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">No clients match these filters.</td></tr>`}
   </tbody></table></div></section>`);
   bindGo();$('#addc').onclick=()=>toast('In the portal this opens the new client form.');$$('[data-go2]').forEach(b=>b.onclick=()=>go(b.dataset.go2));
   $$('[data-f]').forEach(el=>el.onchange=()=>{const nf={...(UI.filters||{})};const v=el.value.trim();if(v)nf[el.dataset.f]=NUMF.includes(el.dataset.f)?parseMoney(v):v;else delete nf[el.dataset.f];UI.filters=cleanFilters(nf);render()});
-  const cl=$('#fclear');if(cl)cl.onclick=()=>{UI.filters={};UI.filterFrom=null;render()};
+  const cl=$('#fclear');if(cl)cl.onclick=()=>{UI.filters={};UI.filterFrom=null;UI.searchQ='';render()};
 }
 
 function vClient(){
