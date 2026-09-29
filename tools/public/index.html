@@ -106,6 +106,10 @@ a{color:var(--accent-ink);text-decoration:none}a:hover{text-decoration:underline
 .tool h3{font-size:17px}
 .tool p{color:var(--ink-2);font-size:13px}
 .tool .outs{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;padding-top:6px}
+.tool.first{border-color:var(--accent-tint-2);background:linear-gradient(0deg,var(--surface),var(--surface)),var(--surface)}
+.pv-table td,.pv-table th{padding:8px 12px}
+.flag{display:flex;gap:10px;align-items:flex-start;padding:10px 18px;border-top:1px solid var(--line);font-size:13px}
+.flag:first-child{border-top:0}
 .tool .outs span{font-size:11.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 7px}
 
 /* Tables */
@@ -191,12 +195,15 @@ const API='api/';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const S={me:null,canApprove:false,tools:[],skills:[],demo:false,clients:null,stop:null};
-const ICONS={'fee-comparison':'<path d="M2 13h12"/><path d="M4 11V6M8 11V3M12 11V8"/>','product-comparison':'<rect x="1.5" y="3" width="5.5" height="10"/><rect x="9" y="3" width="5.5" height="10"/><path d="M3 6h2.5M3 8.5h2.5M10.5 6H13M10.5 8.5H13"/>','tax-optimisation':'<path d="M3 13L13 3"/><circle cx="4.5" cy="4.5" r="1.8"/><circle cx="11.5" cy="11.5" r="1.8"/>','annual-review':'<rect x="2" y="3" width="12" height="11"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3"/><path d="M5 10l2 2 4-4"/>','soa-roa':'<path d="M3 1.5h6.5L13 5v9.5H3z"/><path d="M9.5 1.5V5H13"/><path d="M5.5 8.5h5M5.5 11h3.5"/>'};
+const ICONS={'client-profile':'<circle cx="8" cy="5" r="2.6"/><path d="M2.5 14c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/>','fee-comparison':'<path d="M2 13h12"/><path d="M4 11V6M8 11V3M12 11V8"/>','product-comparison':'<rect x="1.5" y="3" width="5.5" height="10"/><rect x="9" y="3" width="5.5" height="10"/><path d="M3 6h2.5M3 8.5h2.5M10.5 6H13M10.5 8.5H13"/>','tax-optimisation':'<path d="M3 13L13 3"/><circle cx="4.5" cy="4.5" r="1.8"/><circle cx="11.5" cy="11.5" r="1.8"/>','annual-review':'<rect x="2" y="3" width="12" height="11"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3"/><path d="M5 10l2 2 4-4"/>','soa-roa':'<path d="M3 1.5h6.5L13 5v9.5H3z"/><path d="M9.5 1.5V5H13"/><path d="M5.5 8.5h5M5.5 11h3.5"/>'};
 const STATUS={queued:['Queued','info'],running:['Running','brand live'],review:['Adviser review','warn'],done:['Done','good'],failed:['Failed','bad'],cancelled:['Cancelled','']};
 const DOC={draft:['Draft','warn'],approved:['Approved','good'],rejected:['Sent back','bad'],final:['Ready','good']};
+// A run waiting on a data confirmation (the client profile) is not waiting on an adviser.
+const statusOf=r=>r.status==='review'&&((r.approval||S.tools.find(t=>t.id===r.tool)?.approval)==='data')?['To confirm','warn']:STATUS[r.status]||[r.status,''];
 const chip=([l,c])=>`<span class="chip ${c}"><span class="dot"></span>${esc(l)}</span>`;
 const when=iso=>iso?new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}):'—';
 const clock=iso=>new Date(iso).toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+const money=n=>n==null?'—':'$'+Number(n).toLocaleString('en-AU',{maximumFractionDigits:0});
 const usd=n=>n==null?'—':'US$'+Number(n).toFixed(2);
 const initials=n=>String(n||'').split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('');
 function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,3200)}
@@ -221,11 +228,11 @@ async function vHome(){
   crumb([['Advice tools']]);
   const c=$('#content');
   c.innerHTML=`<div class="page-head"><div><h1>Advice tools</h1><p class="sub">Run the practice's skills on a client's reports and records. Each run reads the client from the CRM as you see it, and every document it writes is a draft until checked${S.canApprove?'':' by an adviser'}.</p></div></div>
-  <section class="tools">${S.tools.map(t=>{const missing=!S.skills.includes(t.skill)&&!S.demo;return`<a class="tool" href="#/new/${t.id}"><span class="ico"><svg viewBox="0 0 16 16">${ICONS[t.id]||''}</svg></span><h3>${esc(t.name)}</h3><p>${esc(t.short)}</p>${t.approval?'<div><span class="chip brand">Adviser sign-off</span></div>':''}${missing?'<div><span class="chip bad">Skill not installed yet</span></div>':''}<div class="outs">${t.outputs.map(o=>`<span>${esc(o)}</span>`).join('')}</div></a>`}).join('')}</section>
+  <section class="tools">${S.tools.map(t=>{const missing=!S.skills.includes(t.skill)&&!S.demo;return`<a class="tool${t.id==='client-profile'?' first':''}" href="#/new/${t.id}"><span class="ico"><svg viewBox="0 0 16 16">${ICONS[t.id]||''}</svg></span><h3>${esc(t.name)}</h3><p>${esc(t.short)}</p>${t.id==='client-profile'?'<div><span class="chip brand">Start here</span></div>':t.approval==='advice'?'<div><span class="chip brand">Adviser sign-off</span></div>':''}${missing?'<div><span class="chip bad">Skill not installed yet</span></div>':''}<div class="outs">${t.outputs.map(o=>`<span>${esc(o)}</span>`).join('')}</div></a>`}).join('')}</section>
   <section class="card"><div class="card-head"><h2>Recent runs</h2><span class="label">${S.me.perms.allRecords||S.me.perms.admin?'Whole practice':'Your clients and your runs'}</span></div><div class="table-wrap" id="runs"><div class="card-body"><div class="skel" style="width:60%"></div></div></div></section>`;
   const {runs}=await api('runs');
   const byId=Object.fromEntries(S.tools.map(t=>[t.id,t]));
-  $('#runs').innerHTML=runs.length?`<table><thead><tr><th>Tool</th><th>Client</th><th>Status</th><th>Started by</th><th>Started</th><th class="num">Cost</th></tr></thead><tbody>${runs.map(r=>`<tr data-run="${esc(r.id)}"><td><a href="#/run/${esc(r.id)}">${esc(byId[r.tool]?.name||r.tool)}</a></td><td>${esc(r.clientName||'—')}</td><td>${chip(STATUS[r.status]||[r.status,''])}</td><td>${esc(r.createdByName||'')}</td><td>${when(r.createdAt)}</td><td class="num">${usd(r.costUsd)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No runs yet. Choose a tool above to start one.</div>';
+  $('#runs').innerHTML=runs.length?`<table><thead><tr><th>Tool</th><th>Client</th><th>Status</th><th>Started by</th><th>Started</th><th class="num">Cost</th></tr></thead><tbody>${runs.map(r=>`<tr data-run="${esc(r.id)}"><td><a href="#/run/${esc(r.id)}">${esc(byId[r.tool]?.name||r.tool)}</a></td><td>${esc(r.clientName||'—')}</td><td>${chip(statusOf(r))}</td><td>${esc(r.createdByName||'')}</td><td>${when(r.createdAt)}</td><td class="num">${usd(r.costUsd)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No runs yet. Choose a tool above to start one.</div>';
   $$('#runs tr[data-run]').forEach(tr=>tr.onclick=e=>{if(!e.target.closest('a'))location.hash='#/run/'+tr.dataset.run});
 }
 
@@ -243,11 +250,13 @@ async function vNew(id,params){
     if(f.kind==='select')return`<div class="field"><label for="${id}">${esc(f.label)}${req}</label><select class="select" id="${id}" name="${f.key}" required>${f.options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select></div>`;
     if(f.kind==='textarea')return`<div class="field span"><label for="${id}">${esc(f.label)}${req}</label><textarea class="textarea" id="${id}" name="${f.key}" ${f.required?'required':''} placeholder="${esc(f.placeholder||'')}"></textarea></div>`;
     if(f.kind==='date')return`<div class="field"><label for="${id}">${esc(f.label)}${req}</label><input class="input" type="date" id="${id}" name="${f.key}" ${f.required?'required':''}></div>`;
-    if(f.kind==='files')return`<div class="field span"><label for="${id}">${esc(f.label)}${req}</label><div class="drop" data-drop="${f.key}"><input type="file" id="${id}" multiple accept="${esc(f.accept)}" hidden><div class="row"><button type="button" class="btn btn-sm" data-pick="${f.key}">Choose files</button> <span class="hint">or drop them here · ${esc(f.accept.replace(/\./g,'').toUpperCase().replace(/,/g,', '))}</span></div><div class="files"></div></div></div>`;
+    if(f.kind==='files')return`<div class="field span"><label for="${id}">${esc(f.label)}${req}</label><div class="drop" data-drop="${f.key}"><input type="file" id="${id}" multiple accept="${esc(f.accept)}" hidden><div class="row"><button type="button" class="btn btn-sm" data-pick="${f.key}">Choose files</button> <span class="hint">or drop them here · ${esc(f.accept.replace(/\./g,'').toUpperCase().replace(/,/g,', '))}</span></div><div class="files"></div></div>${f.help?`<span class="hint">${esc(f.help)}</span>`:''}</div>`;
     return`<div class="field"><label for="${id}">${esc(f.label)}${req}</label><input class="input" id="${id}" name="${f.key}" ${f.required?'required':''} placeholder="${esc(f.placeholder||'')}"></div>`};
   c.innerHTML=`<div class="page-head"><div><h1>${esc(t.name)}</h1><p class="sub">${esc(t.short)} Produces: ${t.outputs.map(esc).join(', ')}.</p></div></div>
   ${missing?`<div class="note">The <b>${esc(t.skill)}</b> skill is not installed yet. Add it to <span class="mono">tools/agent/skills/${esc(t.skill)}/</span> before running this tool.</div>`:''}
-  ${t.approval?'<div class="note">This produces advice documents. They stay drafts until an adviser approves them on the run page.</div>':''}
+  ${t.approval==='advice'?'<div class="note">This produces advice documents. They stay drafts until an adviser approves them on the run page.</div>':''}
+  ${t.approval==='data'?'<div class="note">The profile is a draft until someone confirms it on the run page. Once confirmed, every advice tool starts from it for this client.</div>':''}
+  <div class="note" id="profile-status" hidden></div>
   <form class="card" id="run-form" novalidate><div class="card-body"><div class="form">${t.fields.map(field).join('')}</div></div>
   <div class="card-body" style="border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" type="submit" ${missing?'disabled':''}>Start run</button><a class="btn btn-quiet" href="#/">Cancel</a><span class="error" id="form-error" role="alert" hidden></span></div></form>`;
   const picked={};
@@ -256,14 +265,40 @@ async function vNew(id,params){
     $('[data-pick]',d).onclick=()=>inp.click();inp.onchange=()=>{add([...inp.files]);inp.value=''};
     d.ondragover=e=>{e.preventDefault();d.classList.add('over')};d.ondragleave=()=>d.classList.remove('over');d.ondrop=e=>{e.preventDefault();d.classList.remove('over');add([...e.dataTransfer.files])};
     d.onclick=e=>{const rm=e.target.closest('[data-rm]');if(rm){const[k,i]=rm.dataset.rm.split(':');picked[k].splice(+i,1);draw(k)}}});
+  const sel=$('#f-clientId');
+  const showProfile=async()=>{const box=$('#profile-status');const cid=sel&&sel.value;if(!cid){box.hidden=true;return}
+    try{const {profile:p}=await api('clients/'+encodeURIComponent(cid)+'/profile');box.hidden=false;
+      const line=p?`profile version ${p.version}, position at ${esc(p.asAt||'—')}, confirmed ${when(p.confirmedAt)} by ${esc(p.confirmedByName||'')} (${p.accounts} account${p.accounts===1?'':'s'}, ${money(p.total)})`:'';
+      box.innerHTML=t.id==='client-profile'?(p?`Updates ${line}. Add the new documents, or corrections, and the run lists what changed.`:'No profile yet for this client: this run builds the first one.')
+        :(p?`Starts from the client's ${line}.${p.blocks?` <b>${p.blocks} unresolved issue${p.blocks===1?'':'s'} in the profile.</b>`:''}`:`This client has no confirmed profile yet, so the tool works from the portal record and your uploads only. <a href="#/new/client-profile?client=${encodeURIComponent(cid)}">Build the client profile first</a>.`)}
+    catch(e){box.hidden=true}};
+  if(sel){sel.addEventListener('change',showProfile);showProfile()}
   $('#run-form').onsubmit=async e=>{e.preventDefault();const form=e.target,err=$('#form-error');err.hidden=true;
     for(const f of t.fields){const present=f.kind==='files'?(picked[f.key]||[]).length:String(form.elements[f.key]?.value||'').trim();if(f.required&&!present){err.textContent=f.label+' is required.';err.hidden=false;(form.elements[f.key]||$(`[data-pick="${f.key}"]`))?.focus();return}}
+    if(t.atLeastOne&&!t.atLeastOne.some(k=>(picked[k]||[]).length||String(form.elements[k]?.value||'').trim())){err.textContent='Add '+t.atLeastOne.map(k=>t.fields.find(f=>f.key===k).label.toLowerCase()).join(', or ')+', or both.';err.hidden=false;return}
     const fd=new FormData();fd.append('tool',t.id);for(const f of t.fields){if(f.kind==='files')(picked[f.key]||[]).forEach(file=>fd.append(f.key,file,file.name));else if(form.elements[f.key])fd.append(f.key,form.elements[f.key].value)}
     const btn=$('button[type=submit]',form);btn.disabled=true;btn.textContent='Starting…';
     try{const run=await api('runs',{body:fd});location.hash='#/run/'+run.id}catch(x){err.textContent=x.message;err.hidden=false;btn.disabled=false;btn.textContent='Start run'}};
 }
 
 function linkify(summary){return esc(summary).replace(/\[\[CONFIRM:[^\]]*\]\]/g,m=>`<mark>${m}</mark>`)}
+
+function profilePreview(p){
+  const people=Object.fromEntries((p.people||[]).map(x=>[x.id,`${x.first_name} ${x.last_name}`]));const who=id=>id==='joint'?'Joint':people[id]||id;
+  const acc=p.accounts||[];const total=acc.reduce((s,a)=>s+(+a.balance||0),0);
+  const sev={block:['Blocking','bad'],warn:['Check','warn'],info:['Note','info']};
+  const flags=[...(p.flags||[])].sort((a,b)=>['block','warn','info'].indexOf(a.severity)-['block','warn','info'].indexOf(b.severity));
+  return`<section class="card" id="profile-preview"><div class="card-head"><h2>Profile</h2><span class="label">Position at ${esc(p.as_at||'—')}</span></div>
+  <div class="card-body"><dl class="kv"><dt>People</dt><dd>${(p.people||[]).map(x=>`${esc(x.first_name)} ${esc(x.last_name)}${x.dob?` <span class="muted">(${esc(x.dob)})</span>`:''}`).join(', ')}</dd>
+  <dt>Risk profile</dt><dd>${esc(p.risk_profile?.profile||'Not stated')}</dd>
+  ${p.scope?`<dt>Scope</dt><dd>${Object.entries(p.scope).map(([k,v])=>`${esc(k.replace(/_/g,' '))} ${esc(v)}`).join(', ')}</dd>`:''}
+  <dt>Documents</dt><dd>${(p.documents||[]).filter(d=>d.used).length} used${(p.documents||[]).some(d=>!d.used)?`, ${(p.documents||[]).filter(d=>!d.used).length} not used`:''}</dd></dl></div>
+  <div class="table-wrap"><table class="pv-table"><thead><tr><th>Account</th><th>Owner</th><th class="num">Balance</th><th>As at</th></tr></thead><tbody>${acc.map(a=>`<tr><td>${esc(a.provider)} · ${esc(a.product)}${a.holdings?.length?` <span class="muted">(${a.holdings.length} holdings)</span>`:''}</td><td>${esc(who(a.owner))}</td><td class="num">${money(a.balance)}</td><td>${esc(a.as_at)}</td></tr>`).join('')}<tr><td><b>Total</b></td><td></td><td class="num"><b>${money(total)}</b></td><td></td></tr></tbody></table></div>
+  ${flags.length?`<div class="card-head" style="border-top:1px solid var(--line)"><h3>Flags</h3><span class="label">${flags.length}</span></div>${flags.map(f=>`<div class="flag">${chip(sev[f.severity]||[f.severity,''])}<span>${esc(f.message)}</span></div>`).join('')}`:''}
+  ${(p.gaps||[]).length?`<div class="card-head" style="border-top:1px solid var(--line)"><h3>Missing</h3><span class="label">${p.gaps.length}</span></div>${p.gaps.map(g=>`<div class="flag"><span>${esc(g.message)}${g.needed_for?.length?` <span class="muted">(needed for ${esc(g.needed_for.join(', '))})</span>`:''}</span></div>`).join('')}`:''}
+  ${(p.changes||[]).length?`<div class="card-head" style="border-top:1px solid var(--line)"><h3>Changed since the last profile</h3></div>${p.changes.map(c=>`<div class="flag"><span class="mono">${esc(c.field)}</span><span>${esc(JSON.stringify(c.from??'—'))} → ${esc(JSON.stringify(c.to))}</span></div>`).join('')}`:''}
+  </section>`;
+}
 
 async function vRun(id){
   const c=$('#content');
@@ -275,16 +310,19 @@ async function vRun(id){
   const inputs=Object.entries(run.inputs||{}).filter(([k])=>k!=='clientId'&&k!=='files').map(([k,v])=>`<dt>${esc(labels[k]||k)}</dt><dd>${esc(v)}</dd>`).join('')+Object.entries((run.inputs||{}).files||{}).map(([k,v])=>`<dt>${esc(labels[k]||k)}</dt><dd>${v.map(esc).join('<br>')}</dd>`).join('');
   const docs=run.documents.map(d=>{const ext=(d.filename.split('.').pop()||'').slice(0,4).toUpperCase();const review=d.status==='draft'&&run.canApprove;
     return`<div class="doc" data-doc="${esc(d.id)}"><span class="ext">${esc(ext)}</span><div class="b"><div class="n">${esc(d.filename)}</div><div class="hint">${Math.max(1,Math.round(d.size/1024))} KB${d.decidedByName?` · ${d.status==='approved'?'approved':'sent back'} by ${esc(d.decidedByName)} ${when(d.decidedAt)}`:''}</div>${d.comment?`<div class="hint">“${esc(d.comment)}”</div>`:''}</div>
-    <div class="acts">${chip(DOC[d.status]||[d.status,''])}<a class="btn btn-sm" href="${API}documents/${esc(d.id)}">Download</a>${review?`<button class="btn btn-sm btn-good" data-approve="${esc(d.id)}">Approve</button><button class="btn btn-sm" data-sendback="${esc(d.id)}">Send back</button>`:''}</div>
+    <div class="acts">${chip(DOC[d.status]||[d.status,''])}<a class="btn btn-sm" href="${API}documents/${esc(d.id)}">Download</a>${review?`<button class="btn btn-sm btn-good" data-approve="${esc(d.id)}">${run.approval==='data'?'Confirm profile':'Approve'}</button><button class="btn btn-sm" data-sendback="${esc(d.id)}">Send back</button>`:''}</div>
     ${review?`<form hidden data-backform="${esc(d.id)}"><label class="label" for="c-${esc(d.id)}">What needs to change</label><textarea class="textarea" id="c-${esc(d.id)}" required></textarea><div><button class="btn btn-sm btn-primary" type="submit">Send back</button> <button class="btn btn-sm btn-quiet" type="button" data-cancelback>Cancel</button></div></form>`:''}</div>`}).join('');
-  const waiting=run.status==='review'&&!run.canApprove?'<div class="note">Waiting for an adviser to approve these documents.</div>':'';
-  c.innerHTML=`<div class="page-head"><div><div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h1>${esc(t.name)}</h1>${chip(STATUS[run.status]||[run.status,''])}</div><p class="sub">${run.clientName?esc(run.clientName)+' · ':''}started by ${esc(run.createdByName||'')} ${when(run.createdAt)}${run.costUsd!=null?' · '+usd(run.costUsd):''}</p></div>
+  const waiting=run.status==='review'&&!run.canApprove?'<div class="note">Waiting for an adviser to approve these documents.</div>'
+    :run.status==='review'&&run.approval==='data'?'<div class="note">Check the profile below against the documents, then confirm it. Anything wrong: send it back, or run it again with a correction.</div>'
+    :run.profileVersion?`<div class="note">Confirmed as profile version ${run.profileVersion}. The advice tools now start from it for ${esc(run.clientName||'this client')}.</div>`:'';
+  c.innerHTML=`<div class="page-head"><div><div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h1>${esc(t.name)}</h1>${chip(statusOf(run))}</div><p class="sub">${run.clientName?esc(run.clientName)+' · ':''}started by ${esc(run.createdByName||'')} ${when(run.createdAt)}${run.costUsd!=null?' · '+usd(run.costUsd):''}</p></div>
   <div style="display:flex;gap:8px">${live?'<button class="btn" id="cancel">Cancel run</button>':''}<a class="btn" href="#/new/${esc(run.tool)}${run.clientId?'?client='+encodeURIComponent(run.clientId):''}">Run again</a></div></div>
   ${run.error?`<div class="error">${esc(run.error)}</div>`:''}${waiting}
   <div class="run-grid">
     <section class="card"><div class="card-head"><h2>Progress</h2>${live?'<span class="chip brand live"><span class="dot"></span>Live</span>':''}</div><ol class="feed" id="feed"></ol></section>
     <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
       <section class="card"><div class="card-head"><h2>Documents</h2><span class="label">${run.documents.length}</span></div>${docs||`<div class="empty">${live?'Documents appear here when the run finishes.':'This run produced no documents.'}</div>`}</section>
+      ${run.decides&&run.documents.some(d=>d.filename===run.decides)?'<section class="card" id="profile-preview"><div class="card-head"><h2>Profile</h2></div><div class="card-body"><div class="skel" style="width:50%"></div></div></section>':''}
       ${run.summary?`<section class="card"><div class="card-head"><h2>Summary for the adviser</h2></div><div class="card-body summary">${linkify(run.summary)}</div></section>`:''}
       <section class="card"><div class="card-head"><h2>Inputs</h2></div><div class="card-body">${inputs?`<dl class="kv">${inputs}</dl>`:'<span class="muted">None</span>'}</div></section>
     </div>
@@ -294,7 +332,10 @@ async function vRun(id){
   const es=new EventSource(API+'runs/'+id+'/events');es.onmessage=e=>add(JSON.parse(e.data));S.stop=()=>es.close();
   if(!live)setTimeout(()=>es.close(),1500);
   $('#cancel')&&($('#cancel').onclick=async()=>{try{await api('runs/'+id+'/cancel',{method:'POST'});toast('Run cancelled');route()}catch(e){toast(e.message)}});
-  $$('[data-approve]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await api('documents/'+b.dataset.approve+'/decision',{body:{decision:'approved'}});toast('Approved');route()}catch(e){toast(e.message);b.disabled=false}});
+  const decide=async(b,extra={})=>{b.disabled=true;try{await api('documents/'+b.dataset.approve+'/decision',{body:{decision:'approved',...extra}});toast(run.approval==='data'?'Profile confirmed':'Approved');route()}
+    catch(e){b.disabled=false;if(e.status===409&&/confirm anyway/i.test(e.message)){b.textContent='Confirm anyway';b.onclick=()=>decide(b,{acknowledgeBlocks:true});toast(e.message)}else toast(e.message)}};
+  $$('[data-approve]').forEach(b=>b.onclick=()=>decide(b));
+  if($('#profile-preview'))api('runs/'+id+'/profile').then(r=>{$('#profile-preview').outerHTML=profilePreview(r.profile)}).catch(e=>{$('#profile-preview .card-body').innerHTML=`<div class="error">${esc(e.message)}</div>`});
   $$('[data-sendback]').forEach(b=>b.onclick=()=>{const f=$(`[data-backform="${b.dataset.sendback}"]`);f.hidden=false;$('textarea',f).focus()});
   $$('[data-backform]').forEach(f=>{$('[data-cancelback]',f).onclick=()=>f.hidden=true;f.onsubmit=async e=>{e.preventDefault();const comment=$('textarea',f).value.trim();if(!comment)return $('textarea',f).focus();try{await api('documents/'+f.dataset.backform+'/decision',{body:{decision:'rejected',comment}});toast('Sent back');route()}catch(x){toast(x.message)}}});
 }

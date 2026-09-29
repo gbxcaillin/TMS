@@ -12,13 +12,22 @@ export function periodFor(inputs) {
   return { start, end };
 }
 
-export function writeContext(runDir, tool, recs, inputs) {
+/**
+ * profile: the client's latest confirmed profile ({ version, confirmedAt, confirmedByName, data }) or null.
+ */
+export function writeContext(runDir, tool, recs, inputs, profile = null) {
   const dir = path.join(runDir, 'context');
   fs.mkdirSync(dir, { recursive: true });
   const written = [];
   const put = (name, text) => { fs.writeFileSync(path.join(dir, name), text); written.push('context/' + name); };
   if (!recs) return written;
   const { client, users } = recs;
+
+  // The confirmed client profile: the structured position every tool should start from.
+  if (tool.context.includes('profile') && profile) {
+    put('client-profile.json', JSON.stringify(profile.data, null, 2));
+    put('client-profile.meta.json', JSON.stringify({ version: profile.version, confirmed_at: profile.confirmedAt, confirmed_by: profile.confirmedByName, as_at: profile.asAt }, null, 2));
+  }
   const period = periodFor(inputs);
   const who = (ids) => (ids || []).map((id) => users[id] || id).join(', ');
 

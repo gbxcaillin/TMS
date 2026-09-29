@@ -53,3 +53,8 @@ jobs:
       - name: Tests
         run: npm test
         working-directory: tools
+      - name: Skill script dependencies
+        run: pip install jsonschema openpyxl python-docx pypdf
+      - name: Client profile skill tests
+        run: python3 -m unittest discover -s tests -v
+        working-directory: tools/agent/skills/client-profile

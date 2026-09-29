@@ -22,6 +22,10 @@ CREATE TABLE IF NOT EXISTS documents(
   id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES runs(id) ON DELETE CASCADE, client_id TEXT, filename TEXT NOT NULL, path TEXT NOT NULL,
   mime TEXT NOT NULL, size INTEGER NOT NULL, sha256 TEXT NOT NULL, sealed INTEGER NOT NULL DEFAULT 0, status TEXT NOT NULL,
   decided_by TEXT, decided_by_name TEXT, decided_at TEXT, comment TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS profiles(
+  id INTEGER PRIMARY KEY AUTOINCREMENT, client_id TEXT NOT NULL, version INTEGER NOT NULL, run_id TEXT NOT NULL REFERENCES runs(id),
+  document_id TEXT NOT NULL, data TEXT NOT NULL, as_at TEXT, confirmed_by TEXT NOT NULL, confirmed_by_name TEXT, confirmed_at TEXT NOT NULL,
+  UNIQUE(client_id, version));
 CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT NOT NULL, who TEXT, ip TEXT, action TEXT NOT NULL, target TEXT, detail TEXT);`);
 
 export const now = () => new Date().toISOString();
@@ -78,6 +82,24 @@ export const documents = {
   decide(id, { status, by, byName, comment }) {
     db.prepare('UPDATE documents SET status=?, decided_by=?, decided_by_name=?, decided_at=?, comment=? WHERE id=?').run(status, by, byName, now(), S(comment || null), id);
   },
+};
+
+// Confirmed client profiles, one row per version. The data is sealed; the newest version is the client's current profile.
+function profileRow(r, withData) {
+  if (!r) return null;
+  const out = { id: r.id, clientId: r.client_id, version: r.version, runId: r.run_id, documentId: r.document_id, asAt: r.as_at, confirmedByName: r.confirmed_by_name, confirmedAt: r.confirmed_at };
+  if (withData) out.data = JSON.parse(O(r.data));
+  return out;
+}
+export const profiles = {
+  add({ clientId, runId, documentId, data, by, byName }) {
+    const next = (db.prepare('SELECT MAX(version) AS v FROM profiles WHERE client_id=?').get(clientId).v || 0) + 1;
+    db.prepare('INSERT INTO profiles(client_id,version,run_id,document_id,data,as_at,confirmed_by,confirmed_by_name,confirmed_at) VALUES(?,?,?,?,?,?,?,?,?)')
+      .run(clientId, next, runId, documentId, S(JSON.stringify(data)), data.as_at || null, by, byName || null, now());
+    return next;
+  },
+  latest: (clientId, withData = true) => profileRow(db.prepare('SELECT * FROM profiles WHERE client_id=? ORDER BY version DESC LIMIT 1').get(clientId), withData),
+  forRun: (runId) => profileRow(db.prepare('SELECT * FROM profiles WHERE run_id=? ORDER BY version DESC LIMIT 1').get(runId), false),
 };
 
 export function audit(who, ip, action, target, detail) {

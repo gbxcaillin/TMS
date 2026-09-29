@@ -36,8 +36,11 @@ export const mimeOf = (name) => MIME[path.extname(name).toLowerCase()] || 'appli
 const SYSTEM = `You are working inside Brightday's adviser portal, for an Australian financial advice practice.
 Everything you produce is a DRAFT for a licensed adviser to review before it reaches a client.
 
-- Work only with the files in the current directory: ./run.json (form inputs), ./inputs (files the adviser uploaded)
-  and ./context (client records from the CRM).
+- Work only with the files in the current directory: ./run.json (form inputs, who started the run and today's date),
+  ./inputs (files the adviser uploaded) and ./context (client records from the CRM).
+- When ./context/client-profile.json exists it is the client's confirmed profile: their people, accounts, balances,
+  holdings, insurance, assets and liabilities, each with its source. Start from it rather than re-reading documents,
+  and say so in your summary if an uploaded document contradicts it.
 - Save every deliverable in ./outputs with a clear file name, e.g. "Annual review - <client> - FY26.docx".
 - Never invent figures. When a number is missing or unclear, leave a marked placeholder like [[CONFIRM: ...]] and list
   it in your summary.
@@ -81,6 +84,15 @@ async function fakeAgent(tool, runDir, signal, onTool, onText) {
   const name = `${tool.name} - draft.md`;
   onTool('Write', { file_path: 'outputs/' + name });
   fs.writeFileSync(path.join(runDir, 'outputs', name), `# ${tool.name} (demo draft)\n\nInputs:\n\n\`\`\`json\n${JSON.stringify(inputs, null, 2)}\n\`\`\`\n\n[[CONFIRM: this is placeholder output]]\n`);
+  if (tool.decides) {
+    // The profile tool: the skill's made-up example, relabelled for this client, stands in for a real extraction.
+    const example = JSON.parse(fs.readFileSync(path.join(PLUGIN_DIR, 'skills', tool.skill, 'references', 'example-profile.json'), 'utf8'));
+    if (inputs.inputs && inputs.inputs.client) example.client = { ...example.client, crm_id: String(inputs.inputs.clientId || ''), name: inputs.inputs.client };
+    // Demo hook: a correction containing "demo:block" produces an unresolved blocking flag, to show that path.
+    if (/demo:block/.test(inputs.inputs?.corrections || '')) example.flags.push({ id: 'demo_block', severity: 'block', message: 'Two statements give different balances for the same account and neither is newer.', chosen_value: null });
+    onTool('Write', { file_path: 'outputs/' + tool.decides });
+    fs.writeFileSync(path.join(runDir, 'outputs', tool.decides), JSON.stringify(example, null, 2));
+  }
   return { summary: `Demo draft written (${name}). Set ANTHROPIC_API_KEY and unset AGENT_FAKE to run the real skill.\n\nCheck: [[CONFIRM: placeholder output]]`, cost: 0, sessionId: null };
 }
 
@@ -166,10 +178,13 @@ async function execute(runId) {
     return { id: crypto.randomUUID(), runId, clientId: run.clientId, filename: path.basename(rel), rel: path.join('outputs', rel), mime: mimeOf(rel), size: buf.length, sha256: crypto.createHash('sha256').update(buf).digest('hex') };
   });
   const sealed = sealFolder(runDir);
-  for (const d of docs) store.documents.insert({ ...d, path: path.join('runs', runId, d.rel + (sealed ? '.sealed' : '')), sealed, status: tool.approval ? 'draft' : 'final' });
+  // Which outputs need a decision: all of them for advice documents, or just the one named by `decides`.
+  const needsDecision = (d) => !!tool.approval && (!tool.decides || d.filename === tool.decides);
+  for (const d of docs) store.documents.insert({ ...d, path: path.join('runs', runId, d.rel + (sealed ? '.sealed' : '')), sealed, status: needsDecision(d) ? 'draft' : 'final' });
+  if (!failure && tool.decides && !docs.some((d) => d.filename === tool.decides)) failure = `The run finished without writing outputs/${tool.decides}`;
 
   const cancelled = store.runs.get(runId).status === 'cancelled' || failure === 'Cancelled';
-  const status = cancelled ? 'cancelled' : failure ? 'failed' : tool.approval && docs.length ? 'review' : 'done';
+  const status = cancelled ? 'cancelled' : failure ? 'failed' : docs.some(needsDecision) ? 'review' : 'done';
   store.runs.update(runId, { status, summary: result.summary || null, error: cancelled ? null : failure, costUsd: result.cost, sessionId: result.sessionId, finishedAt: status === 'review' ? null : store.now() });
   if (failure && !cancelled) emit(runId, 'error', failure);
   emit(runId, 'end', status === 'review' ? `${docs.length} document${docs.length === 1 ? '' : 's'} ready for adviser review` : status === 'done' ? `Finished with ${docs.length} document${docs.length === 1 ? '' : 's'}` : 'Run ' + status);

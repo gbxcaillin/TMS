@@ -509,7 +509,7 @@
       "id": "tools",
       "group": "Work",
       "title": "Advice tools",
-      "summary": "Fee and product comparisons, tax-loss harvesting, annual reviews with the Ongoing Fee Arrangement, and SOA/ROA drafting. Each tool runs one of the practice's Claude skills on the reports you upload and the client's records in Brightday Portal, and hands back documents to check.",
+      "summary": "Build a client profile from their documents, then run fee and product comparisons, tax-loss harvesting, annual reviews with the Ongoing Fee Arrangement, and SOA/ROA drafting from it. Each tool runs one of the practice's Claude skills and hands back documents to check.",
       "image": "tools.jpg",
       "caption": "Advice tools: the five tools, and recent runs across the practice. Sample data.",
       "images": [
@@ -522,6 +522,10 @@
         {
           "t": "Open Advice tools",
           "d": "Choose Advice tools in the menu. It opens in its own page with the same sign-in; the Portal links on the left bring you back."
+        },
+        {
+          "t": "Build the client profile first",
+          "d": "Choose Client profile, pick the client and drop in whatever documents you have, in any format: Fact Finder, KYC note, super and platform statements, holdings and CGT reports, insurance schedules, screenshots, emails. It reads them into one record, with the source of every figure, and lists conflicts and anything missing. Check it and choose Confirm profile. Every other tool then starts from it."
         },
         {
           "t": "Pick a tool and a client",
@@ -545,6 +549,7 @@
         }
       ],
       "tips": [
+        "New documents or a correction? Run Client profile again for the same client. It starts from the confirmed profile, applies what's new, and lists what changed. A correction typed in the form is kept as an override on every later update.",
         "For an annual review, the tool reads the client's emails, meetings, notes and tasks for the review period from the portal, so file emails and meetings against the client beforehand.",
         "A client's adviser sees the runs for their clients, including ones a paraplanner started.",
         "Admins turn Advice tools on or off per access level under Settings, Access levels.",
@@ -914,6 +919,14 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-09-29",
+      "title": "Client profile",
+      "body": "Advice tools now start with a client profile: upload a client's documents in any format and it builds one structured record of their position, with the source of every figure, conflicts flagged and gaps listed. Once confirmed, every advice tool works from it.",
+      "modules": [
+        "tools"
+      ]
+    },
     {
       "date": "2026-09-29",
       "title": "Advice tools",

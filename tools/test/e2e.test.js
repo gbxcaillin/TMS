@@ -145,3 +145,54 @@ test('people only see runs they may see, and the form is validated', async () =>
   const r2 = await tools('api/runs', { as: 'adviser@x.com', body: notMine });
   assert.equal(r2.status, 400, 'a client outside your list cannot be used'); assert.match((await r2.json()).error, /not in your client list/);
 });
+
+test('a client profile is built, confirmed by a paraplanner, and given to every later run', async () => {
+  // Nothing to read: refused before any work starts.
+  const empty = new FormData(); empty.append('tool', 'client-profile'); empty.append('clientId', '1');
+  const r0 = await tools('api/runs', { as: 'para@x.com', body: empty });
+  assert.equal(r0.status, 400); assert.match((await r0.json()).error, /Add documents, or corrections or instructions, or both/);
+  assert.equal((await (await tools('api/clients/1/profile', { as: 'adviser@x.com' })).json()).profile, null);
+
+  const fd = new FormData(); fd.append('tool', 'client-profile'); fd.append('clientId', '1');
+  fd.append('documents', new Blob(['Fund,Balance\nART,275812.34\n']), 'ART statement.csv');
+  const run = await (await tools('api/runs', { as: 'para@x.com', body: fd })).json();
+  const done = await until(async () => { const x = await (await tools('api/runs/' + run.id, { as: 'para@x.com' })).json(); return x.status === 'review' && x; });
+  const json = done.documents.find((d) => d.filename === 'client-profile.json');
+  const summary = done.documents.find((d) => d.filename !== 'client-profile.json');
+  assert.equal(json.status, 'draft', 'only the profile itself waits for confirmation');
+  assert.equal(summary.status, 'final');
+  assert.equal(done.canApprove, true, 'a paraplanner can confirm a data record');
+  assert.equal(done.approval, 'data');
+
+  const preview = await (await tools(`api/runs/${run.id}/profile`, { as: 'para@x.com' })).json();
+  assert.equal(preview.profile.client.name, 'Harper Nguyen'); assert.equal(preview.profile.schema_version, '1.0');
+
+  const ok = await (await tools(`api/documents/${json.id}/decision`, { as: 'para@x.com', body: { decision: 'approved' } })).json();
+  assert.equal(ok.status, 'done'); assert.equal(ok.profileVersion, 1);
+  const current = (await (await tools('api/clients/1/profile', { as: 'adviser@x.com' })).json()).profile;
+  assert.equal(current.version, 1); assert.equal(current.confirmedByName, 'Sam Rivera'); assert.equal(current.accounts, 2); assert.equal(current.total, 425812.34);
+  assert.equal((await tools('api/clients/2/profile', { as: 'adviser@x.com' })).status, 404, 'not for a client outside your list');
+
+  // A later fee comparison starts from the confirmed profile.
+  const fee = new FormData(); fee.append('tool', 'fee-comparison'); fee.append('clientId', '1'); fee.append('alternatives', 'HUB24');
+  const feeRun = await (await tools('api/runs', { as: 'adviser@x.com', body: fee })).json();
+  await until(async () => (await (await tools('api/runs/' + feeRun.id, { as: 'adviser@x.com' })).json()).status === 'done');
+  process.env.DATA_KEYS = KEY; const vault = await import('../server/lib/vault.js');
+  const ctx = JSON.parse(vault.openBuf(fs.readFileSync(path.join(TOOLS_DATA, 'runs', feeRun.id, 'context', 'client-profile.json.sealed')), true).toString());
+  assert.equal(ctx.accounts[0].balance, 275812.34);
+  const meta = JSON.parse(vault.openBuf(fs.readFileSync(path.join(TOOLS_DATA, 'runs', feeRun.id, 'context', 'client-profile.meta.json.sealed')), true).toString());
+  assert.equal(meta.version, 1);
+  const runJson = JSON.parse(vault.openBuf(fs.readFileSync(path.join(TOOLS_DATA, 'runs', feeRun.id, 'run.json.sealed')), true).toString());
+  assert.equal(runJson.started_by, 'Alex Morgan');
+
+  // An update with an unresolved conflict needs an explicit "confirm anyway", and becomes version 2.
+  const upd = new FormData(); upd.append('tool', 'client-profile'); upd.append('clientId', '1'); upd.append('corrections', 'Salary confirmed by phone. demo:block');
+  const run2 = await (await tools('api/runs', { as: 'para@x.com', body: upd })).json();
+  const d2 = await until(async () => { const x = await (await tools('api/runs/' + run2.id, { as: 'para@x.com' })).json(); return x.status === 'review' && x; });
+  const doc2 = d2.documents.find((d) => d.filename === 'client-profile.json');
+  const blocked = await tools(`api/documents/${doc2.id}/decision`, { as: 'para@x.com', body: { decision: 'approved' } });
+  assert.equal(blocked.status, 409); assert.match((await blocked.json()).error, /1 unresolved blocking issue/);
+  const forced = await (await tools(`api/documents/${doc2.id}/decision`, { as: 'para@x.com', body: { decision: 'approved', acknowledgeBlocks: true } })).json();
+  assert.equal(forced.profileVersion, 2);
+  assert.equal((await (await tools('api/clients/1/profile', { as: 'para@x.com' })).json()).profile.blocks, 1);
+});

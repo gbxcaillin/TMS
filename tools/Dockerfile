@@ -6,7 +6,7 @@ ENV NODE_ENV=production PORT=3100 DATA_DIR=/app/data TZ=Australia/Melbourne HOME
 
 # What the skills use to read reports and write Word/Excel documents. Add to this list as your skills need.
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates tzdata \
-      python3 python3-docx python3-openpyxl python3-pypdf python3-pdfminer poppler-utils \
+      python3 python3-docx python3-openpyxl python3-pypdf python3-pdfminer python3-jsonschema python3-xlrd poppler-utils antiword \
  && rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./

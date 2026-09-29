@@ -4,6 +4,7 @@ Each advice tool runs one skill. Put your skill folders here, one per tool:
 
 | Advice tool                          | Folder                        |
 | ------------------------------------ | ----------------------------- |
+| Client profile (start here)          | `skills/client-profile/` (included) |
 | Fee comparison                       | `skills/fee-comparison/`      |
 | Product feature comparison           | `skills/product-comparison/`  |
 | Tax minimisation and loss harvesting | `skills/tax-optimisation/`    |
@@ -23,6 +24,11 @@ The agent's working directory is the run folder:
 ```
 run.json               the form inputs (client, dates, fee, notes…)
 inputs/<field>/…       files the adviser uploaded, grouped by form field
+context/client-profile.json   the client's CONFIRMED profile: people, goals, risk profile, scope, every account
+                       with balance and holdings (and tax parcels), insurance, assets, liabilities, each
+                       figure with its source. Built by the Client profile tool; schema in
+                       skills/client-profile/references/client-profile.schema.json
+context/client-profile.meta.json   which version, when and by whom it was confirmed
 context/client.json    the client's CRM record (contact, owner, notes, deals)
 context/emails.md      emails with the client in the review period, from the CRM's mailbox sync
 context/meetings.json  meetings with the client in the period (CRM calendar, synced with Outlook)
@@ -31,7 +37,13 @@ context/tasks.json     the client's tasks
 outputs/               ← write deliverables here; each file becomes a document on the run
 ```
 
-Only the context the tool declares (`context` in `registry.js`) is written. Records come from the CRM as the
+Only the context the tool declares (`context` in `registry.js`) is written.
+
+**Build new skills on the profile.** Read balances, holdings and cover from `context/client-profile.json`
+rather than re-reading statements, and map it onto the building blocks with the table in
+`skills/client-profile/references/field-guide.md` (profile → fee engine scenario, newsoatool config, inscalc
+inputs). All `*_pct` fields are decimals, as in the fee engine. When the profile is missing something the skill
+needs, say so and name the gap rather than filling it from another source. Records come from the CRM as the
 person who started the run can see them.
 
 ## Writing skills for this environment

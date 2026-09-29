@@ -46,4 +46,5 @@ GitHub Actions runs both on every pull request (`.github/workflows/ci.yml`).
   Switch off what the practice won't use under `modules` in `crm/brand.json`.
 - **Dark theme**: `brand.json` has no dark-mode colours, so the portal's dark theme still carries the starter's
   green tints. The advice tools' dark theme is Brightday throughout.
-- **Skills**: add the five skill folders to `tools/agent/skills/`.
+- **Skills**: the Client profile skill is included; the advice skills are built on it and on the practice's
+  building blocks (fee engine, newsoatool) and go in `tools/agent/skills/`.
