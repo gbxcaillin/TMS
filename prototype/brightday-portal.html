@@ -728,7 +728,7 @@ function localAnswer(q){const s=q.toLowerCase();const sig=signals();
   if(Object.keys(clean).length)return{kind:'filter',title:q,explain:'',filters:clean};
   const named=S.clients.filter(c=>c.name.toLowerCase().split(/[\s&]+/).some(w=>w.length>2&&s.includes(w)));
   if(named.length)return{kind:'answer',title:'Clients mentioned',text:'Open a client to see their profile, email, tasks and advice runs.',clients:named.map(c=>c.id)};
-  return{kind:'answer',title:'Try asking another way',text:'Without Claude, Brightly understands filters (provider, balance, fee arrangement, risk profile, holdings, Pearl ratings, review and renewal dates) and questions about opportunities, tax and email. Try one of the suggestions above.',clients:[]}}
+  return{kind:'answer',title:'Try asking another way',text:'In quick mode, Brightly understands filters (provider, balance, fee arrangement, risk profile, holdings, Pearl ratings, review and renewal dates) and questions about opportunities, tax and email. Try one of the suggestions above.',clients:[]}}
 
 /* What Brightly (Claude) reads: the practice's data, the rule checks and the output contract. */
 function snapshot(){return{today:fmtDate(NOW),adviser:me().name,
@@ -760,7 +760,7 @@ Up to 6 items, best first. Start from DATA.signals (the portal's rule checks), b
 3. Anything else:
 {"kind":"answer","title":"<short title>","text":"<plain-English answer, at most 120 words>","clients":["<client id>"]}
 
-Rules: use only figures in DATA and never invent a balance, price or rating. Pearl ratings are sample data. Write for the adviser. Say what to look at, not "you should buy".`;
+Rules: use only figures in DATA and never invent a balance, price or rating. Pearl ratings are sample data. Write for the adviser. Say what to look at, not "you should buy". You are Brightly: never refer to yourself by any other name or mention the model or company behind you.`;
 function cleanAnswer(r){if(!r||typeof r!=='object')return null;
   if(r.kind==='filter'){const f=cleanFilters(r.filters);return Object.keys(f).length?{kind:'filter',title:String(r.title||''),explain:String(r.explain||''),filters:f}:null}
   if(r.kind==='insights'&&Array.isArray(r.items)){const sig=signals();
@@ -782,7 +782,7 @@ async function runAsk(q){q=String(q||'').trim();if(!q)return;ASK.q=q;ASK.note=''
     if(ctl!==ASK.ctl)return;const r=cleanAnswer(raw);if(!r)throw{code:'invalid_json'};finishAsk(r,'claude')}
   catch(e){if(ctl!==ASK.ctl)return;const code=e&&e.code;if(code==='cancelled'){ASK.status='idle';return render()}
     if(['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired'].includes(code))CLAUDE_OFF=true;
-    ASK.note={not_granted:'Claude wasn’t allowed for this page, so Brightly’s built-in rules answered.',rate_limited:'Claude is busy right now, so Brightly’s built-in rules answered. Try again in a minute.',invalid_json:'Claude’s answer couldn’t be read, so the built-in rules answered. Try rephrasing.',refused:'Claude declined that question, so the built-in rules answered.'}[code]||'Claude couldn’t answer just now, so Brightly’s built-in rules answered.';
+    ASK.note={not_granted:'Brightly wasn’t allowed on this page, so a quick answer from the portal’s rules is shown.',rate_limited:'Brightly is busy right now, so a quick answer from the portal’s rules is shown. Try again in a minute.',invalid_json:'Brightly’s answer couldn’t be read, so a quick answer from the portal’s rules is shown. Try rephrasing.',refused:'Brightly can’t answer that question, so a quick answer from the portal’s rules is shown.'}[code]||'Brightly couldn’t answer just now, so a quick answer from the portal’s rules is shown.';
     finishAsk(localAnswer(q),'rules',true)}}
 function finishAsk(r,source,keepNote){ASK.status='done';ASK.source=source;if(!keepNote)ASK.note='';ASK.ctl=null;
   if(r.kind==='filter'){UI.filters=r.filters;UI.filterFrom={q:ASK.q,source,explain:r.explain,note:ASK.note};ASK.status='idle';return go('clients')}
@@ -801,15 +801,15 @@ function researchTable(){const held={};for(const c of S.clients)for(const h of h
   <td>${hs.length?hs.map(h=>`<a data-client="${h.c.id}">${esc(h.c.name)}</a>`).join('<br>'):'<span class="muted">Not held</span>'}</td><td class="r">${hs.length?money(hs.reduce((s,h)=>s+h.val,0)):'—'}</td><td class="small">${esc(r.note)}</td></tr>`}).join('')}
   </tbody></table></div></section>`}
 function askOut(){const A=ASK;
-  if(A.status==='thinking')return`<section class="card"><div class="thinking">${brightlyMark('th',30,true)}<div><b>Brightly is reading ${S.clients.length} client profiles, Pearl research, email and tasks…</b><div class="small muted">Claude usually takes 10 to 40 seconds.</div></div><button class="btn btn-sm" id="askstop">Stop</button></div></section>`;
+  if(A.status==='thinking')return`<section class="card"><div class="thinking">${brightlyMark('th',30,true)}<div><b>Brightly is reading ${S.clients.length} client profiles, Pearl research, email and tasks…</b><div class="small muted">This usually takes 10 to 40 seconds.</div></div><button class="btn btn-sm" id="askstop">Stop</button></div></section>`;
   const note=A.note?`<div class="aibar warn">${esc(A.note)}</div>`:'';
-  const src=A.source==='claude'?chip('Answered by Claude','brand'):chip('Built-in rules');
+  const src=A.source==='claude'?chip('Answered by Brightly','brand'):chip('Quick answer');
   if(A.result&&A.result.kind==='insights')return note+`<section class="card"><div class="card-head"><h2>${esc(A.result.title)}</h2>${src}</div><div class="opps">${A.result.items.map(oppHTML).join('')}</div></section>`+researchTable();
   if(A.result&&A.result.kind==='answer')return note+`<section class="card"><div class="card-head"><h2>${esc(A.result.title)}</h2>${src}</div><div class="answer">${A.result.text.split(/\n+/).map(p=>`<p>${esc(p)}</p>`).join('')}${A.result.clients.length?`<div class="row">${A.result.clients.map(id=>`<button class="btn btn-sm" data-client="${id}">${esc(client(id).name)}</button>`).join('')}</div>`:''}</div></section>`;
   const sig=signals().slice(0,6).map(s=>({...s,size:s.score>=75?'high':s.score>=50?'medium':'low'}));
   return`<section class="card"><div class="card-head"><h2>Opportunities the portal found</h2>${claudeOn()?`<button class="btn btn-sm" data-sugg="${esc(SUGGEST[1])}">Ask Brightly to rank these</button>`:'<span class="label">From profiles, research and email</span>'}</div><div class="opps">${sig.map(oppHTML).join('')}</div></section>`+researchTable()}
 function vAsk(){crumb([['Ask Brightly']]);
-  const status=SAMPLER===undefined?'Connecting to Claude…':claudeOn()?'Brightly sends your question and this practice’s (made-up) data to Claude on your account. The page then applies filters and figures itself, so every number comes from the client records.':'Claude isn’t available in this view, so Brightly’s built-in rules answer. Open the published page in Claude to ask Claude.';
+  const status=SAMPLER===undefined?'Connecting to Brightly…':claudeOn()?'Brightly reads your question with this practice’s (made-up) client records. The portal then applies the filters and works out the figures itself, so every number comes from the client records.':'Brightly is in quick mode here: the portal’s rules answer filter, opportunity, tax and email questions.';
   P(`<div class="head"><div><h1 class="row" style="gap:12px">${brightlyMark('ah',34)}Ask Brightly</h1><p class="sub">Ask about your clients in plain English. Brightly filters the client list, finds opportunities, and reads Pearl research against what clients hold.</p></div></div>
   <section class="card"><form class="ask-box" id="askf"><input class="input" id="askq" placeholder="e.g. Show me all the ART clients with 200k balance on ongoing fees" value="${esc(ASK.q)}" autocomplete="off" aria-label="Ask Brightly"><button class="btn btn-primary" ${ASK.status==='thinking'?'disabled':''}><span class="bdisc">${brightlyMark('pb',24,ASK.status==='thinking')}</span>Ask Brightly</button></form>
   <div class="sugg">${SUGGEST.map(s=>`<button type="button" data-sugg="${esc(s)}">${esc(s)}</button>`).join('')}</div>
@@ -880,7 +880,7 @@ function vClients(){
   const showM=acctCrit(f)||f.holding||f.pearl;const on=Object.keys(f).length>0;
   const matched=m=>[...m.accts.map(a=>`${esc(a.p)} · ${esc(a.owner)} · <b>${money(a.bal)}</b>`),...m.H.map(h=>`${esc(h.code)} ${money(h.val)} ${pearlChip(h.code)}`)].join('<br>');
   P(`<div class="head"><div><h1>Clients</h1><p class="sub">${on?`${rows.length} of ${plural(S.clients.length,'client')} match`:`${S.clients.length} active clients`} · ${big(rows.reduce((s,x)=>s+fum(x.c),0))} under advice. Balances come from each client’s confirmed profile.</p></div><div class="actions"><button class="btn" data-go2="ask" style="display:inline-flex;align-items:center"><span class="bdisc" style="background:transparent">${brightlyMark('cb',24)}</span>Ask Brightly</button><button class="btn btn-primary" id="addc">New client</button></div></div>
-  ${from?`<div class="aibar">${brightlyMark('fb',26)}<div><b>${from.source==='claude'?'Brightly (Claude)':'Brightly’s built-in rules'} read “${esc(from.q)}” as the filters below.</b>${from.explain?`<div>${esc(from.explain)}</div>`:''}${from.note?`<div class="small">${esc(from.note)}</div>`:''}<div class="small muted">Change any filter to refine the list.</div></div></div>`:''}
+  ${from?`<div class="aibar">${brightlyMark('fb',26)}<div><b>${from.source==='claude'?'Brightly':'Brightly (quick mode)'} read “${esc(from.q)}” as the filters below.</b>${from.explain?`<div>${esc(from.explain)}</div>`:''}${from.note?`<div class="small">${esc(from.note)}</div>`:''}<div class="small muted">Change any filter to refine the list.</div></div></div>`:''}
   ${filterPanel(f)}
   <section class="card"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Type</th>${showM?'<th>Matched</th>':'<th>Platforms</th>'}<th>Fee</th><th class="r">Funds</th><th>Next review</th><th>OFA renewal</th><th>Profile</th></tr></thead><tbody>
   ${rows.map(({c,m})=>`<tr class="click" data-client="${c.id}"><td><div class="row" style="flex-wrap:nowrap"><span class="av alt">${initials(c.name)}</span><div><b>${esc(c.name)}</b><div class="small muted">${esc(c.segment)} · ${esc(c.city)}</div></div></div></td><td>${esc(c.type)}</td><td class="matched">${showM?matched(m):esc([...new Set(c.profile.accounts.map(a=>a.p))].join(', '))}</td><td>${esc(c.feeType)}<div class="small muted">${money(c.fee)} a year</div></td><td class="r">${money(fum(c))}</td><td>${due(c.nextReview)}</td><td>${daysTo(c.ofa)<=7?chip(due(c.ofa),'warn'):due(c.ofa)}</td><td>${profileChip(c)}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">No clients match these filters.</td></tr>`}
