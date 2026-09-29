@@ -8,7 +8,7 @@ const CSRF = process.env.CRM_CSRF_HEADER || 'brightday'; // the CRM's X-Requeste
 const cache = new Map(); // sha256(cookie) -> { at, value }
 const TTL = 30e3;
 
-export class CrmError extends Error { constructor(status, message) { super(message); this.status = status; } }
+export class CrmError extends Error { constructor(status, message, extra = {}) { super(message); this.status = status; this.extra = extra; } }
 
 async function call(path, cookie, { method = 'GET', body } = {}) {
   let res;
@@ -21,17 +21,18 @@ async function call(path, cookie, { method = 'GET', body } = {}) {
     });
   } catch (e) { throw new CrmError(502, 'The CRM did not answer: ' + e.message); }
   const j = await res.json().catch(() => ({}));
-  if (!res.ok) throw new CrmError(res.status, j.error || `CRM ${res.status}`);
+  if (!res.ok) { const { error, ...extra } = j; throw new CrmError(res.status, error || `CRM ${res.status}`, extra); }
   return j;
 }
 
-/** { user, perms } for the session on this request, or null when signed out. Cached briefly per cookie. */
+/** { user, perms } for the session on this request, { mfaSetup: true } when the CRM wants two-factor set up first,
+ *  or null when signed out. Cached briefly per cookie. */
 export async function whoami(cookie) {
   if (!cookie) return null;
   const key = crypto.createHash('sha256').update(cookie).digest('hex');
   const hit = cache.get(key); if (hit && Date.now() - hit.at < TTL) return hit.value;
   let value = null;
-  try { value = await call('/auth/me', cookie); } catch (e) { if (e.status !== 401 && e.status !== 403) throw e; }
+  try { value = await call('/auth/me', cookie); } catch (e) { if (e.status === 403 && e.extra.mfaSetup) value = { mfaSetup: true }; else if (e.status !== 401 && e.status !== 403) throw e; }
   cache.set(key, { at: Date.now(), value });
   if (cache.size > 500) for (const [k, v] of cache) if (Date.now() - v.at > TTL) cache.delete(k);
   return value;

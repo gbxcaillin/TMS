@@ -301,6 +301,7 @@ async function vRun(id){
 
 function signedOut(status,msg){
   $('#content').innerHTML=status===401?`<div class="page-head"><div><h1>Sign in first</h1><p class="sub">The advice tools use your portal sign-in.</p></div></div><div><a class="btn btn-primary" href="/">Go to the portal sign-in</a></div>`
+    :/two-factor/.test(msg)?`<div class="page-head"><div><h1>Set up two-factor first</h1><p class="sub">${esc(msg)}. The portal asks for it as soon as you open it.</p></div></div><div><a class="btn btn-primary" href="/">Open the portal</a></div>`
     :`<div class="page-head"><div><h1>No access</h1><p class="sub">${esc(msg)}. Ask an admin to turn on Advice tools for your access level under Settings → Access levels.</p></div></div><div><a class="btn" href="/">Back to the portal</a></div>`;
 }
 

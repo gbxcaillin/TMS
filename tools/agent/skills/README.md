@@ -37,7 +37,8 @@ person who started the run can see them.
 ## Writing skills for this environment
 
 - Use paths relative to the working directory (`./inputs`, `./context`, `./outputs`).
-- The container has Python 3 with `python-docx`, `openpyxl`, `pdfplumber` and `pypdf` (see `tools/Dockerfile`).
+- The container has Python 3 with `python-docx`, `openpyxl`, `pypdf` and `pdfminer`, plus `pdftotext` (see
+  `tools/Dockerfile`).
   Add what your skill needs there.
 - Keep templates (your SOA or OFA .docx, for example) in the skill folder and refer to them relative to the skill's
   base directory, which the agent is told when the skill loads.

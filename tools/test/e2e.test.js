@@ -35,8 +35,8 @@ before(async () => {
   process.env.DATA_DIR = CRM_DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const require = createRequire(import.meta.url);
   const D = require(ROOT + '/crm/server/lib/db'); const auth = require(ROOT + '/crm/server/lib/auth');
-  for (const [id, email, name, role] of [['u1', 'adviser@x.com', 'Alex Morgan', 'Client manager'], ['u2', 'para@x.com', 'Sam Rivera', 'Paraplanner'], ['u3', 'basic@x.com', 'Jordan Lee', 'Basic']]) D.users.insert({ id, email, name, role, status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
-  D.kvSet('settings', { notifyPrefs: { events: [], quietFrom: '', quietTo: '' }, security: { mfaRequired: 'none' } });
+  for (const [id, email, name, role] of [['u1', 'adviser@x.com', 'Alex Morgan', 'Client manager'], ['u2', 'para@x.com', 'Sam Rivera', 'Paraplanner'], ['u3', 'basic@x.com', 'Jordan Lee', 'Basic'], ['u4', 'admin@x.com', 'Chris Taylor', 'Admin']]) D.users.insert({ id, email, name, role, status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
+  D.kvSet('settings', { notifyPrefs: { events: [], quietFrom: '', quietTo: '' }, security: { mfaRequired: 'admins' } });
   D.putRecord('clients', { id: 1, name: 'Harper Nguyen', contact: 'Harper Nguyen', email: 'harper@example.test', owner: 'u1', status: 'Active', deals: [], notes: 'Retiring in March.' });
   D.putRecord('clients', { id: 2, name: 'Wilson SMSF', contact: 'Pat Wilson', email: 'pat@wilson.test', owner: 'u2', status: 'Active', deals: [] });
   D.putRecord('threads', { id: 1, client: 1, folder: 'inbox', from: 'Harper Nguyen', addr: 'harper@example.test', subject: 'TTR question', at: '2026-03-02T09:00', msgs: [{ from: 'Harper Nguyen', at: '2026-03-02T09:00', body: 'Can I keep salary sacrificing once the TTR pension starts?' }] });
@@ -47,7 +47,7 @@ before(async () => {
   D.db.close();
   await boot(ROOT + '/crm/server', 'index.js', { DATA_DIR: CRM_DATA, PORT: String(CRM_PORT), ALLOW_UNENCRYPTED: '1', NODE_ENV: 'test' }, /\[boot\] /);
   await boot(ROOT + '/tools', 'server/index.js', { DATA_DIR: TOOLS_DATA, PORT: String(TOOLS_PORT), CRM_URL: `http://127.0.0.1:${CRM_PORT}`, AGENT_FAKE: '1', DATA_KEYS: KEY, NODE_ENV: 'test' }, /\[boot\] /);
-  for (const e of ['adviser@x.com', 'para@x.com', 'basic@x.com']) await crmLogin(e);
+  for (const e of ['adviser@x.com', 'para@x.com', 'basic@x.com', 'admin@x.com']) await crmLogin(e);
 });
 after(() => { for (const p of procs) p.kill(); fs.rmSync(CRM_DATA, { recursive: true, force: true }); fs.rmSync(TOOLS_DATA, { recursive: true, force: true }); });
 
@@ -67,6 +67,9 @@ test('sign-in comes from the CRM session, and access follows the CRM access leve
   const para = await (await tools('api/me', { as: 'para@x.com' })).json();
   assert.equal(para.canApprove, false, 'paraplanners prepare, they do not sign off');
   assert.equal((await tools('api/me', { as: 'basic@x.com' })).status, 403);
+  const admin = await tools('api/me', { as: 'admin@x.com' });
+  assert.equal(admin.status, 403, 'an admin who has not set up two-factor is stopped, as in the CRM');
+  assert.match((await admin.json()).error, /two-factor/);
 });
 
 test('the client list is the CRM list as this person sees it', async () => {

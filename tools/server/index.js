@@ -45,6 +45,7 @@ async function readJson(req) {
 async function person(req) {
   const me = await crm.whoami(req.headers.cookie);
   if (!me) throw fail(401, 'Sign in to the portal first');
+  if (me.mfaSetup) throw fail(403, 'Finish setting up two-factor authentication in the portal first');
   if (!me.perms || !me.perms.tools) throw fail(403, 'Your access level does not include the advice tools');
   if (req.method !== 'GET' && req.headers['x-requested-with'] !== CSRF) throw fail(403, 'Missing X-Requested-With header');
   return { ...me.user, perms: me.perms, ip: ipOf(req) };
