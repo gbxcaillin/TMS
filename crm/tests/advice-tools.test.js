@@ -42,6 +42,16 @@ const login = async (email) => { const r = await req('POST', '/auth/login', { bo
     t('bootstrap says where the tools live', boot.body.features && boot.body.features.tools === '/tools/');
   } finally { srv.kill(); fs.rmSync(DATA, { recursive: true, force: true }); }
 
+  // The service worker leaves /tools/ alone: it must not answer it from cache or store it as this app's shell.
+  {
+    const vm = require('node:vm'); const listeners = {}; const handled = [];
+    const self = { addEventListener: (ev, fn) => (listeners[ev] = fn), location: { origin: 'https://portal.test' }, skipWaiting() {}, clients: { claim() {} }, registration: {} };
+    vm.runInNewContext(fs.readFileSync(ROOT + '/sw.js', 'utf8'), { self, caches: { match: async () => null, open: async () => ({ put() {} }) }, Response: { error: () => null }, fetch: () => Promise.reject(new Error('no network')), URL, console, Promise, setTimeout });
+    const fire = (url) => listeners.fetch({ request: { method: 'GET', url, mode: 'navigate' }, respondWith: () => handled.push(url) });
+    fire('https://portal.test/tools/'); fire('https://portal.test/tools/runs/abc'); fire('https://portal.test/');
+    t('the service worker passes /tools/ straight to the network', handled.length === 1 && handled[0] === 'https://portal.test/', handled);
+  }
+
   // The app: menu entry by access level, and the hand-over page.
   const html = `<!doctype html><html><head><meta charset="utf-8"></head><body>${fs.readFileSync(ROOT + '/wireframe.html', 'utf8')}</body></html>`;
   // API calls get a 404 so the page stays in its local demo mode.

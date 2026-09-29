@@ -33,6 +33,8 @@ self.addEventListener('fetch', (e) => {
   // Only handle same-origin shell assets; fonts and APIs go straight to the network.
   if (url.origin !== self.location.origin) return;
   if (url.pathname.includes('/api/')) return;
+  // The advice tools are a separate app on the same host (/tools/): never answer or cache its pages as this shell.
+  if (url.pathname === '/tools' || url.pathname.startsWith('/tools/')) return;
   // The app shell (the HTML document) is network-first so a new deploy shows on the
   // next load when online; fall back to the cached shell offline. Other static
   // assets (icons, manifest) stay stale-while-revalidate for instant, offline-safe loads.
