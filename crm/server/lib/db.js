@@ -121,7 +121,7 @@ const uSeen = db.prepare('UPDATE users SET last_seen=? WHERE id=?');
 const uCount = db.prepare('SELECT COUNT(*) AS n FROM users');
 function publicUser(u) {
   if (!u) return null;
-  return { id: u.id, name: u.name, email: u.email, role: u.role, status: u.status, color: u.color || '#3559E0', focus: u.focus || '', perms: parsePerms(u.perms), last: relTime(u.last_seen), mfa: !!u.totp_secret, sso: !!u.sso_oid };
+  return { id: u.id, name: u.name, email: u.email, role: u.role, status: u.status, color: u.color || '#F50D74', focus: u.focus || '', perms: parsePerms(u.perms), last: relTime(u.last_seen), mfa: !!u.totp_secret, sso: !!u.sso_oid };
 }
 function parsePerms(p) { if (!p) return null; if (typeof p === 'object') return p; try { return JSON.parse(p); } catch (e) { return null; }
 }

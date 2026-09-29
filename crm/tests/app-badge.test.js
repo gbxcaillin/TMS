@@ -23,7 +23,7 @@ const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) proce
   // 2. Service worker push handler sets the badge from the payload.
   const swSrc = fs.readFileSync(ROOT + '/sw.js', 'utf8');
   const calls = []; const listeners = {};
-  const sandbox = { self: { addEventListener: (k, f) => { listeners[k] = f; }, registration: { showNotification: async () => {} }, navigator: { setAppBadge: async (n) => calls.push('set:' + n), clearAppBadge: async () => calls.push('clear') }, clients: {}, location: { href: 'https://crm.example.com/sw.js' }, skipWaiting: () => {} }, caches: { open: async () => ({ addAll: async () => {} }), keys: async () => [] }, fetch: async () => {}, URL, Date, Promise, console };
+  const sandbox = { self: { addEventListener: (k, f) => { listeners[k] = f; }, registration: { showNotification: async () => {} }, navigator: { setAppBadge: async (n) => calls.push('set:' + n), clearAppBadge: async () => calls.push('clear') }, clients: {}, location: { href: 'https://portal.brightday.com.au/sw.js' }, skipWaiting: () => {} }, caches: { open: async () => ({ addAll: async () => {} }), keys: async () => [] }, fetch: async () => {}, URL, Date, Promise, console };
   sandbox.self.addEventListener.bind(sandbox.self);
   new Function('self', 'caches', 'fetch', 'URL', 'Date', 'Promise', 'console', 'navigator', swSrc)(sandbox.self, sandbox.caches, sandbox.fetch, URL, Date, Promise, console, sandbox.self.navigator);
   const fire = async (data) => { const waits = []; await listeners.push({ data: { json: () => data }, waitUntil: (pr) => waits.push(pr) }); await Promise.all(waits); };

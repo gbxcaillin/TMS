@@ -1,8 +1,8 @@
-/* Acme CRM service worker — caches the app shell so the CRM opens instantly
+/* Brightday Portal service worker — caches the app shell so the CRM opens instantly
    from the home screen and still loads with a flaky connection. Data calls
    (the real API, Microsoft Graph, ad webhooks) are always network-first and
    never cached here. */
-const VERSION = 'acme-shell-v3';
+const VERSION = 'brightday-shell-v3';
 const SHELL = [
   './',
   './index.html',
@@ -69,13 +69,13 @@ self.addEventListener('message', (e) => {
 // { title, body, url, tag, kind: 'lead'|'task'|'mention'|'system', id, actions:[{action,title}], renotify }
 self.addEventListener('push', (e) => {
   let d = {};
-  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { title: 'Acme CRM', body: e.data ? e.data.text() : '' }; }
-  const title = d.title || 'Acme CRM';
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { title: 'Brightday Portal', body: e.data ? e.data.text() : '' }; }
+  const title = d.title || 'Brightday Portal';
   const opts = {
     body: d.body || '',
     icon: './icons/icon-192.png',
     badge: './icons/badge-96.png',
-    tag: d.tag || ('acme-' + (d.kind || 'system') + '-' + (d.id || Date.now())),
+    tag: d.tag || ('brightday-' + (d.kind || 'system') + '-' + (d.id || Date.now())),
     renotify: !!d.renotify,
     timestamp: Date.now(),
     vibrate: [80, 40, 80],
@@ -111,6 +111,6 @@ self.addEventListener('notificationclick', (e) => {
 self.addEventListener('pushsubscriptionchange', (e) => {
   // Browser rotated the subscription: re-subscribe and tell the server.
   e.waitUntil(self.registration.pushManager.subscribe(e.oldSubscription ? e.oldSubscription.options : { userVisibleOnly: true })
-    .then((sub) => fetch('./api/v1/push/subscribe', { method: 'POST', headers: { 'content-type': 'application/json', 'x-requested-with': 'acme' }, body: JSON.stringify({ subscription: sub }) }))
+    .then((sub) => fetch('./api/v1/push/subscribe', { method: 'POST', headers: { 'content-type': 'application/json', 'x-requested-with': 'brightday' }, body: JSON.stringify({ subscription: sub }) }))
     .catch(() => {}));
 });

@@ -65,7 +65,7 @@ const LOGO = (() => { try { return require('node:fs').readFileSync(require('node
 // Shared page header: the approved logo, the document type on the right, and a rule. Returns the next top.
 function header(b, kind, sub) {
   const rightX = PAGE_W - M;
-  if (LOGO) b.image(M, M - 6, 46, 46); else b.text(M, M + 10, 'Acme Advisory', { font: 'F2', size: 12 });
+  if (LOGO) b.image(M, M - 6, 46, 46); else b.text(M, M + 10, 'Brightday', { font: 'F2', size: 12 });
   b.text(rightX - 200, M + 8, kind, { font: 'F2', size: 13 });
   if (sub) b.text(rightX - 200, M + 22, ascii(sub), { font: 'F1', size: 8.5, color: '0.42 0.42 0.4' });
   b.line(M, M + 48, rightX, M + 48, 0.6, 0.8);
@@ -94,7 +94,7 @@ function footer(b, top, opts = {}) {
   let y = Math.max(top, PAGE_H - 118);
   b.line(M, y, rightX, y, 0.5, 0.85); y += 12;
   if (opts.disclaimer !== false) { b.text(M, y, 'IMPORTANT', { font: 'F2', size: 7.5, color: '0.42 0.42 0.4' }); y += 10; y = b.para(M, y, GENERAL_ADVICE, { size: 7.5, color: '0.42 0.42 0.4', lead: 1.3 }); }
-  b.text(M, PAGE_H - M + 14, ascii([opts.entity || 'Acme Advisory', opts.abn ? 'ABN ' + opts.abn : '', 'example.com'].filter(Boolean).join('  -  ')), { font: 'F1', size: 7.5, color: '0.5 0.5 0.48' });
+  b.text(M, PAGE_H - M + 14, ascii([opts.entity || 'Brightday', opts.abn ? 'ABN ' + opts.abn : '', 'brightday.com.au'].filter(Boolean).join('  -  ')), { font: 'F1', size: 7.5, color: '0.5 0.5 0.48' });
   b.text(rightX - 170, PAGE_H - M + 14, ascii('Prepared ' + fmtDate(opts.asOf || new Date().toISOString()) + (opts.source ? ' - data: ' + opts.source : '')), { font: 'F1', size: 7.5, color: '0.5 0.5 0.48' });
 }
 const pctS = (v, d = 1) => (v == null || !Number.isFinite(+v)) ? '-' : ((+v >= 0 ? '+' : '') + (+v).toFixed(d) + '%');
@@ -106,11 +106,11 @@ function invoicePdf(inv, calc, s = {}) {
   const rightX = PAGE_W - M;
   let y = M + 6;
   // Header: the approved logo + TAX INVOICE
-  if (LOGO) b.image(M, y - 6, 46, 46); else b.text(M, y, 'Acme Advisory', { font: 'F2', size: 12 });
+  if (LOGO) b.image(M, y - 6, 46, 46); else b.text(M, y, 'Brightday', { font: 'F2', size: 12 });
   b.text(rightX - 120, y, 'TAX INVOICE', { font: 'F2', size: 16 });
   if ((inv.status || 'Draft') === 'Draft') b.text(rightX - 120, y + 16, 'DRAFT - not yet issued', { font: 'F1', size: 8, color: '0.7 0.28 0.24' });
   y += 52;
-  b.text(M, y, ascii(s.entity || 'Acme Advisory'), { font: 'F1', size: 9, color: '0.35 0.35 0.33' });
+  b.text(M, y, ascii(s.entity || 'Brightday'), { font: 'F1', size: 9, color: '0.35 0.35 0.33' });
   y += 12;
   (s.abn ? ['ABN ' + s.abn] : []).concat(String(s.address || '').split('\n')).filter(Boolean).forEach((ln) => { b.text(M, y, ln, { font: 'F1', size: 8.5, color: '0.42 0.42 0.4' }); y += 11; });
   if (s.email || s.phone) { b.text(M, y, [s.email, s.phone].filter(Boolean).join('  -  '), { font: 'F1', size: 8.5, color: '0.42 0.42 0.4' }); y += 11; }

@@ -7,14 +7,14 @@ const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) proce
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => {
   const data = body ? Buffer.from(JSON.stringify(body)) : null;
-  const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => { let j = {}; try { j = JSON.parse(s); } catch (_) { } resolve({ status: res.statusCode, headers: res.headers, body: j }); }); });
+  const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'brightday', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => { let j = {}; try { j = JSON.parse(s); } catch (_) { } resolve({ status: res.statusCode, headers: res.headers, body: j }); }); });
   r.on('error', reject); if (data) r.write(data); r.end();
 });
 const login = async (email) => (await req('POST', '/auth/login', { body: { email, password: 'pw-1234567890' } })).headers['set-cookie'][0].split(';')[0];
 (async () => {
   process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const D = require(require('node:path').resolve(__dirname, '..') + '/server/lib/db'); const auth = require(require('node:path').resolve(__dirname, '..') + '/server/lib/auth');
-  for (const [id, email, name, role] of [['u1', 'jordan@x.com', 'Jordan Lee', 'Manager'], ['u2', 'sam@x.com', 'Sam Rivera', 'Manager'], ['u3', 'cc@x.com', 'Alex Morgan', 'Admin']]) D.users.insert({ id, email, name, role, status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  for (const [id, email, name, role] of [['u1', 'jordan@x.com', 'Jordan Lee', 'Manager'], ['u2', 'sam@x.com', 'Sam Rivera', 'Manager'], ['u3', 'cc@x.com', 'Alex Morgan', 'Admin']]) D.users.insert({ id, email, name, role, status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
   D.kvSet('settings', { notifyPrefs: { events: [], quietFrom: '', quietTo: '' }, security: { mfaRequired: 'none' } });
   D.putRecord('rooms', { id: 'general', name: 'General', kind: 'room', members: ['u1', 'u2', 'u3'] }, 'u1');
   D.db.close();

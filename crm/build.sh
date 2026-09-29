@@ -10,14 +10,14 @@ cat > index.html <<'EOF'
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#22389A">
+<meta name="theme-color" content="#990A4E">
 <meta name="color-scheme" content="light dark">
-<meta name="application-name" content="Acme CRM">
+<meta name="application-name" content="Brightday Portal">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ACME">
-<meta name="description" content="Acme Advisory CRM">
+<meta name="apple-mobile-web-app-title" content="BD">
+<meta name="description" content="Brightday CRM">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">

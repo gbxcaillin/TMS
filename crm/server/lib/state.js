@@ -16,7 +16,7 @@ const SERVER_SETTINGS = (s) => {
   s.apiKeys = auth.listApiKeys();
   const st = push.stats7d();
   s.push = { ...(s.push || {}), devices: push.devices(), vapidPublic: push.publicKey, endpoint: '/api/v1/push/subscribe', sent7d: st.sent, failed7d: st.failed };
-  s.spSite = process.env.SP_SITE ? graph.SP_SITE.replace(':/', '/') : (s.spSite || 'example.sharepoint.com/sites/Clients');
+  s.spSite = process.env.SP_SITE ? graph.SP_SITE.replace(':/', '/') : (s.spSite || 'brightday.sharepoint.com/sites/Clients');
   s.spLibrary = graph.SP_LIBRARY;
   s.spFolder = graph.SP_FOLDER;
   s.storage = s.storage || 'sharepoint';

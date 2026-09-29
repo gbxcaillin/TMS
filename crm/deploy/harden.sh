@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-time VPS hardening for the shared ACME stack (Ubuntu). Review before running:
+# One-time VPS hardening for the shared BD stack (Ubuntu). Review before running:
 #   sudo bash /root/crm/deploy/harden.sh
 # Idempotent: safe to re-run. Does not touch Docker networking or the Caddy config.
 set -euo pipefail
@@ -36,7 +36,7 @@ systemctl restart fail2ban
 echo "== SSH: keys only, no root password login"
 if [ -s /root/.ssh/authorized_keys ]; then
   mkdir -p /etc/ssh/sshd_config.d
-  cat > /etc/ssh/sshd_config.d/90-acme.conf <<'CFG'
+  cat > /etc/ssh/sshd_config.d/90-brightday.conf <<'CFG'
 PasswordAuthentication no
 KbdInteractiveAuthentication no
 PermitRootLogin prohibit-password

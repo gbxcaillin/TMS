@@ -1,6 +1,6 @@
 {
   "version": "2026-09-28",
-  "intro": "Step-by-step training for every part of Acme CRM. Screens show sample data, never real clients. Each module lists what the screen is for, the steps to use it, and what happens behind the scenes. Modules are updated with every change to the CRM; see What's new for the latest.",
+  "intro": "Step-by-step training for every part of Brightday Portal. Screens show sample data, never real clients. Each module lists what the screen is for, the steps to use it, and what happens behind the scenes. Modules are updated with every change to the CRM; see What's new for the latest.",
   "groups": [
     "Getting started",
     "Work",
@@ -14,13 +14,13 @@
       "id": "start",
       "group": "Getting started",
       "title": "Signing in and finding your way",
-      "summary": "Acme CRM lives at crm.example.com. It is a web app that also installs on your phone. This module covers signing in, the layout on desktop and phone, search, and the notification bell.",
+      "summary": "Brightday Portal lives at portal.brightday.com.au. It is a web app that also installs on your phone. This module covers signing in, the layout on desktop and phone, search, and the notification bell.",
       "image": "dashboard.jpg",
       "caption": "Desktop layout: navigation rail on the left, search and New lead at the top, the notification bell on the right.",
       "steps": [
         {
-          "t": "Open crm.example.com",
-          "d": "The site sits behind Cloudflare Access, so the first screen is the Microsoft sign-in for your ACME account. Only people in the ACME tenant get past it."
+          "t": "Open portal.brightday.com.au",
+          "d": "The site sits behind Cloudflare Access, so the first screen is the Microsoft sign-in for your BD account. Only people in the BD tenant get past it."
         },
         {
           "t": "Sign in to the CRM",
@@ -295,7 +295,7 @@
         },
         {
           "t": "Bookings",
-          "d": "Appointments booked on the example.com booking page arrive as new leads through Microsoft Bookings, and the meeting itself appears on your calendar through Outlook."
+          "d": "Appointments booked on the brightday.com.au booking page arrive as new leads through Microsoft Bookings, and the meeting itself appears on your calendar through Outlook."
         }
       ]
     },
@@ -420,7 +420,7 @@
       "steps": [
         {
           "t": "Subscribers",
-          "d": "People who sign up on example.com land here automatically with the source and tags. Statuses are subscribed, unsubscribed, and bounced or complained (suppressed by the Resend webhook). Add someone by hand with Add subscriber."
+          "d": "People who sign up on brightday.com.au land here automatically with the source and tags. Statuses are subscribed, unsubscribed, and bounced or complained (suppressed by the Resend webhook). Add someone by hand with Add subscriber."
         },
         {
           "t": "Choose the audience",
@@ -573,7 +573,7 @@
       "steps": [
         {
           "t": "Getting started",
-          "d": "A new workspace starts with an empty library. Load the starter library adds 14 core ASX ETFs and shares, plus the S&P/ASX 200 index, with live prices (the server also loads it on its first price refresh). On Model portfolios, Add the starter models adds ACME Conservative, Balanced, Growth and High Growth as drafts to review before you publish them."
+          "d": "A new workspace starts with an empty library. Load the starter library adds 14 core ASX ETFs and shares, plus the S&P/ASX 200 index, with live prices (the server also loads it on its first price refresh). On Model portfolios, Add the starter models adds BD Conservative, Balanced, Growth and High Growth as drafts to review before you publish them."
         },
         {
           "t": "Adding a security",
@@ -803,7 +803,7 @@
       "id": "fields",
       "group": "Configure",
       "title": "Fields, stages and profile",
-      "summary": "Shape the deal form and pipeline to how ACME sells.",
+      "summary": "Shape the deal form and pipeline to how BD sells.",
       "image": "settings-fields.jpg",
       "caption": "Deal fields with type, required and show-on-card.",
       "steps": [
@@ -832,7 +832,7 @@
       "id": "capabilities",
       "group": "Reference",
       "title": "Capabilities statement",
-      "summary": "The full description of what Acme CRM does, how it connects to example.com, the integrations, running costs and the plan for scaling to 20 users and 1,000 leads a month. Kept up to date alongside this training.",
+      "summary": "The full description of what Brightday Portal does, how it connects to brightday.com.au, the integrations, running costs and the plan for scaling to 20 users and 1,000 leads a month. Kept up to date alongside this training.",
       "steps": [
         {
           "t": "Read it here",
@@ -957,7 +957,7 @@
     {
       "date": "2026-09-28",
       "title": "Research rebuilt on live market data",
-      "body": "Research now runs on real prices end to end. A new workspace gets a one-click starter library of core ASX ETFs and shares and the four ACME starter models as drafts. Add a security searches by ticker or name and the server fetches the full record: price, five years of history, distributions, fund size, beta and description. Model returns, volatility and drawdowns are calculated from month-end prices with a real benchmark line, instead of estimates and simulated charts. You can edit a security's asset class, fee, franking and description, and remove securities. Fixed along the way: yields under 1% were shown 100 times too high, the exchange rate was shown upside down, a looked-up security could break its page, New model failed when no model existed, and the Research settings choices did nothing.",
+      "body": "Research now runs on real prices end to end. A new workspace gets a one-click starter library of core ASX ETFs and shares and the four BD starter models as drafts. Add a security searches by ticker or name and the server fetches the full record: price, five years of history, distributions, fund size, beta and description. Model returns, volatility and drawdowns are calculated from month-end prices with a real benchmark line, instead of estimates and simulated charts. You can edit a security's asset class, fee, franking and description, and remove securities. Fixed along the way: yields under 1% were shown 100 times too high, the exchange rate was shown upside down, a looked-up security could break its page, New model failed when no model existed, and the Research settings choices did nothing.",
       "modules": [
         "research"
       ]
@@ -1041,7 +1041,7 @@
     {
       "date": "2026-09-28",
       "title": "Fix: Research opens on older workspaces; teal title bar",
-      "body": "Research failed to open on a workspace that was set up before the Research section existed, because the page expected a saved watchlist that such workspaces never had. Any settings document a workspace is missing now starts empty at sign-in and is saved on the next change, so every section opens. The installed app's title bar is now teal instead of black, and it reads \"Acme CRM - 2 unread\" rather than repeating the app name; in a browser tab the title stays \"(2) Acme CRM\". The number is your own count of unread notifications, so it differs from person to person.",
+      "body": "Research failed to open on a workspace that was set up before the Research section existed, because the page expected a saved watchlist that such workspaces never had. Any settings document a workspace is missing now starts empty at sign-in and is saved on the next change, so every section opens. The installed app's title bar is now teal instead of black, and it reads \"Brightday Portal - 2 unread\" rather than repeating the app name; in a browser tab the title stays \"(2) Brightday Portal\". The number is your own count of unread notifications, so it differs from person to person.",
       "modules": [
         "research",
         "start"
@@ -1242,7 +1242,7 @@
     {
       "date": "2026-09-27",
       "title": "Approved logo everywhere",
-      "body": "The framed Acme Advisory logo (dark and light versions) replaces the typeset lockups across the app, login, invoices and emails.",
+      "body": "The framed Brightday logo (dark and light versions) replaces the typeset lockups across the app, login, invoices and emails.",
       "modules": [
         "start"
       ]
@@ -1250,7 +1250,7 @@
     {
       "date": "2026-09-27",
       "title": "Branded newsletter builder",
-      "body": "Headline, intro, sections, button and sign-off in the example.com style, with preview, send-me-a-test and Draft with Claude.",
+      "body": "Headline, intro, sections, button and sign-off in the brightday.com.au style, with preview, send-me-a-test and Draft with Claude.",
       "modules": [
         "mailing"
       ]

@@ -12,7 +12,7 @@
 const D = require('./db');
 const mailbox = require('./mailbox');
 const TZ = process.env.TZ || 'Australia/Melbourne';
-const BASE = process.env.APP_URL || 'https://crm.example.com';
+const BASE = process.env.APP_URL || 'https://portal.brightday.com.au';
 const WINDOW = { back: 30, ahead: 90 };
 const GRAPH = 'https://graph.microsoft.com/v1.0';
 const SELECT = 'id,iCalUId,subject,start,end,isAllDay,isCancelled,sensitivity,location,bodyPreview,webLink,lastModifiedDateTime';
@@ -42,7 +42,7 @@ function fromGraph(ev) {
 // CRM event -> Outlook body.
 function toGraph(e) {
   const deal = e.deal ? D.getRecord('deals', e.deal) : null;
-  const body = [e.notes || '', deal ? 'Deal: ' + deal.practice : '', 'From Acme CRM: ' + BASE + '/#/calendar'].filter(Boolean).join('\n\n');
+  const body = [e.notes || '', deal ? 'Deal: ' + deal.practice : '', 'From Brightday Portal: ' + BASE + '/#/calendar'].filter(Boolean).join('\n\n');
   const start = e.allDay ? e.start.slice(0, 10) + 'T00:00:00' : e.start.slice(0, 16) + ':00';
   const end = e.allDay ? addDays((e.end || e.start).slice(0, 10), 1) + 'T00:00:00' : (e.end || e.start).slice(0, 16) + ':00';
   return { subject: e.title || 'Event', isAllDay: !!e.allDay, start: { dateTime: start, timeZone: TZ }, end: { dateTime: end, timeZone: TZ }, body: { contentType: 'text', content: body }, showAs: e.kind === 'Out of office' ? 'oof' : 'busy' };

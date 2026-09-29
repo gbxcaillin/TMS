@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Pull-based auto deploy for crm.example.com. Cron runs this every 5 minutes; it
+# Pull-based auto deploy for portal.brightday.com.au. Cron runs this every 5 minutes; it
 # fetches origin/main and, only when main has moved, runs deploy/update.sh.
 # Nothing reaches into the server: no keys in GitHub, no open ports.
 #

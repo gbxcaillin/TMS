@@ -14,7 +14,7 @@ const D = require('./db');
 const CID = process.env.MS_CLIENT_ID || process.env.SSO_CLIENT_ID;
 const SECRET = process.env.MS_CLIENT_SECRET || process.env.SSO_CLIENT_SECRET;
 const TENANT = process.env.MS_TENANT_ID || process.env.SSO_TENANT;
-const BASE = process.env.APP_URL || 'https://crm.example.com';
+const BASE = process.env.APP_URL || 'https://portal.brightday.com.au';
 const REDIRECT = BASE + '/api/v1/mail/connect/callback';
 const SCOPES = 'openid email offline_access https://graph.microsoft.com/Mail.Read https://graph.microsoft.com/Mail.Send';
 // Calendar sync (lib/calendar.js) needs one more delegated scope. New connections ask for it up front; older ones

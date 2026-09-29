@@ -1,4 +1,4 @@
-# Acme CRM server
+# Brightday Portal server
 
 Plain Node 22 (`node:http`, `node:sqlite`), no framework. Three runtime
 dependencies: `web-push`, `qrcode`, `yahoo-finance2`. Email goes out through the Resend HTTP API.
@@ -13,7 +13,7 @@ server/
   lib/notify.js     bell + push + email fan-out, hooks that watch synced records
   lib/leads.js      lead intake: normalise, de-duplicate, create deal/task/activity
   lib/push.js       VAPID web push, subscriptions
-  lib/mail.js       Resend email with the ACME template
+  lib/mail.js       Resend email with the BD template
   lib/graph.js      Microsoft Graph: SharePoint list/upload/download, Bookings
   lib/refdata.js    Morningstar screener exports (CSV) from SharePoint: fees, ratings, 3y risk, unlisted
                     funds by APIR; stored in DATA_DIR/refdata.json, applied to the research library
@@ -50,9 +50,9 @@ and `colors` need Admin or Manager. The server owns `settings.apiKeys` and
 
 ## Endpoints
 
-Session cookie (`acme_session`, HttpOnly, SameSite=Lax) or
-`Authorization: Bearer acme_live_…` where noted. Mutating cookie requests must
-send `X-Requested-With: acme`.
+Session cookie (`brightday_session`, HttpOnly, SameSite=Lax) or
+`Authorization: Bearer brightday_live_…` where noted. Mutating cookie requests must
+send `X-Requested-With: brightday`.
 
 | Method | Path | Auth | Purpose |
 |---|---|---|---|

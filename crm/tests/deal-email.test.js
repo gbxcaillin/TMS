@@ -6,11 +6,11 @@ const ROOT = require('node:path').resolve(__dirname, '..') + '';
 const DATA = fs.mkdtempSync(path.join(os.tmpdir(), 'deal-email-'));
 const PORT = 3990; const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) process.exitCode = 1; };
-const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(s || '{}') })); }); r.on('error', reject); if (data) r.write(data); r.end(); });
+const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'brightday', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(s || '{}') })); }); r.on('error', reject); if (data) r.write(data); r.end(); });
 (async () => {
   process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const D = require(ROOT + '/server/lib/db'); const auth = require(ROOT + '/server/lib/auth'); const threads = require(ROOT + '/server/lib/threads');
-  D.users.insert({ id: 'u1', email: 'cc@x.com', name: 'Alex Morgan', role: 'Admin', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  D.users.insert({ id: 'u1', email: 'cc@x.com', name: 'Alex Morgan', role: 'Admin', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
   D.kvSet('settings', { notifyPrefs: { events: [] }, security: { mfaRequired: 'none' } });
   D.kvSet('stages', [{ id: 'new', name: 'New lead' }, { id: 'won', name: 'Won', closed: true }]);
   D.putRecord('deals', { id: 3, practice: 'Vantage Wealth', contact: 'Lisa Park', email: 'lisa@vantagewealth.com.au', stage: 'new', value: 96000, owner: 'u1', created: '2026-09-20', source: 'referral' }, 'u1');

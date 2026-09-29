@@ -19,12 +19,12 @@ const byToken = (t) => (t ? D.listCol('subscribers').find((s) => s.token === t) 
 // Website signups are single-click by default. Set MAILING_DOUBLE_OPTIN=1 to require an emailed
 // confirmation first (only takes effect when we can actually send the confirmation email).
 const doubleOptIn = () => process.env.MAILING_DOUBLE_OPTIN === '1' && mail.enabled();
-const brand = 'Acme Advisory';
+const brand = 'Brightday';
 
 async function sendConfirm(s) {
   const url = `${mail.BASE}/api/v1/subscribe/confirm/${s.token}`;
   const first = (s.name || '').split(' ')[0];
-  return mail.send({ to: s.email, subject: `Please confirm your subscription to ${brand}`, title: 'One more step', html: `<p>Hi ${mail.esc(first || 'there')},</p><p>Thanks for subscribing to insights from ${brand}. Please confirm it was you by clicking the button below. If you did not sign up, you can ignore this email and you will not hear from us.</p>`, cta: { label: 'Confirm my subscription', url }, footer: `${brand} · You are receiving this one-off email because this address was entered at example.com.`, kind: 'campaign' });
+  return mail.send({ to: s.email, subject: `Please confirm your subscription to ${brand}`, title: 'One more step', html: `<p>Hi ${mail.esc(first || 'there')},</p><p>Thanks for subscribing to insights from ${brand}. Please confirm it was you by clicking the button below. If you did not sign up, you can ignore this email and you will not hear from us.</p>`, cta: { label: 'Confirm my subscription', url }, footer: `${brand} · You are receiving this one-off email because this address was entered at brightday.com.au.`, kind: 'campaign' });
 }
 
 // Add a subscriber, or re-subscribe/enrich an existing one. Idempotent on email.
@@ -140,10 +140,10 @@ async function sendOne(job, item) {
   const personalised = job.html.replace(/\{\{\s*name\s*\}\}/g, mail.esc((item.name || 'there').split(' ')[0]));
   const opts = { to: item.email, subject: job.subject, kind: 'campaign', unsubscribe: unsub, replyTo: job.reply_to || undefined };
   if (job.prepared) {
-    const withFooter = /\{\{\s*unsubscribe\s*\}\}/.test(personalised) ? personalised.replace(/\{\{\s*unsubscribe\s*\}\}/g, unsub) : personalised + `<p style="font-size:11px;color:#8A919C;text-align:center;margin:24px 0 0"><a href="${unsub}" style="color:#8A919C">Unsubscribe</a></p>`;
+    const withFooter = /\{\{\s*unsubscribe\s*\}\}/.test(personalised) ? personalised.replace(/\{\{\s*unsubscribe\s*\}\}/g, unsub) : personalised + `<p style="font-size:11px;color:#7A8BA3;text-align:center;margin:24px 0 0"><a href="${unsub}" style="color:#7A8BA3">Unsubscribe</a></p>`;
     return mail.send({ ...opts, html: withFooter, raw: true });
   }
-  const footer = `You are receiving this because you subscribed on example.com. <a href="${unsub}" style="color:#8A919C">Unsubscribe</a>`;
+  const footer = `You are receiving this because you subscribed on brightday.com.au. <a href="${unsub}" style="color:#7A8BA3">Unsubscribe</a>`;
   return mail.send({ ...opts, title: '', html: personalised, footer });
 }
 

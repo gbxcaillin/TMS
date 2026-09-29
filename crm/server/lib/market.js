@@ -125,7 +125,7 @@ async function addSecurity(sym, by = 'market') {
   D.putRecord('securities', s, by); return s;
 }
 
-// The starter library: the ASX building blocks the ACME starter models are made of, plus a few direct shares and the
+// The starter library: the ASX building blocks the BD starter models are made of, plus a few direct shares and the
 // Vanguard diversified ETFs the models use as benchmarks. Classes are fixed here rather than guessed.
 const STARTER = [
   ['VAS.AX', 'Australian equities'], ['VGS.AX', 'International equities'], ['NDQ.AX', 'International equities'], ['VAP.AX', 'Property & infrastructure'],

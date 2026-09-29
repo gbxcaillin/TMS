@@ -6,7 +6,7 @@ change is one extra redirect URI. Allow 15 minutes.
 
 ## Part A: Azure (in a browser, on any computer)
 
-1. Go to **https://entra.microsoft.com** and sign in with your ACME admin account (the one that set up Microsoft 365).
+1. Go to **https://entra.microsoft.com** and sign in with your BD admin account (the one that set up Microsoft 365).
 2. In the left menu click **Identity**, then **Applications**, then **App registrations**. If the menu is collapsed,
    click the three-line button at the top left first.
 3. Click the **All applications** tab. Find the app the CRM uses. Its **Application (client) ID** column matches the
@@ -15,12 +15,12 @@ change is one extra redirect URI. Allow 15 minutes.
    icon to its right.
 5. In the app's left menu, under **Manage**, click **Authentication**.
 6. Under **Platform configurations**:
-   - If a **Web** section is already there (it will list `https://crm.example.com/api/v1/mail/connect/callback`), click
+   - If a **Web** section is already there (it will list `https://portal.brightday.com.au/api/v1/mail/connect/callback`), click
      **Add URI** inside that section.
    - If there is no Web section, click **Add a platform**, choose **Web**.
 7. In the new redirect URI box type exactly:
    ```
-   https://crm.example.com/api/v1/auth/microsoft/callback
+   https://portal.brightday.com.au/api/v1/auth/microsoft/callback
    ```
    Leave **Front-channel logout URL** empty and leave both **Implicit grant** boxes unticked.
 8. Click **Configure** (new platform) or **Save** (existing platform) at the bottom. The Web section should now list
@@ -33,7 +33,7 @@ change is one extra redirect URI. Allow 15 minutes.
      the Secret ID. Put the expiry date in your calendar.
 10. Optional check. Under **Manage** click **API permissions**. You should see Microsoft Graph delegated permissions
     including `User.Read` (or `openid`, `profile`, `email`) alongside the mail ones. If any row's **Status** is blank,
-    click **Grant admin consent for ACME** and confirm **Yes**.
+    click **Grant admin consent for BD** and confirm **Yes**.
 
 ## Part B: the VPS (terminal)
 
@@ -53,13 +53,13 @@ change is one extra redirect URI. Allow 15 minutes.
    Use the arrow keys to reach the `SSO_CLIENT_ID=` line and paste the Application (client) ID after the `=`, with no
    spaces or quotes. On the `SSO_CLIENT_SECRET=` line paste the secret value. Leave `SSO_TENANT=` empty (the CRM
    uses `MS_TENANT_ID`). Leave `SSO_AUTO_PROVISION=` empty unless you want anyone in the tenant to get an account on the default access level
-   automatically on first sign-in, in which case set it to `1` and make sure `SSO_DOMAIN=example.com`.
+   automatically on first sign-in, in which case set it to `1` and make sure `SSO_DOMAIN=brightday.com.au`.
    Save with **Ctrl+O**, **Enter**, then exit with **Ctrl+X**.
 4. Restart the CRM so it reads the new variables:
    ```
    cd /root/familyoffice && docker compose up -d crm && docker compose logs --tail=20 crm
    ```
-   The last lines should include `[boot] Acme CRM on :3000`.
+   The last lines should include `[boot] Brightday Portal on :3000`.
 
 ## Part C: check it
 
@@ -70,7 +70,7 @@ change is one extra redirect URI. Allow 15 minutes.
    dashboard. The first person to sign in may see a consent screen listing `openid`, `profile` and `email`; an admin
    accepts it once for the whole tenant.
 4. Each person's CRM account email must match their Microsoft email. If it does not, the login page shows
-   **No Pipeline account for name@example.com. Ask an admin to invite you.** Fix it under Settings, Team by inviting
+   **No Pipeline account for name@brightday.com.au. Ask an admin to invite you.** Fix it under Settings, Team by inviting
    them with the matching address, or turn on auto-provisioning in Part B step 3.
 
 ## If something fails

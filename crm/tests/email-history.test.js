@@ -5,22 +5,22 @@ process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'hist-')); process.
 const L = require('node:path').resolve(__dirname, '..') + '/server/lib/';
 const t = (n, ok, x) => { console.log((ok ? 'PASS ' : 'FAIL ') + n + (ok || x === undefined ? '' : ' :: ' + JSON.stringify(x).slice(0, 400))); if (!ok) process.exitCode = 1; };
 const mb = require(L + 'mailbox'); let calls = 0;
-mb.accounts = () => [{ user: 'u1', email: 'jordan@example.com' }]; mb.enabled = () => true;
-mb.recentIn = async (uid, email, folder) => (folder === 'inbox' ? [{ id: 'M6', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@example.com'], at: '2026-09-20T01:00:00Z', preview: 'Signed, see attached.', url: 'u6' }] : []);
+mb.accounts = () => [{ user: 'u1', email: 'jordan@brightday.com.au' }]; mb.enabled = () => true;
+mb.recentIn = async (uid, email, folder) => (folder === 'inbox' ? [{ id: 'M6', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@brightday.com.au'], at: '2026-09-20T01:00:00Z', preview: 'Signed, see attached.', url: 'u6' }] : []);
 mb.message = async () => null;
 const HIST = [
-  { id: 'M1', conv: 'C1', subject: 'Harbourline proposal', from: 'jordan@example.com', to: ['sarah@harbourline.com.au'], cc: [], at: '2026-09-01T00:00:00Z', text: 'Hi Sarah, proposal attached.', url: 'u1' },
-  { id: 'M2', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@example.com'], cc: [], at: '2026-09-02T00:00:00Z', text: 'Thanks, a question on fees.', url: 'u2' },
-  { id: 'M3', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'jordan@example.com', to: ['sarah@harbourline.com.au'], cc: [], at: '2026-09-03T00:00:00Z', text: 'The retainer is monthly.', url: 'u3' },
-  { id: 'M4', conv: 'C2', subject: 'Intro call notes', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@example.com'], cc: [], at: '2026-08-20T00:00:00Z', text: 'Great to meet you.', url: 'u4' },
-  { id: 'M5', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'bob@harbourline.com.au', to: ['jordan@example.com'], cc: ['sarah@harbourline.com.au'], at: '2026-09-04T00:00:00Z', text: 'Bob here, cc Sarah.', url: 'u5' },
-  { id: 'M6', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@example.com'], cc: [], at: '2026-09-20T01:00:00Z', text: 'Signed, see attached.', url: 'u6' },
+  { id: 'M1', conv: 'C1', subject: 'Harbourline proposal', from: 'jordan@brightday.com.au', to: ['sarah@harbourline.com.au'], cc: [], at: '2026-09-01T00:00:00Z', text: 'Hi Sarah, proposal attached.', url: 'u1' },
+  { id: 'M2', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@brightday.com.au'], cc: [], at: '2026-09-02T00:00:00Z', text: 'Thanks, a question on fees.', url: 'u2' },
+  { id: 'M3', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'jordan@brightday.com.au', to: ['sarah@harbourline.com.au'], cc: [], at: '2026-09-03T00:00:00Z', text: 'The retainer is monthly.', url: 'u3' },
+  { id: 'M4', conv: 'C2', subject: 'Intro call notes', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@brightday.com.au'], cc: [], at: '2026-08-20T00:00:00Z', text: 'Great to meet you.', url: 'u4' },
+  { id: 'M5', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'bob@harbourline.com.au', to: ['jordan@brightday.com.au'], cc: ['sarah@harbourline.com.au'], at: '2026-09-04T00:00:00Z', text: 'Bob here, cc Sarah.', url: 'u5' },
+  { id: 'M6', conv: 'C1', subject: 'RE: Harbourline proposal', from: 'sarah@harbourline.com.au', fromName: 'Sarah Whitfield', to: ['jordan@brightday.com.au'], cc: [], at: '2026-09-20T01:00:00Z', text: 'Signed, see attached.', url: 'u6' },
 ];
 mb.withAddress = async (uid, email, addr) => { calls++; return HIST.filter((m) => [m.from, ...m.to, ...m.cc].includes(addr)).reverse(); };
 const push = require(L + 'push'); const pushed = []; push.sendToUser = async (u, p) => { pushed.push(p); return 1; };
 const D = require(L + 'db'); const threads = require(L + 'threads'); const ms = require(L + 'mailsync');
 (async () => {
-  D.users.insert({ id: 'u1', email: 'jordan@example.com', name: 'Jordan', role: 'Manager', status: 'Active', color: '#000' });
+  D.users.insert({ id: 'u1', email: 'jordan@brightday.com.au', name: 'Jordan', role: 'Manager', status: 'Active', color: '#000' });
   D.kvSet('settings', { notifyPrefs: { events: [] } }); D.kvSet('stages', [{ id: 'new' }]);
   D.putRecord('deals', { id: 7, practice: 'Harbourline', contact: 'Sarah Whitfield', email: 'sarah@harbourline.com.au', stage: 'new', owner: 'u1', created: '2026-08-01' }, 'u1');
   // Before: M2 and M3 reached only the timeline (old sync); the thread holds just the latest reply M6, read.

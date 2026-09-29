@@ -25,7 +25,7 @@ function passwordProblem(pw) {
 // __Host- prefix (production): the browser refuses the cookie unless it is Secure, Path=/ and has no Domain,
 // so a subdomain or a plain-http page can never plant a session cookie for the app.
 const SECURE = process.env.NODE_ENV === 'production' || process.env.COOKIE_SECURE === '1';
-const COOKIE = SECURE ? '__Host-acme_session' : 'acme_session';
+const COOKIE = SECURE ? '__Host-brightday_session' : 'brightday_session';
 const sIns = db.prepare('INSERT INTO sessions(id,user_id,created_at,expires_at,ua,ip,limited,via,last_seen) VALUES(?,?,?,?,?,?,?,?,?)');
 const sGet = db.prepare('SELECT * FROM sessions WHERE id=? AND expires_at>?');
 const sTouch = db.prepare('UPDATE sessions SET last_seen=?, ip=? WHERE id=?');
@@ -105,7 +105,7 @@ const kByHash = db.prepare('SELECT * FROM api_keys WHERE hash=?');
 const kDel = db.prepare('DELETE FROM api_keys WHERE id=?');
 const kUsed = db.prepare('UPDATE api_keys SET last_used=? WHERE id=?');
 function createApiKey(name, scopes, by) {
-  const raw = 'acme_live_' + crypto.randomBytes(24).toString('base64url');
+  const raw = 'brightday_live_' + crypto.randomBytes(24).toString('base64url');
   const id = 'k' + Date.now().toString(36);
   kIns.run(id, name, raw.slice(0, 13) + '…', sha(raw), (scopes || []).join(' '), nowIso(), null, by);
   bumpRev();

@@ -7,7 +7,7 @@ const { chromium } = require('playwright-core');
 const ROOT = path.resolve(__dirname, '..'); const DATA = fs.mkdtempSync(path.join(os.tmpdir(), 'topasx-')); const PORT = 3977;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = (n, ok, extra) => { console.log((ok ? 'PASS ' : 'FAIL ') + n + (ok || extra === undefined ? '' : ' :: ' + JSON.stringify(extra).slice(0, 400))); if (!ok) process.exitCode = 1; };
-const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => { let b; try { b = JSON.parse(s || '{}'); } catch { b = {}; } resolve({ status: res.statusCode, headers: res.headers, body: b }); }); }); r.on('error', reject); if (data) r.write(data); r.end(); });
+const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'brightday', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => { let b; try { b = JSON.parse(s || '{}'); } catch { b = {}; } resolve({ status: res.statusCode, headers: res.headers, body: b }); }); }); r.on('error', reject); if (data) r.write(data); r.end(); });
 (async () => {
   process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const D = require(ROOT + '/server/lib/db'); const auth = require(ROOT + '/server/lib/auth'); const market = require(ROOT + '/server/lib/market');
@@ -15,7 +15,7 @@ const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) 
   t('the list has 50 unique ASX codes', L.length === 50 && new Set(L).size === 50 && L.every((c) => /^[A-Z0-9]{3}$/.test(c)));
   t('the big four banks, BHP and CSL are in the top 20', ['CBA', 'NAB', 'WBC', 'ANZ', 'BHP', 'CSL'].every((c) => L.indexOf(c) >= 0 && L.indexOf(c) < 20));
   t('rank lookups: CBA.AX is 1, a code outside the list has none', market.asxRank('CBA.AX') === 1 && market.asxRank('ZZZ.AX') === null);
-  D.users.insert({ id: 'u1', email: 'cc@x.com', name: 'Alex Morgan', role: 'Admin', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  D.users.insert({ id: 'u1', email: 'cc@x.com', name: 'Alex Morgan', role: 'Admin', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
   D.kvSet('settings', { notifyPrefs: { events: [] }, security: { mfaRequired: 'none' }, research: { starterAt: '2026-01-01T00:00:00', indicesAt: '2026-01-01T00:00:00', topAsxAt: '2026-01-01T00:00:00', refreshMins: 1440, lastRefresh: D.nowIso() } });
   const base = { kind: 'Share', cls: 'Australian equities', ex: 'ASX', ccy: 'AUD', chg: 0.2, w52: [10, 20], mcap: '', pe: 15, yld: 4, frank: 100, mer: null, beta: 1, ret: { m1: 1, m3: 2, y1: 4, y3: 11, y5: 7.5 }, vol: 18, mdd: -25, provider: 'yahoo' };
   D.putRecord('securities', { ...base, t: 'CBA.AX', name: 'Commonwealth Bank of Australia', price: 151.5, asxRank: 1 }, 'market');

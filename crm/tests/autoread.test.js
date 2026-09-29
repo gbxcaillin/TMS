@@ -32,7 +32,7 @@ const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) proce
   await go('#/tasks');
   t('task list clears the task alert, but not Sam\'s', (await unread()).join() === '105' && await p.evaluate(() => !S.notifs.find((n) => n.id === 106).read));
   await go('#/email');
-  t('Email clears the reply alert; bell empty, title plain', (await unread()).join() === '' && await p.evaluate(() => document.querySelector('#notif-pip').hidden && document.title === 'Acme CRM'));
+  t('Email clears the reply alert; bell empty, title plain', (await unread()).join() === '' && await p.evaluate(() => document.querySelector('#notif-pip').hidden && document.title === 'Brightday Portal'));
   // Live arrival for the room you are already reading: marked on the re-render, and announce() shows nothing.
   await p.evaluate(() => { S.ui.room = 'dm_u1_u3'; location.hash = '#/chat'; route(); });
   await p.evaluate(() => { const n = { id: 107, text: 'Jordan sent you a message', p: 'again', at: 'now', read: false, go: '#/chat/dm_u1_u3', to: ['u1'] }; S.notifs.unshift(n); route(); announce([n]); });

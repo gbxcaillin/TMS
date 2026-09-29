@@ -64,7 +64,7 @@ function byRules(f) {
 async function byClaude(f) {
   const list = (k, label) => f[k].length ? `${label}:\n` + f[k].map((x) => `- [deal ${x.id}] ${x.text}`).join('\n') : '';
   const prompt = [
-    `You write the two-sentence morning briefing on a CRM dashboard for ${f.user} at Acme Advisory (B2B professional services and workplace financial education). Today is ${f.today}.`,
+    `You write the two-sentence morning briefing on a CRM dashboard for ${f.user} at Brightday (B2B professional services and workplace financial education). Today is ${f.today}.`,
     'Say what matters most today and why, in plain Australian English, no headings, no bullet points, no em dashes, at most 45 words. Then choose up to three deals to open as buttons, most urgent first.',
     'Return ONLY compact JSON, no prose and no code fences: {"text":"<two sentences>","actions":[{"label":"<practice name, max 4 words>","deal":<deal id integer>}]}',
     '', 'Facts:',

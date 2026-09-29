@@ -5,11 +5,11 @@ const { chromium } = require('playwright-core');
 const ROOT = require('node:path').resolve(__dirname, '..') + ''; const DATA = fs.mkdtempSync(path.join(os.tmpdir(), 'rlive-')); const PORT = 3997;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = (n, ok, extra) => { console.log((ok ? 'PASS ' : 'FAIL ') + n + (ok || extra === undefined ? '' : ' :: ' + JSON.stringify(extra).slice(0, 500))); if (!ok) process.exitCode = 1; };
-const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { const ch = []; res.on('data', (c) => ch.push(c)); res.on('end', () => { const s = Buffer.concat(ch); let b; try { b = JSON.parse(s.toString() || '{}'); } catch { b = { bytes: s.length, head: s.slice(0, 5).toString() }; } resolve({ status: res.statusCode, headers: res.headers, body: b }); }); }); r.on('error', reject); if (data) r.write(data); r.end(); });
+const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'brightday', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { const ch = []; res.on('data', (c) => ch.push(c)); res.on('end', () => { const s = Buffer.concat(ch); let b; try { b = JSON.parse(s.toString() || '{}'); } catch { b = { bytes: s.length, head: s.slice(0, 5).toString() }; } resolve({ status: res.statusCode, headers: res.headers, body: b }); }); }); r.on('error', reject); if (data) r.write(data); r.end(); });
 (async () => {
   process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const D = require(ROOT + '/server/lib/db'); const auth = require(ROOT + '/server/lib/auth');
-  D.users.insert({ id: 'u1', email: 'cc@x.com', name: 'Alex Morgan', role: 'Admin', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  D.users.insert({ id: 'u1', email: 'cc@x.com', name: 'Alex Morgan', role: 'Admin', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
   D.kvSet('settings', { notifyPrefs: { events: [] }, security: { mfaRequired: 'none' } }); D.db.close();
   const srv = spawn('node', ['index.js'], { cwd: ROOT + '/server', env: { ...process.env, DATA_DIR: DATA, PORT: String(PORT), ALLOW_UNENCRYPTED: '1', NODE_ENV: 'test' }, stdio: ['ignore', 'pipe', 'pipe'] });
   let log = ''; srv.stdout.on('data', (c) => (log += c)); srv.stderr.on('data', (c) => (log += c));
@@ -77,7 +77,7 @@ const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) 
     t('model cards show real 5-year figures (no …)', !/…/.test(await content()) && /5 yr p\.a\./.test(await content()));
     await sleep(1200); t('models saved on the server', (await recs('models')).length === 4);
     await clean('models tab');
-    const bal = await p.evaluate(() => S.models.find((m) => m.name === 'ACME Balanced').id);
+    const bal = await p.evaluate(() => S.models.find((m) => m.name === 'BD Balanced').id);
     await go('#/model/' + bal); await p.waitForSelector('#content .legend2 span:nth-child(2)', { timeout: 60000 }).catch(() => {}); await sleep(600);
     const mv = await p.evaluate((id) => { const m = modelOf(id); const mm = modelMetrics(m); const c = document.querySelector('#content'); return { est: mm.est, ret5: mm.ret5, vol: mm.vol, legend: c.querySelector('.legend2')?.innerText, chart: !!c.querySelector('.card-body svg'), src: /yrs of month-end prices/.test(c.innerText) }; }, bal);
     t('model page: figures from real month-end series, chart with the VDBA benchmark line', !mv.est && typeof mv.ret5 === 'number' && mv.chart && /Balanced/.test(mv.legend) && mv.src, mv);

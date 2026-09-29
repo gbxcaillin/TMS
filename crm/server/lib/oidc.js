@@ -7,7 +7,7 @@
 const crypto = require('node:crypto');
 const TENANT = process.env.SSO_TENANT || process.env.MS_TENANT_ID;
 const CID = process.env.SSO_CLIENT_ID, SECRET = process.env.SSO_CLIENT_SECRET;
-const BASE = process.env.APP_URL || 'https://crm.example.com';
+const BASE = process.env.APP_URL || 'https://portal.brightday.com.au';
 const REDIRECT = BASE + '/api/v1/auth/microsoft/callback';
 const enabled = () => !!(TENANT && CID && SECRET);
 const b64u = (b) => Buffer.from(b).toString('base64url');

@@ -1,9 +1,9 @@
 # Security
 
-How Acme CRM protects the client and financial data it holds, what each
+How Brightday Portal protects the client and financial data it holds, what each
 control costs, and what to do when something goes wrong. Everything in the
 "built in" column ships with the app and costs nothing beyond the VPS and
-the Microsoft 365 licences ACME already pays for.
+the Microsoft 365 licences BD already pays for.
 
 ## Threat model
 
@@ -29,7 +29,7 @@ links. Realistic threats, in the order they are likely:
 | Sessions | Random 256-bit token, hashed in the DB, `__Host-` cookie (Secure, HttpOnly, SameSite=Lax), 12 h or 30 d, list and revoke devices, "sign out other devices" on password change | Settings → Security → Signed-in devices | $0 |
 | Encryption at rest | AES-256-GCM on every record, configuration document, MFA secret and log detail before it reaches SQLite. Key from `DATA_KEYS` in the environment, never on the data volume. Versioned keys, rotation tool. Backups and SharePoint copies are therefore ciphertext. | `server/lib/vault.js`, `tools/keygen.js`, `tools/rotate.js` | $0 |
 | Authorization | Five access levels (Admin, Manager, Paraplanner, Client manager, Basic) with a per-function matrix and per-person overrides, enforced server-side: hidden sections are not sent to the browser and writes to them are refused; the "see everyone's records" rule limits which deals, clients and related records a person receives and can change. Policy and routing settings are admin-only. | `server/lib/state.js` | $0 |
-| API keys | `acme_live_…` shown once, stored hashed, scoped (`deals:read`, `deals:write`, `ai:write`, …), revocable | Integrations → API keys | $0 |
+| API keys | `brightday_live_…` shown once, stored hashed, scoped (`deals:read`, `deals:write`, `ai:write`, …), revocable | Integrations → API keys | $0 |
 | Webhooks | Google Ads shared key, Meta HMAC-SHA256 signature check, duplicate rejection | `server/routes/api.js` | $0 |
 | Browser hardening | Content-Security-Policy (no third-party scripts or connections), `frame-ancestors 'none'`, `nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy`, COOP/CORP | `server/index.js` | $0 |
 | Abuse limits | 600 requests/min per IP, 40/min on auth and webhook paths, 5 password-reset requests / 15 min | `server/lib/auth.js` | $0 |
@@ -57,7 +57,7 @@ links. Realistic threats, in the order they are likely:
   family-office data.
 - **No WAF.** Caddy + the app's own limits are enough for a private tool.
   If the login page ever gets hammered, Cloudflare's free tier in front of
-  crm.example.com adds bot filtering and DDoS absorption for $0.
+  portal.brightday.com.au adds bot filtering and DDoS absorption for $0.
 
 ## Operating it
 

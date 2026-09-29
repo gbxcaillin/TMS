@@ -12,10 +12,10 @@ const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) proce
   await p.goto('http://127.0.0.1:3282/', { waitUntil: 'load' });
   await p.evaluate(() => { NET.mode = 'local'; S.loggedIn = true; S.me = 'u1'; S.notifs.forEach((n) => { n.read = true; }); location.hash = '#/dashboard'; route(); });
   await p.waitForTimeout(300);
-  t('no unread: badge hidden, no alert class, plain title', await p.evaluate(() => document.querySelector('#notif-pip').hidden && !document.querySelector('#notif-btn').classList.contains('alert') && document.title === 'Acme CRM'));
+  t('no unread: badge hidden, no alert class, plain title', await p.evaluate(() => document.querySelector('#notif-pip').hidden && !document.querySelector('#notif-btn').classList.contains('alert') && document.title === 'Brightday Portal'));
   await p.evaluate(() => { S.notifs.unshift({ id: 1, text: 'Jordan sent you a message', p: 'Can you check the Harbourline scope?', at: 'now', read: false, go: '#/chat', to: ['u1'] }, { id: 2, text: 'Task assigned: Send the scope', p: 'Sam · due Friday', at: 'now', read: false, go: '#/tasks', to: ['u1'] }); route(); });
   const bell = await p.evaluate(() => { const pip = document.querySelector('#notif-pip'); const cs = getComputedStyle(pip); return { hidden: pip.hidden, n: pip.textContent, alert: document.querySelector('#notif-btn').classList.contains('alert'), title: document.title, bg: cs.backgroundColor, w: pip.offsetWidth, h: pip.offsetHeight }; });
-  t('two unread: red count badge on the bell, alert pulse, title (2)', !bell.hidden && bell.n === '2' && bell.alert && bell.title === '(2) Acme CRM' && bell.bg === 'rgb(180, 70, 63)' && bell.w >= 18 && bell.h >= 18);
+  t('two unread: red count badge on the bell, alert pulse, title (2)', !bell.hidden && bell.n === '2' && bell.alert && bell.title === '(2) Brightday Portal' && bell.bg === 'rgb(180, 70, 63)' && bell.w >= 18 && bell.h >= 18);
   await p.screenshot({ path: OUT + 'attn-bell.jpg', type: 'jpeg', quality: 70, clip: { x: 1300, y: 0, width: 300, height: 60 } });
   // Live arrival: announce() rings the bell and pops a card; clicking it opens the record and marks it read.
   await p.evaluate(() => announce([S.notifs[0]]));
@@ -30,7 +30,7 @@ const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) proce
   await p.evaluate(() => { location.hash = '#/settings/notifications'; route(); }); await p.waitForTimeout(300);
   t('sound button present and off by default', await p.evaluate(() => document.querySelector('#chime-toggle').textContent === 'Sound off'));
   await p.click('#chime-toggle'); await p.waitForTimeout(300);
-  t('sound toggles on and is remembered', await p.evaluate(() => document.querySelector('#chime-toggle').textContent === 'Sound on' && localStorage.getItem('acme-chime') === '1'));
+  t('sound toggles on and is remembered', await p.evaluate(() => document.querySelector('#chime-toggle').textContent === 'Sound on' && localStorage.getItem('brightday-chime') === '1'));
   await p.click('#chime-toggle'); await p.waitForTimeout(200);
   // Email: three panes on the demo mailbox with drag handles.
   await p.evaluate(() => { location.hash = '#/email'; route(); }); await p.waitForTimeout(300);
@@ -41,7 +41,7 @@ const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) proce
   const box = await (await p.$$('.mail .split'))[1].boundingBox();
   await p.mouse.move(box.x + 4, box.y + 200); await p.mouse.down(); await p.mouse.move(box.x + 104, box.y + 200, { steps: 5 }); await p.mouse.move(box.x + 204, box.y + 200, { steps: 5 }); await p.mouse.up();
   await p.waitForTimeout(200);
-  const after = await p.evaluate(() => ({ panes: S.ui.panes, w: document.querySelector('.mail-list').offsetWidth, saved: JSON.parse(localStorage.getItem('acme-crm-v8') || localStorage.getItem('acme-ui') || '{}') }));
+  const after = await p.evaluate(() => ({ panes: S.ui.panes, w: document.querySelector('.mail-list').offsetWidth, saved: JSON.parse(localStorage.getItem('brightday-crm-v8') || localStorage.getItem('brightday-ui') || '{}') }));
   t('drag widens the list to 530 and stores it (' + JSON.stringify(after.panes) + ')', after.w === 530 && after.panes && after.panes.mail3 && after.panes.mail3[1] === 530);
   await p.screenshot({ path: OUT + 'attn-email.jpg', type: 'jpeg', quality: 60 });
   await p.evaluate(() => { location.hash = '#/dashboard'; route(); location.hash = '#/email'; route(); }); await p.waitForTimeout(300);

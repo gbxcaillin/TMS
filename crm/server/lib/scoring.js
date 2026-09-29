@@ -16,7 +16,7 @@ function facts(d) {
 }
 async function scoreLead(d, who = '') {
   const prompt = [
-    'You are scoring an inbound business lead for Acme Advisory, which offers professional services and workplace financial education/wellbeing to businesses of any kind.',
+    'You are scoring an inbound business lead for Brightday, which offers professional services and workplace financial education/wellbeing to businesses of any kind.',
     'Rate how promising the lead is and how urgently to follow up (0 = weak, 100 = drop everything). Weigh fit, buying signals, source quality and how complete the details are.',
     'Return ONLY compact JSON, no prose and no code fences: {"score":<integer 0-100>,"priority":"High"|"Medium"|"Low","rationale":"<one concise sentence>"}',
     '', 'Lead:', facts(d),

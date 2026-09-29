@@ -38,7 +38,8 @@ add(have.bank, want.bank);
 // The short name and slug also live in identifiers (invoice numbers, storage keys, cookie and service names): replaced
 // only as a whole token, never inside a longer word or a base64 string.
 add(have.short, want.short, 'token'); add(title(have.slug), title(want.slug), 'token'); add(have.slug, want.slug, 'token');
-for (const k of ['serif', 'sans', 'mono']) { add(have.fonts[k], want.fonts[k]); add(have.fonts[k].replace(/ /g, '+'), want.fonts[k].replace(/ /g, '+')); }
+// Font names are matched as whole words: a family such as "Inter" must not rewrite identifiers like setInterval.
+for (const k of ['serif', 'sans', 'mono']) { add(have.fonts[k], want.fonts[k], true); add(have.fonts[k].replace(/ /g, '+'), want.fonts[k].replace(/ /g, '+'), true); }
 
 // A name right after an escaped newline in a string ("\\nAlex:") still counts as a whole word.
 const textRe = pairs.length ? new RegExp(pairs.sort((a, b) => b[0].length - a[0].length).map(([f, , b]) => b === 'token' ? `(?:(?<=\\\\[nt])|(?<![A-Za-z0-9]))${esc(f)}(?![A-Za-z0-9+/=])` : b ? `(?:(?<=\\\\[nt])|(?<![A-Za-z0-9_]))${esc(f)}(?![A-Za-z0-9_])` : esc(f)).join('|'), 'g') : null;

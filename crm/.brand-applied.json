@@ -1,23 +1,23 @@
 {
   "_help": "Edit this file, then run: node tools/rebrand.js  (see START-HERE.md). Every value is replaced wherever the current one appears: app, server, emails, PDFs, docs and tests.",
-  "company": "Acme Advisory",
-  "legal": "Acme Advisory Pty Ltd",
-  "product": "Acme CRM",
-  "short": "ACME",
-  "slug": "acme",
-  "monogram": "A",
-  "domain": "example.com",
-  "appHost": "crm.example.com",
-  "sharepointHost": "example.sharepoint.com",
-  "repo": "your-org/your-website",
-  "packageName": "acme-crm-server",
+  "company": "Brightday",
+  "legal": "Brightday Pty Ltd",
+  "product": "Brightday Portal",
+  "short": "BD",
+  "slug": "brightday",
+  "monogram": "B",
+  "domain": "brightday.com.au",
+  "appHost": "portal.brightday.com.au",
+  "sharepointHost": "brightday.sharepoint.com",
+  "repo": "gbxcaillin/TMS",
+  "packageName": "brightday-portal-server",
   "tagline": [
-    "Every client relationship.",
+    "Every client, meeting and task.",
     "In one place."
   ],
   "cities": [
-    "Sydney · Melbourne · Brisbane",
-    "Perth · Adelaide · Auckland"
+    "Financial advice",
+    "Australia"
   ],
   "bank": "BSB 000‑000 · Acc 00 000 0000",
   "people": [
@@ -48,32 +48,32 @@
     }
   ],
   "colors": {
-    "accent": "#3559E0",
-    "accentDeep": "#22389A",
-    "accentInk": "#2A47B8",
-    "accentTint": "#E8EDFC",
-    "accentTint2": "#D0DAF8",
-    "rail": "#0F172A",
-    "rail2": "#1E293B",
+    "accent": "#F50D74",
+    "accentDeep": "#990A4E",
+    "accentInk": "#990A4E",
+    "accentTint": "#FDE7F1",
+    "accentTint2": "#FBCDE1",
+    "rail": "#123559",
+    "rail2": "#1B4470",
     "paper": "#FFFFFF",
-    "soft": "#F5F6F8",
-    "surface2": "#EEF0F4",
-    "surface3": "#E5E8EE",
-    "line": "#E2E5EA",
-    "line2": "#CBD0D8",
-    "ink": "#111827",
-    "ink2": "#4B5563",
-    "ink3": "#8A919C"
+    "soft": "#F4F6FA",
+    "surface2": "#EDF1F6",
+    "surface3": "#E3E9F1",
+    "line": "#DFE5EE",
+    "line2": "#C7D1DE",
+    "ink": "#123559",
+    "ink2": "#3D5573",
+    "ink3": "#7A8BA3"
   },
   "fonts": {
-    "serif": "Source Serif 4",
-    "sans": "Inter",
-    "mono": "JetBrains Mono",
-    "url": "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    "serif": "Ubuntu",
+    "sans": "Manrope",
+    "mono": "Ubuntu Mono",
+    "url": "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@400;500;600;700&family=Ubuntu+Mono:wght@400;700&display=swap"
   },
   "logo": {
-    "mark": "",
-    "light": ""
+    "mark": "brand/brightday-flower.svg",
+    "light": "brand/brightday-logo-light.png"
   },
   "modules": {
     "calendar": true,

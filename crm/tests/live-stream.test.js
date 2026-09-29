@@ -7,7 +7,7 @@ const PORT = 3977;
 const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) process.exitCode = 1; };
 const req = (method, p, { body, cookie, headers = {} } = {}) => new Promise((resolve, reject) => {
   const data = body ? Buffer.from(JSON.stringify(body)) : null;
-  const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}), ...headers } }, (res) => {
+  const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'brightday', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}), ...headers } }, (res) => {
     let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => { let j = {}; try { j = JSON.parse(s); } catch (_) { } resolve({ status: res.statusCode, headers: res.headers, body: j, raw: s }); });
   });
   r.on('error', reject); if (data) r.write(data); r.end();
@@ -31,7 +31,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   // Seed two non-admin users (admins need MFA before /sync) and a settings doc, then boot the server on that data.
   process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const D = require(require('node:path').resolve(__dirname, '..') + '/server/lib/db'); const auth = require(require('node:path').resolve(__dirname, '..') + '/server/lib/auth');
-  for (const [id, email, name] of [['u1', 'jordan@x.com', 'Jordan Lee'], ['u2', 'sam@x.com', 'Sam Rivera']]) D.users.insert({ id, email, name, role: 'Manager', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  for (const [id, email, name] of [['u1', 'jordan@x.com', 'Jordan Lee'], ['u2', 'sam@x.com', 'Sam Rivera']]) D.users.insert({ id, email, name, role: 'Manager', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
   D.kvSet('settings', { notifyPrefs: { events: [], quietFrom: '', quietTo: '' }, security: { mfaRequired: 'none' } });
   D.db.close();
   const srv = spawn('node', ['index.js'], { cwd: require('node:path').resolve(__dirname, '..') + '/server', env: { ...process.env, DATA_DIR: DATA, PORT: String(PORT), ALLOW_UNENCRYPTED: '1', NODE_ENV: 'test' }, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -70,7 +70,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     t('no events while nothing changes; stream still open', quiet === null && !s2.closed);
     // A second tab for the same user gets the same event; both count in admin stats.
     const s2b = stream(c2); await s2b.next();
-    const st = await req('GET', '/live', { cookie: 'acme_session=nope' });
+    const st = await req('GET', '/live', { cookie: 'brightday_session=nope' });
     t('bad cookie rejected', st.status === 401);
     const pA = s2.next(2000), pB = s2b.next(2000);
     await req('POST', '/sync', { cookie: c1, body: { base: 0, ops: [{ col: 'tasks', id: '1', data: { id: 1, title: 'Send the scope', who: ['u2'], by: 'u1', done: false } }], kv: {} } });

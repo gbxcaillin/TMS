@@ -11,7 +11,7 @@ if (!keys.publicKey || !keys.privateKey) {
   if (fs.existsSync(KEYFILE)) keys = JSON.parse(fs.readFileSync(KEYFILE, 'utf8'));
   else { keys = webpush.generateVAPIDKeys(); fs.writeFileSync(KEYFILE, JSON.stringify(keys), { mode: 0o600 }); console.log('[push] generated VAPID keys →', KEYFILE); }
 }
-webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:cc@example.com', keys.publicKey, keys.privateKey);
+webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:cc@brightday.com.au', keys.publicKey, keys.privateKey);
 
 const sIns = db.prepare('INSERT INTO push_subs(endpoint,user_id,device,sub,created_at,failures) VALUES(?,?,?,?,?,0) ON CONFLICT(endpoint) DO UPDATE SET user_id=excluded.user_id, device=excluded.device, sub=excluded.sub, failures=0');
 const sDel = db.prepare('DELETE FROM push_subs WHERE endpoint=?');

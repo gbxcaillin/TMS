@@ -87,7 +87,7 @@ async function ingest(c) {
 }
 async function summarise(rec) {
   const d = rec.deal ? D.getRecord('deals', rec.deal) : null;
-  const prompt = ['Summarise this phone call for a CRM timeline at Acme Advisory. Two sentences on what was discussed and decided, then "Next: " and the follow-ups, in plain Australian English, no em dashes, at most 70 words. Return only the text.', '', d ? `Deal: ${d.practice} (${d.contact || ''})` : '', `Direction: ${rec.direction === 'in' ? 'inbound' : 'outbound'}, ${fmtDur(rec.duration)}`, '', 'Transcript:', String(rec.transcript).slice(0, 12000)].filter(Boolean).join('\n');
+  const prompt = ['Summarise this phone call for a CRM timeline at Brightday. Two sentences on what was discussed and decided, then "Next: " and the follow-ups, in plain Australian English, no em dashes, at most 70 words. Return only the text.', '', d ? `Deal: ${d.practice} (${d.contact || ''})` : '', `Direction: ${rec.direction === 'in' ? 'inbound' : 'outbound'}, ${fmtDur(rec.duration)}`, '', 'Transcript:', String(rec.transcript).slice(0, 12000)].filter(Boolean).join('\n');
   return String(await claude.run(prompt)).replace(/\s+/g, ' ').trim().slice(0, 600);
 }
 // Link an unmatched call to a deal by hand.

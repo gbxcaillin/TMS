@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ACME Claude helper - on-demand `claude -p` over a Unix socket (host side).
+"""BD Claude helper - on-demand `claude -p` over a Unix socket (host side).
 
 The CRM runs in Docker and must NOT hold your Claude credentials. This tiny
 service runs on the host, owns the `claude` binary and your subscription login,
@@ -9,10 +9,10 @@ TCP port, nothing public - the socket file's permissions are the boundary.
 
 Config - env or an env file (CRM_AGENT_ENV, default /root/crm-agent.env):
   CLAUDE_BIN            default /root/.local/bin/claude
-  CLAUDE_HELPER_SOCKET  default /root/acme-claude/claude.sock   (HOST path)
+  CLAUDE_HELPER_SOCKET  default /root/brightday-claude/claude.sock   (HOST path)
   CLAUDE_HELPER_TOKEN   optional shared secret (Bearer) for defence in depth
   CLAUDE_MODEL          default sonnet
-Run it under systemd (deploy/agent/acme-claude-helper.service).
+Run it under systemd (deploy/agent/brightday-claude-helper.service).
 
 Request:  POST / {"prompt": "...", "model": "sonnet"}
 Response: 200 {"text": "..."}  |  4xx/5xx {"error": "..."}
@@ -34,7 +34,7 @@ if os.path.exists(envf):
                 os.environ[m.group(1)] = m.group(2).strip("\"'")
 
 CLAUDE = os.environ.get("CLAUDE_BIN", "/root/.local/bin/claude")
-SOCKPATH = os.environ.get("CLAUDE_HELPER_SOCKET", "/root/acme-claude/claude.sock")
+SOCKPATH = os.environ.get("CLAUDE_HELPER_SOCKET", "/root/brightday-claude/claude.sock")
 TOKEN = os.environ.get("CLAUDE_HELPER_TOKEN", "")
 DEFAULT_MODEL = os.environ.get("CLAUDE_MODEL", "sonnet")
 HOME = os.environ.get("HOME", "/root")

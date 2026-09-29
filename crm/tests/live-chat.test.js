@@ -8,14 +8,14 @@ const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) proce
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => {
   const data = body ? Buffer.from(JSON.stringify(body)) : null;
-  const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(s || '{}') })); });
+  const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'brightday', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(s || '{}') })); });
   r.on('error', reject); if (data) r.write(data); r.end();
 });
 const login = async (email) => (await req('POST', '/auth/login', { body: { email, password: 'pw-1234567890' } })).headers['set-cookie'][0].split(';')[0];
 (async () => {
   process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const D = require(require('node:path').resolve(__dirname, '..') + '/server/lib/db'); const auth = require(require('node:path').resolve(__dirname, '..') + '/server/lib/auth');
-  for (const [id, email, name] of [['u1', 'jordan@x.com', 'Jordan Lee'], ['u2', 'sam@x.com', 'Sam Rivera']]) D.users.insert({ id, email, name, role: 'Manager', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  for (const [id, email, name] of [['u1', 'jordan@x.com', 'Jordan Lee'], ['u2', 'sam@x.com', 'Sam Rivera']]) D.users.insert({ id, email, name, role: 'Manager', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
   D.db.close();
   const srv = spawn('node', ['index.js'], { cwd: require('node:path').resolve(__dirname, '..') + '/server', env: { ...process.env, DATA_DIR: DATA, PORT: String(PORT), ALLOW_UNENCRYPTED: '1', NODE_ENV: 'test' }, stdio: ['ignore', 'pipe', 'pipe'] });
   let log = ''; srv.stdout.on('data', (c) => (log += c)); srv.stderr.on('data', (c) => (log += c));
@@ -52,7 +52,7 @@ const login = async (email) => (await req('POST', '/auth/login', { body: { email
     await R.fill('#chat-form textarea', '');
     // The bell notice arrived with a deep link; following it opens the DM.
     const attn = await R.evaluate(() => ({ card: !!document.querySelector('.toast.notice'), cardText: (document.querySelector('.toast.notice b') || {}).textContent, badge: document.querySelector('#notif-pip').textContent, alert: document.querySelector('#notif-btn').classList.contains('alert'), title: document.title }));
-    t('live arrival: notice card, red count 1 on the bell, title (1)', attn.card && /Jordan sent you a message/.test(attn.cardText) && attn.badge === '1' && attn.alert && attn.title === '(1) Acme CRM');
+    t('live arrival: notice card, red count 1 on the bell, title (1)', attn.card && /Jordan sent you a message/.test(attn.cardText) && attn.badge === '1' && attn.alert && attn.title === '(1) Brightday Portal');
     // Connected-mailbox layout: two panes, conversation takes the rest of the width.
     await R.evaluate(() => { window.fetchMail = () => {}; NET.features.mailbox = true; MAIL.accounts = [{ email: 'sam@x.com' }]; MAIL.loaded = true; location.hash = '#/email'; try { route(); } catch (e) { window.__err = e.message; } });
     await sleep(400);

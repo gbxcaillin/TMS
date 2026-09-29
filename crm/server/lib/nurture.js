@@ -11,7 +11,7 @@ const mail = require('./mail');
 const mailbox = require('./mailbox');
 
 const TZ = 'Australia/Melbourne';
-const BRAND = 'Acme Advisory';
+const BRAND = 'Brightday';
 const rid = () => Date.now() + Math.floor(Math.random() * 1e5);
 const seqs = () => D.listCol('sequences');
 const enrols = () => D.listCol('enrolments');
@@ -27,8 +27,8 @@ function inHours(seq) {
 const dueAt = (startedAt, day) => { const t = new Date(startedAt); t.setDate(t.getDate() + (Number(day) || 0)); return t.toISOString(); };
 
 // The booking link every nurture email must carry: Settings, else BOOKING_URL, else the website's
-// booking page (example.com/book embeds the Microsoft Bookings scheduler, on our own domain).
-const DEFAULT_BOOKING = 'https://example.com/book/';
+// booking page (brightday.com.au/book embeds the Microsoft Bookings scheduler, on our own domain).
+const DEFAULT_BOOKING = 'https://brightday.com.au/book/';
 const bookingUrl = () => String((D.kvGet('settings') || {}).bookingUrl || process.env.BOOKING_URL || DEFAULT_BOOKING).trim();
 // Does the sequence's audience filter (source / service) describe this lead?
 function matchesLead(seq, d) {
@@ -124,7 +124,7 @@ async function sendStep(e, seq, d) {
     if (acct) { try { await mailbox.send(d.owner, acct, { to: d.email, subject, body: `${body}\n\n--\nNot useful? Stop these emails: ${unsub}` }); sent = true; via = acct; } catch (err) { console.error('[nurture] mailbox send failed, falling back:', err.message); } }
   }
   if (!sent) {
-    sent = await mail.send({ to: d.email, subject, title: '', html: `<div style="white-space:pre-wrap">${mail.esc(body)}</div>`, footer: `${BRAND} &middot; You are receiving this because you enquired at example.com. <a href="${unsub}" style="color:#8A919C">Stop these emails</a>.`, kind: 'campaign', unsubscribe: unsub, replyTo: owner.email || undefined });
+    sent = await mail.send({ to: d.email, subject, title: '', html: `<div style="white-space:pre-wrap">${mail.esc(body)}</div>`, footer: `${BRAND} &middot; You are receiving this because you enquired at brightday.com.au. <a href="${unsub}" style="color:#7A8BA3">Stop these emails</a>.`, kind: 'campaign', unsubscribe: unsub, replyTo: owner.email || undefined });
     via = mail.campaignFrom();
   }
   D.putRecord('activity', { id: rid(), deal: d.id, type: 'email', who: '', text: sent ? `Nurture email sent (step ${e.step + 1} of ${steps.length})` : `Nurture email failed (step ${e.step + 1})`, detail: `${subject}${via ? ' · from ' + via : ''}`, at: D.nowIso() }, 'system');
@@ -155,7 +155,7 @@ function templateSteps(service, source) {
   const s = service ? service : 'your enquiry';
   return [
     { day: 0, subject: `Thanks for getting in touch, {{name}}`, body: `Hi {{name}},\n\nThanks for reaching out to ${BRAND} about ${s}. I have your details and will come back to you personally within two business days.\n\nIf it is easier, pick a time that suits you for a 20-minute call here: {{booking}}\n\nKind regards,\n{{sender}}\n${BRAND}` },
-    { day: 3, subject: `One thing most businesses miss with ${s}`, body: `Hi {{name}},\n\nA quick one while it is fresh. When we look at ${s} with a business like {{practice}}, the biggest gains usually come from the basics done consistently rather than anything clever: a clear number to watch each week, one owner for it, and a short monthly review.\n\nOur free tools at https://example.com/tools give you a quick read on where you stand. Takes about five minutes.\n\nHappy to talk it through whenever suits: {{booking}}\n\n{{sender}}\n${BRAND}` },
+    { day: 3, subject: `One thing most businesses miss with ${s}`, body: `Hi {{name}},\n\nA quick one while it is fresh. When we look at ${s} with a business like {{practice}}, the biggest gains usually come from the basics done consistently rather than anything clever: a clear number to watch each week, one owner for it, and a short monthly review.\n\nOur free tools at https://brightday.com.au/tools give you a quick read on where you stand. Takes about five minutes.\n\nHappy to talk it through whenever suits: {{booking}}\n\n{{sender}}\n${BRAND}` },
     { day: 7, subject: `How a business like {{practice}} approached this`, body: `Hi {{name}},\n\nOne example that might be useful. A business of a similar size came to us with the same question about ${s}. We started with a short health check, picked the two changes with the best return, and reviewed them monthly. Within a quarter they had a clear picture and a plan they could actually run.\n\nIf you would like the same kind of starting point, a Health Check is a 45-minute conversation with no obligation. Book one here: {{booking}}\n\n{{sender}}\n${BRAND}` },
     { day: 14, subject: `Should I close the loop, {{name}}?`, body: `Hi {{name}},\n\nI do not want to keep filling your inbox. If ${s} is still on the list, grab a time here and I will call: {{booking}}\n\nIf the timing is wrong, no problem at all, just say so and I will leave it there.\n\nEither way, thanks for considering ${BRAND}.\n\n{{sender}}` },
   ].map((x) => ({ ...x, source }));

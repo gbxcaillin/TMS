@@ -28,18 +28,18 @@ top and shows up as *"Claude scored lead N / 100"* on the lead timeline.
    `lead-scorer`, scopes **`deals:read`** and **`ai:write`**. Copy it once.
 2. **Config file** on the host (keeps the key out of cron and shell history):
    ```bash
-   echo 'CRM_API_KEY=acme_live_your_key_here' > /root/crm-agent.env
+   echo 'CRM_API_KEY=brightday_live_your_key_here' > /root/crm-agent.env
    echo 'MODEL=sonnet' >> /root/crm-agent.env
    chmod 600 /root/crm-agent.env
    ```
-   `CRM_BASE` defaults to `https://crm.example.com` (the host reaches the CRM through
+   `CRM_BASE` defaults to `https://portal.brightday.com.au` (the host reaches the CRM through
    Caddy). **Do not** use `http://localhost:3000` - on this box that's a different
    app, not the CRM.
 3. **Smoke test** (dry run - scores are logged, nothing written back):
    ```bash
    DRY_RUN=1 CRM_AGENT_ENV=/root/crm-agent.env python3 /root/crm/deploy/agent/score-leads.py
    ```
-   With no new leads it prints `0 new lead(s)`; submit any tool on example.com to
+   With no new leads it prints `0 new lead(s)`; submit any tool on brightday.com.au to
    create one, then re-run and you'll see a `-> NN (Priority) rationale` line per
    unscored new lead. Drop `DRY_RUN=1` to write the scores for real.
 
@@ -62,7 +62,7 @@ and add:
 | Var | Default | Notes |
 |---|---|---|
 | `CRM_API_KEY` | *(required)* | CRM key with `deals:read` + `ai:write`. |
-| `CRM_BASE` | `https://crm.example.com` | Reaches the CRM via Caddy. Not `localhost:3000`. |
+| `CRM_BASE` | `https://portal.brightday.com.au` | Reaches the CRM via Caddy. Not `localhost:3000`. |
 | `CLAUDE_BIN` | `/root/.local/bin/claude` | Path to the Claude Code binary. |
 | `MODEL` | `sonnet` | `sonnet` (balanced), `opus` (best), `haiku` (cheapest). |
 | `SINCE_DAYS` | `14` | Only score leads created within N days (bounds the first run). |
@@ -97,20 +97,20 @@ container mounts. No API key, no TCP port, nothing public.
 
 1. **Socket dir on the host** (the helper creates the socket here):
    ```bash
-   mkdir -p /root/acme-claude
+   mkdir -p /root/brightday-claude
    ```
 2. **Config** - the helper reuses `/root/crm-agent.env`. Make sure it has (add if
    missing):
    ```bash
-   echo 'CLAUDE_HELPER_SOCKET=/root/acme-claude/claude.sock' >> /root/crm-agent.env   # HOST path
+   echo 'CLAUDE_HELPER_SOCKET=/root/brightday-claude/claude.sock' >> /root/crm-agent.env   # HOST path
    echo 'CLAUDE_MODEL=sonnet' >> /root/crm-agent.env
    ```
 3. **Run the helper as a service:**
    ```bash
-   cp /root/crm/deploy/agent/acme-claude-helper.service /etc/systemd/system/
+   cp /root/crm/deploy/agent/brightday-claude-helper.service /etc/systemd/system/
    systemctl daemon-reload
-   systemctl enable --now acme-claude-helper
-   systemctl status acme-claude-helper --no-pager     # active, "listening on …/claude.sock"
+   systemctl enable --now brightday-claude-helper
+   systemctl status brightday-claude-helper --no-pager     # active, "listening on …/claude.sock"
    ```
 4. **Mount the socket into the CRM container** - in
    `/root/familyoffice/docker-compose.yml`, under the **crm** service, add the
@@ -118,15 +118,15 @@ container mounts. No API key, no TCP port, nothing public.
    (`.env.production`):
    ```yaml
        volumes:
-         - /root/acme-claude:/run/acme-claude          # add this line
+         - /root/brightday-claude:/run/brightday-claude          # add this line
    ```
    ```bash
-   echo 'CLAUDE_HELPER_SOCKET=/run/acme-claude/claude.sock' >> /root/crm/.env.production   # CONTAINER path
+   echo 'CLAUDE_HELPER_SOCKET=/run/brightday-claude/claude.sock' >> /root/crm/.env.production   # CONTAINER path
    echo 'CLAUDE_MODEL=sonnet' >> /root/crm/.env.production
    cd /root/familyoffice && docker compose up -d --force-recreate crm
    ```
-   Note the two different socket paths: `/root/acme-claude/claude.sock` on the host
-   (helper), `/run/acme-claude/claude.sock` inside the container (CRM).
+   Note the two different socket paths: `/root/brightday-claude/claude.sock` on the host
+   (helper), `/run/brightday-claude/claude.sock` inside the container (CRM).
 5. **Verify:** open a lead in the CRM and click **Re-score** - it should score the
    lead live and log "Claude scored lead N / 100". If the buttons say
    "not set up", the container can't see the socket (check the mount and
@@ -139,4 +139,4 @@ Optional: set `CLAUDE_HELPER_TOKEN` to the same value in both `/root/crm-agent.e
 
 - The helper only runs `claude -p` when a button is clicked - no cron, no polling.
 - Same subscription usage/login notes as the scorer above apply.
-- Logs: `journalctl -u acme-claude-helper -f`.
+- Logs: `journalctl -u brightday-claude-helper -f`.

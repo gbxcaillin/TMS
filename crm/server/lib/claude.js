@@ -4,7 +4,7 @@
 // mounted Unix socket and gets text back. Off unless CLAUDE_HELPER_SOCKET is set.
 const http = require('node:http');
 
-const SOCKET = process.env.CLAUDE_HELPER_SOCKET || '';   // container path, e.g. /run/acme-claude/claude.sock
+const SOCKET = process.env.CLAUDE_HELPER_SOCKET || '';   // container path, e.g. /run/brightday-claude/claude.sock
 const TOKEN = process.env.CLAUDE_HELPER_TOKEN || '';
 const DEFAULT_MODEL = process.env.CLAUDE_MODEL || 'sonnet';
 

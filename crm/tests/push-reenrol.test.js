@@ -7,7 +7,7 @@ const ROOT = require('node:path').resolve(__dirname, '..') + '';
 const DATA = fs.mkdtempSync(path.join(os.tmpdir(), 'push-resub-'));
 const PORT = 3993; const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = (n, ok) => { console.log((ok ? 'PASS ' : 'FAIL ') + n); if (!ok) process.exitCode = 1; };
-const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'acme', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(s || '{}') })); }); r.on('error', reject); if (data) r.write(data); r.end(); });
+const req = (method, p, { body, cookie } = {}) => new Promise((resolve, reject) => { const data = body ? Buffer.from(JSON.stringify(body)) : null; const r = http.request({ host: '127.0.0.1', port: PORT, method, path: '/api/v1' + p, headers: { 'x-requested-with': 'brightday', ...(cookie ? { cookie } : {}), ...(data ? { 'content-type': 'application/json', 'content-length': data.length } : {}) } }, (res) => { let s = ''; res.on('data', (c) => (s += c)); res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(s || '{}') })); }); r.on('error', reject); if (data) r.write(data); r.end(); });
 // Fake the browser side: permission state and a push manager whose subscription can be present or missing.
 const fakeBrowser = (permission, hasSub) => `(() => {
   window.__calls = [];
@@ -22,7 +22,7 @@ const fakeBrowser = (permission, hasSub) => `(() => {
 (async () => {
   process.env.DATA_DIR = DATA; process.env.ALLOW_UNENCRYPTED = '1';
   const D = require(ROOT + '/server/lib/db'); const auth = require(ROOT + '/server/lib/auth');
-  D.users.insert({ id: 'u2', email: 'sam@x.com', name: 'Sam Rivera', role: 'Admin', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword('pw-1234567890') });
+  D.users.insert({ id: 'u2', email: 'sam@x.com', name: 'Sam Rivera', role: 'Admin', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword('pw-1234567890') });
   D.kvSet('settings', { notifyPrefs: { events: [] }, security: { mfaRequired: 'none' } }); // an initialised workspace (a manager cannot set one up)
   D.db.close();
   const srv = spawn('node', ['index.js'], { cwd: ROOT + '/server', env: { ...process.env, DATA_DIR: DATA, PORT: String(PORT), ALLOW_UNENCRYPTED: '1', NODE_ENV: 'test' }, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -49,11 +49,11 @@ const fakeBrowser = (permission, hasSub) => `(() => {
     {
       const ctx3 = await b.newContext(); await ctx3.addCookies([{ name: c.split('=')[0], value: c.split('=')[1], domain: '127.0.0.1', path: '/' }]); const p3 = await ctx3.newPage(); await p3.addInitScript(fakeBrowser('default', false));
       await p3.goto(`http://127.0.0.1:${PORT}/#/dashboard`, { waitUntil: 'domcontentloaded' });
-      await p3.waitForFunction(() => typeof S === 'object' && S && S.loggedIn && sessionStorage.getItem('acme-push-nag') === '1', null, { timeout: 10000 });
+      await p3.waitForFunction(() => typeof S === 'object' && S && S.loggedIn && sessionStorage.getItem('brightday-push-nag') === '1', null, { timeout: 10000 });
       const st3 = await p3.evaluate(() => ({ calls: window.__calls, had: (S.settings.push.devices || []).some((d) => d.user === S.me) }));
       t('permission lost: no subscribe attempt, the session is marked as told (' + st3.calls.join(',') + ')', st3.calls.join(',') === 'get' && st3.had);
       // The message itself: clear the session mark and run the check again with toast() observed.
-      const shown = await p3.evaluate(async () => { sessionStorage.removeItem('acme-push-nag'); const seen = []; const o = window.toast; window.toast = (m) => { seen.push(m); o(m); }; await ensurePush(); await ensurePush(); window.toast = o; return seen; });
+      const shown = await p3.evaluate(async () => { sessionStorage.removeItem('brightday-push-nag'); const seen = []; const o = window.toast; window.toast = (m) => { seen.push(m); o(m); }; await ensurePush(); await ensurePush(); window.toast = o; return seen; });
       t('says push is off on this device, once per session', shown.length === 1 && /Push alerts are off on this device/.test(shown[0]));
       await ctx3.close();
     }

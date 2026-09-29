@@ -3,7 +3,7 @@
 // Needs an Azure app registration with application permissions:
 //   Sites.Selected (or Sites.ReadWrite.All) for the client library, Bookings.Read.All for Bookings.
 const T = process.env.MS_TENANT_ID, C = process.env.MS_CLIENT_ID, S = process.env.MS_CLIENT_SECRET;
-const SP_SITE = process.env.SP_SITE || 'example.sharepoint.com:/sites/Clients';
+const SP_SITE = process.env.SP_SITE || 'brightday.sharepoint.com:/sites/Clients';
 const SP_LIBRARY = process.env.SP_LIBRARY || 'Client Files';
 // Optional base folder within the library to nest per-client folders under (e.g. "Client Files").
 const SP_FOLDER = (process.env.SP_FOLDER || '').replace(/^\/+|\/+$/g, '');

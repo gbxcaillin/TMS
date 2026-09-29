@@ -36,7 +36,7 @@ const BASE = mail.BASE;
 const LIMITED_OK = /^\/(bootstrap|auth\/(logout|mfa\/setup|mfa\/enable|password|sessions.*))$/;
 function session(req, { allowLimited = false } = {}) {
   const u = auth.sessionUser(req); if (!u) throw err(401, 'Sign in required');
-  if (req.method !== 'GET' && req.headers['x-requested-with'] !== 'acme') throw err(403, 'Missing X-Requested-With header');
+  if (req.method !== 'GET' && req.headers['x-requested-with'] !== 'brightday') throw err(403, 'Missing X-Requested-With header');
   if (!allowLimited && !LIMITED_OK.test(req.apiPath || '') && (req.session.limited || (state.mfaRequiredFor(u) && !u.totp_secret && req.session.via !== 'sso'))) throw err(403, 'Set up two-factor authentication to continue', { mfaSetup: true });
   u.ip = auth.clientIp(req);
   const fn = state.access.pathFunction(req.apiPath); if (fn && !state.perms(u)[fn]) throw err(403, 'Your access level does not include ' + (state.access.FUNCTIONS.find((f) => f.id === fn) || { label: fn }).label);
@@ -69,7 +69,7 @@ r.post('/auth/setup', async (req, res) => {
   const p = auth.passwordProblem(b.password); if (p) throw err(400, p);
   if (!b.email || !/^[^@\s]+@[^@\s]+$/.test(b.email)) throw err(400, 'Valid email required');
   const id = 'u1';
-  D.users.insert({ id, email: String(b.email).toLowerCase(), name: String(b.name || 'Admin').slice(0, 80), role: 'Admin', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword(b.password) });
+  D.users.insert({ id, email: String(b.email).toLowerCase(), name: String(b.name || 'Admin').slice(0, 80), role: 'Admin', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword(b.password) });
   audit(req, id, 'workspace.setup', b.email, '');
   const f = finishLogin(req, res, D.users.get(id), { remember: true, via: 'password' });
   send(res, 200, { ok: true, mfaSetup: f.mfaSetup }, { 'set-cookie': f.cookie });
@@ -127,7 +127,7 @@ r.post('/auth/forgot', async (req, res) => {
   if (u && u.status === 'Active') {
     const t = auth.issueToken(u.id, 'reset', 1);
     audit(req, u.id, 'password.forgot', u.email, '');
-    await mail.send({ to: u.email, subject: 'Reset your Acme Advisory CRM password', title: 'Reset your password', html: `<p>Hi ${mail.esc(u.name.split(' ')[0])}, someone asked to reset the password for this account. The link works once and expires in 24 hours. If it wasn't you, ignore this email.</p>`, cta: { label: 'Choose a new password', url: `${BASE}/#/reset/${t}` }, kind: 'reset' });
+    await mail.send({ to: u.email, subject: 'Reset your Brightday CRM password', title: 'Reset your password', html: `<p>Hi ${mail.esc(u.name.split(' ')[0])}, someone asked to reset the password for this account. The link works once and expires in 24 hours. If it wasn't you, ignore this email.</p>`, cta: { label: 'Choose a new password', url: `${BASE}/#/reset/${t}` }, kind: 'reset' });
   }
   ok(res, { ok: true, sent: !!(u && mail.enabled()) });
 });
@@ -147,7 +147,7 @@ r.post('/auth/mfa/setup', async (req, res) => {
   const secret = totp.newSecret(); const m = D.users.mfa(u.id);
   D.users.setMfa(u.id, { secret: m.secret, pending: secret, codes: m.codes });
   const url = totp.otpauthUrl(secret, u.email);
-  ok(res, { secret, url, qr: await QR.toDataURL(url, { margin: 1, width: 200, color: { dark: '#1E293B', light: '#FFFFFF' } }) });
+  ok(res, { secret, url, qr: await QR.toDataURL(url, { margin: 1, width: 200, color: { dark: '#1B4470', light: '#FFFFFF' } }) });
 });
 r.post('/auth/mfa/enable', async (req, res) => {
   const u = session(req, { allowLimited: true }); const b = await readJson(req);
@@ -229,7 +229,7 @@ r.post('/sync', async (req, res) => { const u = session(req); const b = await re
 async function sendInvite(u, by) {
   const t = auth.issueToken(u.id, 'invite', 7);
   const url = `${BASE}/#/invite/${t}`;
-  const sent = await mail.send({ to: u.email, subject: `${by.name} invited you to the Acme Advisory CRM`, title: 'You have been invited', html: `<p>Hi ${mail.esc(u.name.split(' ')[0])}, ${mail.esc(by.name)} added you to the Acme Advisory pipeline workspace as <b>${mail.esc(u.role)}</b>. Choose a password to get started. The link expires in 7 days.</p>`, cta: { label: 'Set your password', url }, kind: 'invite' });
+  const sent = await mail.send({ to: u.email, subject: `${by.name} invited you to the Brightday CRM`, title: 'You have been invited', html: `<p>Hi ${mail.esc(u.name.split(' ')[0])}, ${mail.esc(by.name)} added you to the Brightday pipeline workspace as <b>${mail.esc(u.role)}</b>. Choose a password to get started. The link expires in 7 days.</p>`, cta: { label: 'Set your password', url }, kind: 'invite' });
   return { url, sent };
 }
 r.post('/users', async (req, res) => {
@@ -237,7 +237,7 @@ r.post('/users', async (req, res) => {
   const email = String(b.email || '').trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+$/.test(email)) throw err(400, 'Valid email required');
   if (D.users.byEmail(email)) throw err(409, 'A user with that email already exists');
-  const colors = D.kvGet('colors') || ['#3559E0', '#B4463F', '#3E6C9B', '#B0812A', '#6E5E9B', '#7A8B2E', '#8B4A6E', '#3F8A8A'];
+  const colors = D.kvGet('colors') || ['#F50D74', '#B4463F', '#3E6C9B', '#B0812A', '#6E5E9B', '#7A8B2E', '#8B4A6E', '#3F8A8A'];
   const used = D.users.all().map((x) => x.color);
   const u = { id: D.users.newId(), email, name: String(b.name || email.split('@')[0]).slice(0, 80), role: state.access.normRole(b.role) || state.access.roleOf(((D.kvGet('settings') || {}).access || {}).defaultLevel), perms: state.access.cleanPerms(b.perms), status: 'Invited', color: colors.find((c) => !used.includes(c)) || colors[used.length % colors.length], focus: String(b.focus || '').slice(0, 120) };
   D.users.insert(u);
@@ -246,7 +246,7 @@ r.post('/users', async (req, res) => {
   ok(res, { user: D.users.public(D.users.get(u.id)), inviteUrl: inv.url, emailed: inv.sent });
 });
 r.post('/users/:id/invite', async (req, res) => { const me = admin(req); const u = D.users.get(req.params.id); if (!u) throw err(404, 'No such user'); if (u.status === 'Active' && u.pw_hash) throw err(400, 'User is already active'); const inv = await sendInvite(u, me); ok(res, { inviteUrl: inv.url, emailed: inv.sent }); });
-r.post('/users/:id/reset', async (req, res) => { admin(req); const u = D.users.get(req.params.id); if (!u) throw err(404, 'No such user'); const t = auth.issueToken(u.id, 'reset', 1); const url = `${BASE}/#/reset/${t}`; const sent = await mail.send({ to: u.email, subject: 'Reset your Acme Advisory CRM password', title: 'Reset your password', html: '<p>An admin issued a password reset for your account. The link works once and expires in 24 hours.</p>', cta: { label: 'Choose a new password', url }, kind: 'reset' }); ok(res, { resetUrl: url, emailed: sent }); });
+r.post('/users/:id/reset', async (req, res) => { admin(req); const u = D.users.get(req.params.id); if (!u) throw err(404, 'No such user'); const t = auth.issueToken(u.id, 'reset', 1); const url = `${BASE}/#/reset/${t}`; const sent = await mail.send({ to: u.email, subject: 'Reset your Brightday CRM password', title: 'Reset your password', html: '<p>An admin issued a password reset for your account. The link works once and expires in 24 hours.</p>', cta: { label: 'Choose a new password', url }, kind: 'reset' }); ok(res, { resetUrl: url, emailed: sent }); });
 
 /* ---------- API keys ---------- */
 r.post('/keys', async (req, res) => { const me = admin(req); const b = await readJson(req); if (!b.name) throw err(400, 'Name required'); const scopes = (Array.isArray(b.scopes) ? b.scopes : []).filter((s) => ['deals:read', 'deals:write', 'contacts:write', 'files:read', 'ai:write', 'subscribers:write'].includes(s)); const k = auth.createApiKey(String(b.name).slice(0, 60), scopes.length ? scopes : ['deals:read'], me.id); audit(req, me.id, 'key.create', b.name, scopes.join(' ')); ok(res, { id: k.id, key: k.key, keys: auth.listApiKeys() }); });
@@ -265,7 +265,7 @@ r.get('/analytics/summary', async (req, res) => { session(req); ok(res, await cl
 r.get('/push/key', (req, res) => ok(res, { publicKey: push.publicKey }));
 r.post('/push/subscribe', async (req, res) => { const u = session(req); const b = await readJson(req); push.subscribe(u.id, b.device, b.subscription); ok(res, { devices: push.devices() }); });
 r.post('/push/unsubscribe', async (req, res) => { session(req); const b = await readJson(req); if (b.endpoint) push.unsubscribe(b.endpoint); ok(res, { devices: push.devices() }); });
-r.post('/push/test', async (req, res) => { const u = session(req); const n = await push.sendToUser(u.id, { title: 'Acme Advisory', body: 'Push is working on this device.', url: '#/settings/notifications', kind: 'system', id: 'test' }); ok(res, { sent: n }); });
+r.post('/push/test', async (req, res) => { const u = session(req); const n = await push.sendToUser(u.id, { title: 'Brightday', body: 'Push is working on this device.', url: '#/settings/notifications', kind: 'system', id: 'test' }); ok(res, { sent: n }); });
 
 /* ---------- leads API (Claude agent, Zapier, ads platforms) ---------- */
 const dealView = (d) => ({ ...d, campaign: (D.kvGet('campaigns') || {})[d.id] || '' });
@@ -338,10 +338,10 @@ r.post('/leads/:id/ai', async (req, res) => {
   if (b.task === 'score') return ok(res, await scoring.scoreLead(d, u.id));
 
   if (b.task === 'draft' || b.task === 'reply') {
-    const common = `Keep it professional, warm and specific, under 150 words. Return ONLY the email body - no subject line, no preamble, no markdown. Sign off as: ${u.name}, Acme Advisory.`;
+    const common = `Keep it professional, warm and specific, under 150 words. Return ONLY the email body - no subject line, no preamble, no markdown. Sign off as: ${u.name}, Brightday.`;
     const prompt = b.task === 'reply'
-      ? ['Draft a reply email on behalf of Acme Advisory to the message below.', common, '', 'Lead:', facts, '', 'Message to reply to:', String(b.context || '').slice(0, 1500)].join('\n')
-      : ['Draft a follow-up email on behalf of Acme Advisory to this lead, appropriate to their pipeline stage.', common, '', 'Lead:', facts].join('\n');
+      ? ['Draft a reply email on behalf of Brightday to the message below.', common, '', 'Lead:', facts, '', 'Message to reply to:', String(b.context || '').slice(0, 1500)].join('\n')
+      : ['Draft a follow-up email on behalf of Brightday to this lead, appropriate to their pipeline stage.', common, '', 'Lead:', facts].join('\n');
     const draft = (await claude.run(prompt)).trim();
     return ok(res, { draft });
   }
@@ -484,7 +484,7 @@ r.post('/files/reconcile', async (req, res) => {
 r.post('/newsletter/render', async (req, res) => { session(req); const b = await readJson(req); ok(res, { html: newsletter.render(b.data || b) }); });
 r.post('/newsletter/draft', async (req, res) => {
   const u = session(req); const b = await readJson(req);
-  ok(res, await newsletter.draft({ topic: String(b.topic || '').slice(0, 200), notes: String(b.notes || ''), sender: { name: u.name, role: u.role === 'Admin' ? 'Acme Advisory' : u.role } }));
+  ok(res, await newsletter.draft({ topic: String(b.topic || '').slice(0, 200), notes: String(b.notes || ''), sender: { name: u.name, role: u.role === 'Admin' ? 'Brightday' : u.role } }));
 });
 // Send the rendered issue to yourself only, with a dummy unsubscribe link, before the real send.
 r.post('/newsletter/test', async (req, res) => {
@@ -514,7 +514,7 @@ r.post('/subscribers/sends/:id/retry', (req, res) => { const me = admin(req); co
 r.delete('/subscribers/sends/:id', (req, res) => { const me = admin(req); const out = mailing.deleteSend(Number(req.params.id)); if (out.error) throw err(400, out.error); audit(req, me.id, 'mailing.delete', 'send #' + req.params.id, ''); ok(res, out); });
 // Small public page for the confirm / unsubscribe links (no app chrome, no auth).
 function publicPage(res, heading, msg) {
-  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${mail.esc(heading)} · ACME</title></head><body style="margin:0;background:#F5F6F8;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#1E293B"><div style="max-width:460px;margin:14vh auto;background:#FFFFFF;border:1px solid #E4DFD3;padding:34px 28px;text-align:center"><span style="display:inline-block;border:1.5px solid #1E293B;padding:3px 7px;font-weight:700;letter-spacing:.08em;font-size:12px">ACME</span><h1 style="font-weight:400;font-size:23px;margin:18px 0 10px;font-family:Georgia,serif">${mail.esc(heading)}</h1><p style="font-size:14px;line-height:1.6;color:#4B5563;margin:0">${msg}</p></div></body></html>`;
+  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${mail.esc(heading)} · BD</title></head><body style="margin:0;background:#F4F6FA;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#1B4470"><div style="max-width:460px;margin:14vh auto;background:#FFFFFF;border:1px solid #E4DFD3;padding:34px 28px;text-align:center"><span style="display:inline-block;border:1.5px solid #1B4470;padding:3px 7px;font-weight:700;letter-spacing:.08em;font-size:12px">BD</span><h1 style="font-weight:400;font-size:23px;margin:18px 0 10px;font-family:Georgia,serif">${mail.esc(heading)}</h1><p style="font-size:14px;line-height:1.6;color:#3D5573;margin:0">${msg}</p></div></body></html>`;
   res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
   res.end(html);
 }
@@ -522,7 +522,7 @@ function publicPage(res, heading, msg) {
 r.get('/subscribe/confirm/:token', (req, res) => {
   const s = mailing.confirm(req.params.token);
   if (s) D.audit('system', auth.clientIp(req), 'mailing.confirm', s.email, '');
-  publicPage(res, s ? 'You are subscribed' : 'Link not valid', s ? `${mail.esc(s.email)} is confirmed. You will hear from us occasionally, and you can unsubscribe from any email.` : 'This confirmation link is not valid. Please sign up again at example.com.');
+  publicPage(res, s ? 'You are subscribed' : 'Link not valid', s ? `${mail.esc(s.email)} is confirmed. You will hear from us occasionally, and you can unsubscribe from any email.` : 'This confirmation link is not valid. Please sign up again at brightday.com.au.');
 });
 // Public unsubscribe from an email link (GET), plus RFC 8058 one-click (POST from Gmail/Yahoo/
 // Outlook's unsubscribe button, body "List-Unsubscribe=One-Click"). Neither needs auth or CSRF.
@@ -587,7 +587,7 @@ r.post('/sequences/draft', async (req, res) => {
   const count = Math.min(6, Math.max(2, Number(b.count) || 4));
   if (!claude.enabled()) return ok(res, { steps: nurture.templateSteps(service, source).slice(0, count), via: 'template' });
   const prompt = [
-    `You write nurture email sequences for Acme Advisory (professional services and workplace financial education/wellbeing for businesses of any kind, Australia). Author: ${u.name || 'a consultant'}.`,
+    `You write nurture email sequences for Brightday (professional services and workplace financial education/wellbeing for businesses of any kind, Australia). Author: ${u.name || 'a consultant'}.`,
     `Write a ${count}-step follow-up sequence for a lead who enquired${service ? ' about "' + service + '"' : ''}${source ? ' via ' + source : ''}.${goal ? ' Goal: ' + goal : ' Goal: book a 45-minute Health Check call.'}`,
     'Rules: plain text bodies (no HTML, no markdown), each under 120 words, warm, specific, no hype, one clear ask per email, sign off with {{sender}}. Every email must include {{booking}} (a scheduling link) as the call to action, e.g. "Pick a time here: {{booking}}". Use {{name}} for the first name and {{practice}} for the business name. Space the steps over about two weeks (day offsets from enrolment, first is 0). The last step should make it easy to say no.',
     'Return ONLY compact JSON, no prose, no code fences: {"steps":[{"day":<int>,"subject":"...","body":"..."}]}',
@@ -642,8 +642,8 @@ r.post('/invoices/:id/send', async (req, res) => {
   const buf = pdf.invoicePdf({ ...inv, status: 'Sent' }, calc, s);
   if (graph.enabled()) { try { const item = await graph.upload(graph.SP_INVOICE_FOLDER, invPdfName(inv), buf); inv.spId = item.id; inv.spUrl = item.webUrl; } catch (e) { console.error('[invoice] SharePoint save failed:', e.message); } }
   const first = mail.esc(String(inv.client.contact || 'there').split(' ')[0]);
-  const html = `<p>Hi ${first},</p><p>Please find attached tax invoice <b>${mail.esc(inv.number)}</b> for <b>${invMoney(calc.total)}</b> inc GST, due <b>${mail.esc(String(inv.due))}</b>.</p>${s.bank ? `<p>Payment details: ${mail.esc(s.bank)}</p>` : ''}<p>Please reply if you need anything changed.</p><p>${mail.esc((D.users.get(u.id) || {}).name || 'Acme Advisory')}<br>Acme Advisory</p>`;
-  const sent = await mail.send({ to: inv.client.email, subject: `${inv.number} — Tax invoice from Acme Advisory`, title: 'Tax invoice ' + inv.number, html, attachments: [{ filename: `${graph.safe(inv.number)}.pdf`, content: buf, contentType: 'application/pdf' }], footer: s.footer ? mail.esc(s.footer) : undefined, kind: 'invoice' });
+  const html = `<p>Hi ${first},</p><p>Please find attached tax invoice <b>${mail.esc(inv.number)}</b> for <b>${invMoney(calc.total)}</b> inc GST, due <b>${mail.esc(String(inv.due))}</b>.</p>${s.bank ? `<p>Payment details: ${mail.esc(s.bank)}</p>` : ''}<p>Please reply if you need anything changed.</p><p>${mail.esc((D.users.get(u.id) || {}).name || 'Brightday')}<br>Brightday</p>`;
+  const sent = await mail.send({ to: inv.client.email, subject: `${inv.number} — Tax invoice from Brightday`, title: 'Tax invoice ' + inv.number, html, attachments: [{ filename: `${graph.safe(inv.number)}.pdf`, content: buf, contentType: 'application/pdf' }], footer: s.footer ? mail.esc(s.footer) : undefined, kind: 'invoice' });
   if (!sent) throw err(502, 'The email could not be sent (check server mail settings)');
   inv.status = 'Sent'; inv.sentAt = D.nowIso(); D.putRecord('invoices', inv, u.id);
   audit(req, u.id, 'invoice.send', inv.number, inv.client.email);
@@ -716,7 +716,7 @@ r.post('/email/send', async (req, res) => {
   const subject = String(b.subject || '(no subject)').slice(0, 200);
   const html = `<div style="white-space:pre-wrap;font-size:14px;line-height:1.55">${mail.esc(String(b.body || ''))}</div>`;
   const me = D.users.get(u.id) || {};
-  const sent = await mail.send({ to, subject, title: '', html, footer: mail.esc((me.name ? me.name + ' · ' : '') + 'Acme Advisory'), kind: 'outbound' });
+  const sent = await mail.send({ to, subject, title: '', html, footer: mail.esc((me.name ? me.name + ' · ' : '') + 'Brightday'), kind: 'outbound' });
   if (!sent) throw err(502, 'The email could not be sent (check server mail settings)');
   audit(req, u.id, 'email.send', to, subject);
   ok(res, { sent: true, thread: logOutbound(u, to, subject, String(b.body || ''), b) });
@@ -814,8 +814,8 @@ r.post('/mail/draft', async (req, res) => {
   if (!mailbox.listFor(u.id).some((a) => a.email === acct)) throw err(400, 'That mailbox is not connected to your account');
   const m = await mailbox.message(u.id, acct, b.id); const me = D.users.get(u.id) || {};
   const first = String(m.fromName || 'there').split(' ')[0];
-  if (!claude.enabled()) return ok(res, { draft: `Hi ${first},\n\nThanks for your email.\n\n\n\nKind regards,\n${me.name || ''}\nAcme Advisory` });
-  const prompt = `You are ${me.name || 'a consultant'} at Acme Advisory (professional services and workplace financial education for businesses). Draft a concise, warm, professional reply to the email below. Output ONLY the reply body - no subject line, no preamble, no code fences.\n\nFrom: ${m.fromName} <${m.from}>\nSubject: ${m.subject}\n\n${String(m.text || '').slice(0, 4000)}`;
+  if (!claude.enabled()) return ok(res, { draft: `Hi ${first},\n\nThanks for your email.\n\n\n\nKind regards,\n${me.name || ''}\nBrightday` });
+  const prompt = `You are ${me.name || 'a consultant'} at Brightday (professional services and workplace financial education for businesses). Draft a concise, warm, professional reply to the email below. Output ONLY the reply body - no subject line, no preamble, no code fences.\n\nFrom: ${m.fromName} <${m.from}>\nSubject: ${m.subject}\n\n${String(m.text || '').slice(0, 4000)}`;
   try { ok(res, { draft: String(await claude.run(prompt) || '').trim() }); }
   catch (e) { ok(res, { draft: `Hi ${first},\n\nThanks for your email.\n\n\n\nKind regards,\n${me.name || ''}` }); }
 });
@@ -896,7 +896,7 @@ const nv = (v, suf = '%') => (v == null || v === '' || isNaN(v) ? 'n/a' : Number
 function secFacts(x) { return `${x.t} · ${x.name} · ${x.kind} · ${x.cls} · price ${x.price}${x.ccy ? ' ' + x.ccy : ''} · 1y ${pct(x.ret && x.ret.y1)} · 3y ${pct(x.ret && x.ret.y3)} p.a. · 5y ${pct(x.ret && x.ret.y5)} p.a. · vol ${nv(x.vol)} · max drawdown ${nv(x.mdd)} · yield ${nv(x.yld)}${x.frank ? ' (' + x.frank + '% franked)' : ''} · fee ${nv(x.mer)}${x.beta != null && x.beta !== '' ? ' · beta ' + x.beta : ''}${x.pe ? ' · P/E ' + x.pe : ''}${x.mcap ? ' · size ' + x.mcap : ''}${x.sector ? ' · sector ' + x.sector : ''}`; }
 function peersOf(sec) { return D.listCol('securities').filter((x) => x.t !== sec.t && x.cls === sec.cls).sort((a, b) => ((b.ret && b.ret.y5) || -99) - ((a.ret && a.ret.y5) || -99)).slice(0, 6); }
 function templateNote(x) {
-  const role = x.vol > 18 ? 'satellite (growth sleeves only, single-name weight under 5%)' : (x.ret && x.ret.y1 < 0) ? 'hold, re-check the thesis before adding to income models' : 'core holding across the ACME models';
+  const role = x.vol > 18 ? 'satellite (growth sleeves only, single-name weight under 5%)' : (x.ret && x.ret.y1 < 0) ? 'hold, re-check the thesis before adding to income models' : 'core holding across the BD models';
   return `${x.name} (${x.t})\n\nWhat it is: ${x.desc || x.kind + ' in the ' + x.cls + ' sleeve'}.\n\nNumbers: ${pct(x.ret && x.ret.y5)} p.a. over five years, ${nv(x.vol)} volatility, worst drawdown ${nv(x.mdd)}, yield ${nv(x.yld)}${x.frank ? ' with ' + x.frank + '% franking' : ''}, fee ${x.mer != null && x.mer !== '' ? x.mer + '% p.a.' : 'n/a'}.\n\nRole: ${role}.\n\nRisks: concentration in ${String(x.cls || '').toLowerCase()}, drawdowns of the order seen (${nv(x.mdd)}), and fee drag if a cheaper equivalent exists.\n\nVerdict: ${x.vol > 18 ? 'Satellite' : 'Core'}. Review annually or on a change to mandate or fee.`;
 }
 r.post('/research/:t/ai', async (req, res) => {
@@ -905,12 +905,12 @@ r.post('/research/:t/ai', async (req, res) => {
   const peers = peersOf(sec);
   if (b.task === 'peers') {
     if (!claude.enabled() || !peers.length) return ok(res, { peers, commentary: '', via: 'table' });
-    const prompt = ['You are an investment research analyst at Acme Advisory (Australia). Compare the security below against its sleeve peers for use in model portfolios.', 'Write about 120 words of plain text (no markdown, no headings): which is the best core exposure and why, any fee or volatility outliers, and one caution. Be specific with the numbers given. Do not give personal advice.', '', 'Security: ' + secFacts(sec), 'Peers:', ...peers.map(secFacts)].join('\n');
+    const prompt = ['You are an investment research analyst at Brightday (Australia). Compare the security below against its sleeve peers for use in model portfolios.', 'Write about 120 words of plain text (no markdown, no headings): which is the best core exposure and why, any fee or volatility outliers, and one caution. Be specific with the numbers given. Do not give personal advice.', '', 'Security: ' + secFacts(sec), 'Peers:', ...peers.map(secFacts)].join('\n');
     try { return ok(res, { peers, commentary: (await claude.run(prompt)).trim(), via: 'claude' }); } catch (e) { return ok(res, { peers, commentary: '', via: 'table' }); }
   }
   if (b.task === 'note') {
     if (!claude.enabled()) return ok(res, { note: templateNote(sec), via: 'template' });
-    const prompt = ['You are an investment research analyst at Acme Advisory (Australia). Write an internal research note on the security below for the model-portfolio committee.', 'About 180 words, plain text with short labelled paragraphs: What it is / Numbers / Role in a portfolio / Risks / Verdict (Core, Satellite or Avoid). Use the figures given, no invented data, no personal advice, no markdown.', '', secFacts(sec), sec.desc ? 'Description: ' + sec.desc : '', peers.length ? 'Sleeve peers for context: ' + peers.map((p) => p.t + ' ' + pct(p.ret && p.ret.y5) + ' 5y, fee ' + (p.mer != null ? p.mer + '%' : 'n/a')).join('; ') : ''].filter(Boolean).join('\n');
+    const prompt = ['You are an investment research analyst at Brightday (Australia). Write an internal research note on the security below for the model-portfolio committee.', 'About 180 words, plain text with short labelled paragraphs: What it is / Numbers / Role in a portfolio / Risks / Verdict (Core, Satellite or Avoid). Use the figures given, no invented data, no personal advice, no markdown.', '', secFacts(sec), sec.desc ? 'Description: ' + sec.desc : '', peers.length ? 'Sleeve peers for context: ' + peers.map((p) => p.t + ' ' + pct(p.ret && p.ret.y5) + ' 5y, fee ' + (p.mer != null ? p.mer + '%' : 'n/a')).join('; ') : ''].filter(Boolean).join('\n');
     try { return ok(res, { note: (await claude.run(prompt)).trim(), via: 'claude' }); } catch (e) { return ok(res, { note: templateNote(sec), via: 'template' }); }
   }
   throw err(400, 'Unknown task');
@@ -941,7 +941,7 @@ r.get('/admin/status', (req, res) => { admin(req); ok(res, { features: state.fea
 r.post('/admin/backup', async (req, res) => { const me = admin(req); const f = await jobs.backup(); audit(req, me.id, 'admin.backup', f, ''); ok(res, { file: f }); });
 r.get('/admin/audit', (req, res) => { admin(req); const since = req.query.get('since') || ''; ok(res, { rows: D.auditRecent(Math.min(2000, Number(req.query.get('limit')) || 200), since) }); });
 r.get('/admin/audit.csv', (req, res) => { const me = admin(req); audit(req, me.id, 'audit.export', '', ''); const rows = D.auditRecent(20000, req.query.get('since') || ''); const csv = ['at,who,ip,action,target,detail', ...rows.map((r) => [r.at, r.who, r.ip, r.action, r.target, r.detail].map((v) => '"' + String(v ?? '').replace(/"/g, '""') + '"').join(','))].join('\n'); res.writeHead(200, { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': 'attachment; filename="pipeline-audit.csv"', 'cache-control': 'no-store' }); res.end(csv); });
-r.post('/admin/test-mail', async (req, res) => { const u = admin(req); const sent = await mail.send({ to: u.email, subject: 'Acme Advisory test email', title: 'Email is working', text: 'This is a test from the Pipeline server.', cta: { label: 'Open Pipeline', url: BASE }, kind: 'test' }); ok(res, { sent, mode: mail.mode() }); });
+r.post('/admin/test-mail', async (req, res) => { const u = admin(req); const sent = await mail.send({ to: u.email, subject: 'Brightday test email', title: 'Email is working', text: 'This is a test from the Pipeline server.', cta: { label: 'Open Pipeline', url: BASE }, kind: 'test' }); ok(res, { sent, mode: mail.mode() }); });
 r.post('/admin/run-job', async (req, res) => { admin(req); const b = await readJson(req); const fn = { chat: jobs.chatDigest, digest: jobs.dailyDigest, backup: jobs.backup, market: market.refreshSecurities, bookings: bookings.sync, calendar: require('../lib/calendar').syncAll, mailsync: require('../lib/mailsync').syncAll, nurture: () => nurture.run(30, { force: true }) }[b.job]; if (!fn) throw err(400, 'Unknown job'); ok(res, { result: await fn() }); });
 
 module.exports = r;

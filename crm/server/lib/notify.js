@@ -33,7 +33,7 @@ async function notify(evId, to, o) {
   }
   let sent = 0, mailed = 0;
   if (p.push !== false && !inQuiet()) {
-    for (const id of recips) sent += await push.sendToUser(id, { title: o.title, body: o.body, url: url, kind: o.kind || evId, id: o.id, tag: 'acme-' + (o.kind || evId) + '-' + (o.id || Date.now()), actions: o.actions, badge: unreadFor(id) });
+    for (const id of recips) sent += await push.sendToUser(id, { title: o.title, body: o.body, url: url, kind: o.kind || evId, id: o.id, tag: 'brightday-' + (o.kind || evId) + '-' + (o.id || Date.now()), actions: o.actions, badge: unreadFor(id) });
   }
   if (p.email === true || o.forceEmail) {
     for (const id of recips) {

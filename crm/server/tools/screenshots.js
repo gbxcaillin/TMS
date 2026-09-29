@@ -69,7 +69,7 @@ function serve(dir) {
 
 (async () => {
   // A full document around the wireframe fragment, with the sample data left in (local mode).
-  const tmp = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'acme-shots-'));
+  const tmp = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'brightday-shots-'));
   fs.mkdirSync(path.join(tmp, 'icons'));
   for (const f of fs.readdirSync(path.join(ROOT, 'icons'))) if (/\.(svg|png)$/.test(f)) fs.copyFileSync(path.join(ROOT, 'icons', f), path.join(tmp, 'icons', f));
   fs.writeFileSync(path.join(tmp, 'index.html'), `<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>${fs.readFileSync(path.join(ROOT, 'wireframe.html'), 'utf8')}</body></html>`);

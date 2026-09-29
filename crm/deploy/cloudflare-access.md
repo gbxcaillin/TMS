@@ -1,7 +1,7 @@
-# Putting Cloudflare in front of crm.example.com
+# Putting Cloudflare in front of portal.brightday.com.au
 
 > **Status: optional, not currently applied.** The live deployment relies on the
-> CRM's own auth (login + TOTP 2FA) and keeps `crm.example.com` DNS-only with
+> CRM's own auth (login + TOTP 2FA) and keeps `portal.brightday.com.au` DNS-only with
 > Caddy's automatic Let's Encrypt certificate. This guide is for adding a
 > Cloudflare perimeter later if the extra DDoS/WAF/Zero-Trust layer is wanted;
 > it is not required to run the CRM.
@@ -18,7 +18,7 @@ Trust login and must be allowed through.
 
 ## 1. Proxy the DNS record
 
-In the Cloudflare dashboard, `example.com` zone -> DNS:
+In the Cloudflare dashboard, `brightday.com.au` zone -> DNS:
 
 - Find the `crm` record (A/AAAA/CNAME pointing at the VPS).
 - Set it to **Proxied** (orange cloud).
@@ -30,12 +30,12 @@ certificate over HTTP-01/TLS-ALPN (Cloudflare now terminates 443). Use a
 Cloudflare **Origin Certificate** instead, which never needs renewing:
 
 1. Cloudflare -> SSL/TLS -> Origin Server -> **Create Certificate** (hostname
-   `crm.example.com`, 15-year). Copy the cert and private key to the VPS, e.g.
-   `/root/familyoffice/certs/crm.example.com.pem` and `.key`.
-2. In the `crm.example.com` block of the Caddyfile, point Caddy at them:
+   `portal.brightday.com.au`, 15-year). Copy the cert and private key to the VPS, e.g.
+   `/root/familyoffice/certs/portal.brightday.com.au.pem` and `.key`.
+2. In the `portal.brightday.com.au` block of the Caddyfile, point Caddy at them:
    ```
-   crm.example.com {
-       tls /certs/crm.example.com.pem /certs/crm.example.com.key
+   portal.brightday.com.au {
+       tls /certs/portal.brightday.com.au.pem /certs/portal.brightday.com.au.key
        reverse_proxy crm:3000
        # ... existing headers / request_body ...
    }
@@ -55,14 +55,14 @@ and has nothing to renew.
 Cloudflare **Zero Trust** dashboard -> Access -> Applications -> **Add an
 application** -> **Self-hosted**:
 
-- Application name: `Acme CRM CRM`
+- Application name: `Brightday Portal CRM`
 - Session duration: e.g. 24 hours
-- Application domain: `crm.example.com` (path left blank = the whole site)
+- Application domain: `portal.brightday.com.au` (path left blank = the whole site)
 - Identity: add a login method under Settings -> Authentication first. Use
   **Microsoft Entra ID** so it matches the M365 accounts (or email one-time PIN
   to start).
 - Policy: **Allow**, with an include rule of either **Emails** (list your
-  team's addresses) or **Emails ending in** `@example.com`, or an Entra group.
+  team's addresses) or **Emails ending in** `@brightday.com.au`, or an Entra group.
 
 Everyone who reaches the UI now signs in through Cloudflare first, then through
 the CRM's own login (defence in depth). The CRM's TOTP MFA still applies.
@@ -77,13 +77,13 @@ these win over the site-wide app above.
 
 | Application domain + path | Why it must bypass |
 |---|---|
-| `crm.example.com/api/v1/hooks/*` | Lead webhooks: the example.com website, Google Ads and Meta. Authenticated by API key / signature, not a human login. |
-| `crm.example.com/api/v1/auth/microsoft/callback` | The Microsoft sign-in redirect, which arrives before any Access session exists. |
-| `crm.example.com/api/v1/mail/connect/callback` | The per-user mailbox OAuth redirect (Settings -> Email accounts -> Connect). |
-| `crm.example.com/api/v1/health` | The uptime / health check. |
-| `crm.example.com/api/v1/unsubscribe/*` | The unsubscribe link and one-click button in every newsletter. Subscribers are not staff. |
-| `crm.example.com/api/v1/subscribe/confirm/*` | The double opt-in confirmation link (when `MAILING_DOUBLE_OPTIN=1`). |
-| `crm.example.com/api/v1/nurture/stop/*` | The "Stop these emails" link in every nurture email. |
+| `portal.brightday.com.au/api/v1/hooks/*` | Lead webhooks: the brightday.com.au website, Google Ads and Meta. Authenticated by API key / signature, not a human login. |
+| `portal.brightday.com.au/api/v1/auth/microsoft/callback` | The Microsoft sign-in redirect, which arrives before any Access session exists. |
+| `portal.brightday.com.au/api/v1/mail/connect/callback` | The per-user mailbox OAuth redirect (Settings -> Email accounts -> Connect). |
+| `portal.brightday.com.au/api/v1/health` | The uptime / health check. |
+| `portal.brightday.com.au/api/v1/unsubscribe/*` | The unsubscribe link and one-click button in every newsletter. Subscribers are not staff. |
+| `portal.brightday.com.au/api/v1/subscribe/confirm/*` | The double opt-in confirmation link (when `MAILING_DOUBLE_OPTIN=1`). |
+| `portal.brightday.com.au/api/v1/nurture/stop/*` | The "Stop these emails" link in every nurture email. |
 
 `hooks/*` also covers `hooks/subscribe` (website newsletter signups) and
 `hooks/mail-events/*` (the Resend bounce and complaint webhook).
@@ -102,20 +102,20 @@ Access app. Two clean options:
   create a token, then add a policy of action **Service Auth** to the CRM app.
   The client sends the `CF-Access-Client-Id` / `CF-Access-Client-Secret`
   headers alongside its Bearer key.
-- **Or** add `crm.example.com/api/v1/*` as a Bypass application and rely on the
+- **Or** add `portal.brightday.com.au/api/v1/*` as a Bypass application and rely on the
   CRM's own API-key auth for those routes. Simpler, slightly less layered.
 
-The example.com website only calls `/api/v1/hooks/lead`, so the hooks bypass in
+The brightday.com.au website only calls `/api/v1/hooks/lead`, so the hooks bypass in
 the table above is enough for it; you only need this section if you also drive
 the API from Claude or Zapier.
 
 ## 5. Verify
 
-- Open `https://crm.example.com` in a fresh browser -> you should hit the
+- Open `https://portal.brightday.com.au` in a fresh browser -> you should hit the
   Cloudflare Access login, then the CRM login.
-- `curl -s https://crm.example.com/api/v1/health` -> `{"ok":true,...}` with no
+- `curl -s https://portal.brightday.com.au/api/v1/health` -> `{"ok":true,...}` with no
   login redirect.
-- Submit a tool on example.com (with `CRM_WEBHOOK_URL` / `CRM_API_KEY` set) ->
+- Submit a tool on brightday.com.au (with `CRM_WEBHOOK_URL` / `CRM_API_KEY` set) ->
   the lead lands in the CRM, proving the webhook bypass works.
 - Send yourself a newsletter and click Unsubscribe in the footer -> the
   "Unsubscribed" page, not a Cloudflare login. Same for the "Stop these

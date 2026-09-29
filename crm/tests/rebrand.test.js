@@ -26,7 +26,7 @@ function* walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) 
   const words = [old.company, old.product, old.legal, old.domain, old.people[0].name, old.colors.accent];
   const token = new RegExp(`(?<![A-Za-z0-9])(${old.short}|${old.slug})(?![A-Za-z0-9])`);
   for (const f of walk(W)) {
-    const rel = path.relative(W, f); if (!/\.(html|js|json|md|svg|sh|yml|example|webmanifest|py|service|txt)$|Dockerfile$/.test(rel) || /^(brand\.json|\.brand-applied\.json|START-HERE\.md|tools\/rebrand\.js)$|package-lock\.json$|^icons\//.test(rel)) continue;
+    const rel = path.relative(W, f); if (!/\.(html|js|json|md|svg|sh|yml|example|webmanifest|py|service|txt)$|Dockerfile$/.test(rel) || /^(brand\.json|\.brand-applied\.json|START-HERE\.md|tools\/rebrand\.js)$|package-lock\.json$|^(icons|brand)\//.test(rel)) continue; // brand/ holds the logo art, which rebrand.js leaves alone
     const s = fs.readFileSync(f, 'utf8'); for (const w of words) if (s.toLowerCase().includes(w.toLowerCase())) left.push(rel + ': ' + w); if (token.test(s)) left.push(rel + ': ' + s.match(token)[0]);
   }
   t('no trace of the old name, domain, person, accent colour or slug in any text file', left.length === 0, left.slice(0, 12));
@@ -44,5 +44,15 @@ function* walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) 
     await p.evaluate(() => { location.hash = '#/research'; }); await p.waitForTimeout(500);
     t('its address sends you home instead', !/#\/research/.test(p.url()));
     t('no page errors', errs.length === 0, errs);
+    // Font families are swapped as whole words: moving the body face to "Inter" and on to another family must
+    // leave identifiers that contain the name (setInterval, clearInterval) alone.
+    const count = (f, w) => fs.readFileSync(path.join(W, f), 'utf8').split(w).length - 1;
+    const before = count('server/lib/auth.js', 'setInterval');
+    for (const sans of ['Inter', 'Lato']) {
+      const bj = JSON.parse(fs.readFileSync(path.join(W, 'brand.json'), 'utf8')); bj.fonts = { ...bj.fonts, sans };
+      fs.writeFileSync(path.join(W, 'brand.json'), JSON.stringify(bj, null, 2));
+      spawnSync(process.execPath, ['tools/rebrand.js'], { cwd: W, env, encoding: 'utf8' });
+    }
+    t('a font called Inter does not rewrite setInterval', before > 0 && count('server/lib/auth.js', 'setInterval') === before && !/setLato|Latoval/.test(fs.readFileSync(path.join(W, 'wireframe.html'), 'utf8')) && count('wireframe.html', "'Lato'") > 0, { before });
   } finally { await br.close(); fs.rmSync(W, { recursive: true, force: true }); }
 })().catch((e) => { console.error(e); process.exit(1); });

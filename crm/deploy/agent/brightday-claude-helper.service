@@ -1,5 +1,5 @@
 [Unit]
-Description=ACME Claude helper - on-demand claude -p over a Unix socket for the CRM
+Description=BD Claude helper - on-demand claude -p over a Unix socket for the CRM
 After=network.target
 
 [Service]

@@ -1,5 +1,5 @@
 'use strict';
-// Acme CRM server: serves the built PWA from dist/ and the JSON API under /api/v1.
+// Brightday Portal server: serves the built PWA from dist/ and the JSON API under /api/v1.
 const http = require('node:http');
 const path = require('node:path');
 const fs = require('node:fs');
@@ -15,7 +15,7 @@ const DIST = process.env.DIST_DIR || path.join(__dirname, '..', 'dist');
 
 // First-run admin from the environment (optional; otherwise the app shows a setup form).
 if (D.users.count() === 0 && process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
-  D.users.insert({ id: 'u1', email: process.env.ADMIN_EMAIL.toLowerCase(), name: process.env.ADMIN_NAME || 'Admin', role: 'Admin', status: 'Active', color: '#3559E0', pw_hash: auth.hashPassword(process.env.ADMIN_PASSWORD) });
+  D.users.insert({ id: 'u1', email: process.env.ADMIN_EMAIL.toLowerCase(), name: process.env.ADMIN_NAME || 'Admin', role: 'Admin', status: 'Active', color: '#F50D74', pw_hash: auth.hashPassword(process.env.ADMIN_PASSWORD) });
   console.log('[boot] created admin', process.env.ADMIN_EMAIL);
 }
 
@@ -51,7 +51,7 @@ const server = http.createServer(async (req, res) => {
   }
 });
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`[boot] Acme CRM on :${PORT} · db ${D.DB_PATH} · dist ${fs.existsSync(path.join(DIST, 'index.html')) ? 'ok' : 'MISSING (run build.sh)'}`);
+  console.log(`[boot] Brightday Portal on :${PORT} · db ${D.DB_PATH} · dist ${fs.existsSync(path.join(DIST, 'index.html')) ? 'ok' : 'MISSING (run build.sh)'}`);
   jobs.start();
   // A company list that was still being added when the server stopped picks up where it left off (done codes are skipped).
   for (const f of require('./lib/refdata').status().files) if (f.kind === 'list' && f.progress && /queued|running/.test(f.progress.state)) require('./lib/market').startList(f.name, 'refdata');

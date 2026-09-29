@@ -4,32 +4,32 @@
 // send paths if Resend ever has to be replaced.
 //
 // Two identities keep reputations apart: MAIL_FROM for transactional/notify mail on the main
-// domain, MAIL_CAMPAIGN_FROM for newsletters and nurture on a subdomain (e.g. news.example.com),
+// domain, MAIL_CAMPAIGN_FROM for newsletters and nurture on a subdomain (e.g. news.brightday.com.au),
 // so a campaign with complaints can never drag client correspondence into junk.
 const { log, nowIso } = require('./db');
 
 const env = process.env;
 const cfg = {
   mode: env.RESEND_API_KEY ? 'resend' : 'off',
-  from: env.MAIL_FROM || 'Acme Advisory <no-reply@example.com>',
-  campaignFrom: env.MAIL_CAMPAIGN_FROM || env.MAIL_FROM || 'Acme Advisory <hello@example.com>',
+  from: env.MAIL_FROM || 'Brightday <no-reply@brightday.com.au>',
+  campaignFrom: env.MAIL_CAMPAIGN_FROM || env.MAIL_FROM || 'Brightday <hello@brightday.com.au>',
   resendKey: env.RESEND_API_KEY,
   replyTo: env.MAIL_REPLY_TO || '',   // default Reply-To for campaign mail (the campaign address has no mailbox)
 };
 function enabled() { return cfg.mode === 'resend'; }
 
-const BASE = env.APP_URL || 'https://crm.example.com';
+const BASE = env.APP_URL || 'https://portal.brightday.com.au';
 // The approved logo (light version, for the paper email surface), hosted on the public website (the CRM sits behind Cloudflare Access, so
-// recipients could not load an image served from crm.example.com).
-const LOGO = env.MAIL_LOGO_URL || 'https://example.com/media/logo-light-email.png';
+// recipients could not load an image served from portal.brightday.com.au).
+const LOGO = env.MAIL_LOGO_URL || 'https://brightday.com.au/media/logo-light-email.png';
 function layout(title, bodyHtml, cta, footer) {
-  return `<!doctype html><html><body style="margin:0;background:#F5F6F8;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#1E293B">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F6F8;padding:28px 12px"><tr><td align="center">
+  return `<!doctype html><html><body style="margin:0;background:#F4F6FA;font-family:Manrope,Segoe UI,Helvetica,Arial,sans-serif;color:#1B4470">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F4F6FA;padding:28px 12px"><tr><td align="center">
 <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;background:#FFFFFF;border:1px solid #E4DFD3">
-<tr><td style="padding:20px 28px;border-bottom:1px solid #E4DFD3"><a href="https://example.com" style="text-decoration:none"><img src="${LOGO}" width="64" height="64" alt="Acme Advisory" style="display:block;border:0;width:64px;height:64px"></a></td></tr>
-<tr><td style="padding:26px 28px 8px"><h1 style="margin:0 0 12px;font-weight:400;font-size:22px;font-family:'Source Serif 4',Georgia,serif">${title}</h1><div style="font-size:14px;line-height:1.55">${bodyHtml}</div></td></tr>
-${cta ? `<tr><td style="padding:8px 28px 26px"><a href="${cta.url}" style="display:inline-block;background:#22389A;color:#FFFFFF;text-decoration:none;padding:11px 18px;font-size:13px;letter-spacing:.04em">${cta.label}</a><div style="font-size:11px;color:#8A919C;margin-top:10px">${cta.url}</div></td></tr>` : '<tr><td style="padding:8px"></td></tr>'}
-<tr><td style="padding:14px 28px;border-top:1px solid #E4DFD3;font-size:11px;color:#8A919C">${footer || `Acme Advisory · Notification preferences: ${BASE}/#/settings/notifications`}</td></tr>
+<tr><td style="padding:20px 28px;border-bottom:1px solid #E4DFD3"><a href="https://brightday.com.au" style="text-decoration:none"><img src="${LOGO}" width="64" height="64" alt="Brightday" style="display:block;border:0;width:64px;height:64px"></a></td></tr>
+<tr><td style="padding:26px 28px 8px"><h1 style="margin:0 0 12px;font-weight:400;font-size:22px;font-family:'Ubuntu',Georgia,serif">${title}</h1><div style="font-size:14px;line-height:1.55">${bodyHtml}</div></td></tr>
+${cta ? `<tr><td style="padding:8px 28px 26px"><a href="${cta.url}" style="display:inline-block;background:#990A4E;color:#FFFFFF;text-decoration:none;padding:11px 18px;font-size:13px;letter-spacing:.04em">${cta.label}</a><div style="font-size:11px;color:#7A8BA3;margin-top:10px">${cta.url}</div></td></tr>` : '<tr><td style="padding:8px"></td></tr>'}
+<tr><td style="padding:14px 28px;border-top:1px solid #E4DFD3;font-size:11px;color:#7A8BA3">${footer || `Brightday · Notification preferences: ${BASE}/#/settings/notifications`}</td></tr>
 </table></td></tr></table></body></html>`;
 }
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

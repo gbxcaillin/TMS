@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Acme CRM - Claude lead scorer (host-side, stdlib only).
+"""Brightday Portal - Claude lead scorer (host-side, stdlib only).
 
 Runs headless Claude Code (`claude -p`, subscription auth, NO API key) to score
 new CRM leads and write the score back as an AI activity - the external agent the
@@ -14,7 +14,7 @@ shown as "Claude scored lead N / 100" on the lead timeline.
 Config - env vars, optionally from an env file (CRM_AGENT_ENV, default
 /root/crm-agent.env; KEY=VALUE lines):
   CRM_API_KEY   required - a CRM API key with scopes: deals:read AND ai:write
-  CRM_BASE      default https://crm.example.com  (host reaches the CRM via Caddy;
+  CRM_BASE      default https://portal.brightday.com.au  (host reaches the CRM via Caddy;
                 NOT http://localhost:3000, which is a different app on this box)
   CLAUDE_BIN    default /root/.local/bin/claude
   MODEL         default sonnet                 (sonnet | opus | haiku)
@@ -44,7 +44,7 @@ def load_env_file(path):
 
 load_env_file(os.environ.get("CRM_AGENT_ENV", "/root/crm-agent.env"))
 
-BASE = os.environ.get("CRM_BASE", "https://crm.example.com").rstrip("/")
+BASE = os.environ.get("CRM_BASE", "https://portal.brightday.com.au").rstrip("/")
 KEY = os.environ.get("CRM_API_KEY")
 CLAUDE = os.environ.get("CLAUDE_BIN", "/root/.local/bin/claude")
 MODEL = os.environ.get("MODEL", "sonnet")
@@ -83,7 +83,7 @@ def api(path, method="GET", body=None):
 
 def score_with_claude(lead):
     prompt = "\n".join([
-        "You are scoring an inbound business lead for Acme Advisory, which offers professional services and workplace financial education/wellbeing to businesses of any kind.",
+        "You are scoring an inbound business lead for Brightday, which offers professional services and workplace financial education/wellbeing to businesses of any kind.",
         "Rate how promising the lead is and how urgently to follow up (0 = weak, 100 = drop everything). Weigh fit, buying signals, source quality, and how complete the details are.",
         'Return ONLY compact JSON, no prose and no code fences: {"score":<integer 0-100>,"priority":"High"|"Medium"|"Low","rationale":"<one concise sentence>"}',
         "",

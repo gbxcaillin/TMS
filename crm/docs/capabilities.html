@@ -3,35 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Acme CRM System Map</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<title>Brightday Portal System Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@400;500;600;700&family=Ubuntu+Mono:wght@400;700&display=swap">
 <style>
   :root {
-    --paper: #FFFFFF; --soft: #F5F6F8; --card: #FFFFFF;
-    --ink: #0F172A; --ink-2: #3D3D3A; --ink-3: #6B6B66;
+    --paper: #FFFFFF; --soft: #F4F6FA; --card: #FFFFFF;
+    --ink: #123559; --ink-2: #3D3D3A; --ink-3: #6B6B66;
     --line: rgba(10,10,10,0.12); --line-2: rgba(10,10,10,0.28);
-    --teal: #22389A; --teal-2: #3559E0; --teal-soft: rgba(46,139,110,0.12);
-    --void: #0F172A; --void-text: #FFFFFF;
-    --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-    --sans: Inter, 'Segoe UI', Helvetica, Arial, sans-serif;
-    --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    --teal: #990A4E; --teal-2: #F50D74; --teal-soft: rgba(46,139,110,0.12);
+    --void: #123559; --void-text: #FFFFFF;
+    --serif: 'Ubuntu', Georgia, 'Times New Roman', serif;
+    --sans: Manrope, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono: 'Ubuntu Mono', 'SF Mono', Menlo, Consolas, monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --paper: #0F172A; --soft: #151514; --card: #1E293B;
+      --paper: #123559; --soft: #151514; --card: #1B4470;
       --ink: #FFFFFF; --ink-2: #D8D6CF; --ink-3: #9A9891;
       --line: rgba(255,253,248,0.14); --line-2: rgba(255,253,248,0.32);
-      --teal: #3559E0; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
+      --teal: #F50D74; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
       --void: #000000; --void-text: #FFFFFF;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --paper: #0F172A; --soft: #151514; --card: #1E293B;
+    --paper: #123559; --soft: #151514; --card: #1B4470;
     --ink: #FFFFFF; --ink-2: #D8D6CF; --ink-3: #9A9891;
     --line: rgba(255,253,248,0.14); --line-2: rgba(255,253,248,0.32);
-    --teal: #3559E0; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
+    --teal: #F50D74; --teal-2: #4FB08F; --teal-soft: rgba(79,176,143,0.16);
     --void: #000000; --void-text: #FFFFFF;
   }
   * { box-sizing: border-box; }
@@ -116,17 +116,17 @@
 </head>
 <body>
 
-<div id="crm-back" style="display:none;position:sticky;top:0;z-index:5;background:#0F172A;color:#FFFFFF;font:500 13px/1 Inter,Segoe UI,Helvetica,Arial,sans-serif;padding:12px 20px;align-items:center;gap:14px"><a href="../#/help/capabilities" target="_top" style="color:#FFFFFF;text-decoration:none;border:1px solid rgba(255,253,248,.5);padding:7px 12px;letter-spacing:.06em;text-transform:uppercase;font-size:11px">&#8249; Back to Help &amp; training</a><span style="opacity:.75">Acme CRM capabilities statement</span><span style="flex:1"></span><button onclick="window.print()" style="background:#22389A;color:#FFFFFF;border:0;padding:8px 12px;font:600 11px Inter,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Print / PDF</button></div>
+<div id="crm-back" style="display:none;position:sticky;top:0;z-index:5;background:#123559;color:#FFFFFF;font:500 13px/1 Manrope,Segoe UI,Helvetica,Arial,sans-serif;padding:12px 20px;align-items:center;gap:14px"><a href="../#/help/capabilities" target="_top" style="color:#FFFFFF;text-decoration:none;border:1px solid rgba(255,253,248,.5);padding:7px 12px;letter-spacing:.06em;text-transform:uppercase;font-size:11px">&#8249; Back to Help &amp; training</a><span style="opacity:.75">Brightday Portal capabilities statement</span><span style="flex:1"></span><button onclick="window.print()" style="background:#990A4E;color:#FFFFFF;border:0;padding:8px 12px;font:600 11px Manrope,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Print / PDF</button></div>
 <script>if(window.self===window.top&&/\/docs\/capabilities\.html$/.test(location.pathname))document.getElementById('crm-back').style.display='flex';</script>
 <div class="wrap">
   <header class="hero">
     <div>
-      <p class="eyebrow teal">Acme Advisory</p>
+      <p class="eyebrow teal">Brightday</p>
       <h1>Pipeline system map</h1>
       <p class="lede" style="margin-top:14px">What the CRM does, how the website feeds it, which outside services it leans on, and roughly what it all costs to run each month. Parked and planned work is in the <a href="capabilities-future.html">future capabilities statement</a>.</p>
     </div>
     <div class="meta">
-      <span>crm.example.com</span>
+      <span>portal.brightday.com.au</span>
       <span>main 4d96aa9</span>
       <span>27 September 2026</span>
     </div>
@@ -143,7 +143,7 @@
     <p class="eyebrow">How it fits together</p>
     <h2>Website in, pipeline out</h2>
     <figure class="diagram">
-      <img src="capabilities-img/diagram.jpg" width="1600" height="900" alt="Architecture: example.com sends tools, contact form, newsletter signups and bookings into the Acme CRM CRM behind Cloudflare Access; the CRM connects to Microsoft 365, Resend email, Google Ads and Meta, Claude and Yahoo Finance.">
+      <img src="capabilities-img/diagram.jpg" width="1600" height="900" alt="Architecture: brightday.com.au sends tools, contact form, newsletter signups and bookings into the Brightday Portal CRM behind Cloudflare Access; the CRM connects to Microsoft 365, Resend email, Google Ads and Meta, Claude and Yahoo Finance.">
       <figcaption>The website feeds the CRM; the CRM does the follow-up. Staff reach it only through Cloudflare Access.</figcaption>
     </figure>
   </section>
@@ -151,7 +151,7 @@
 
   <section>
     <p class="eyebrow">The website's own capabilities</p>
-    <h2>example.com is a lead engine, not a brochure</h2>
+    <h2>brightday.com.au is a lead engine, not a brochure</h2>
     <p class="lede" style="margin-bottom:18px">Every page is prerendered for search and shares a sitemap. Thirteen free tools give visitors a result in minutes and give you a qualified lead with the answers attached.</p>
     <div class="grid cols-3">
       <div class="card"><p class="eyebrow teal">Diagnostics</p><h3>Business Health Check</h3><p>Two-minute scorecard across six performance areas, with anonymous benchmarks once 25 responses exist.</p></div>
@@ -171,7 +171,7 @@
     <div class="grid cols-3" style="margin-top:16px">
       <div class="card"><p class="eyebrow">Pages</p><ul><li>Services, Diagnostic, Leadership, Approach, Education, Tools and Insights, Case studies, Contact, Book</li><li>Articles with structured data for search</li><li>Privacy policy and AFSL disclaimer on every page</li></ul></div>
       <div class="card"><p class="eyebrow">Under the hood</p><ul><li>React on Cloudflare Pages, 59 routes prerendered, sitemap generated at build; repo trimmed of unshipped media and one-off tooling</li><li>Two Pages Functions: lead capture and health-check benchmarks</li><li>D1 database keeps every submission with the full answers</li></ul></div>
-      <div class="card"><p class="eyebrow">Brand</p><ul><li>Approved logo in dark and light versions, animated brand film</li><li>Source Serif 4 and Inter, ACME palette</li><li>Open Graph image and icons generated from the logo master</li></ul></div>
+      <div class="card"><p class="eyebrow">Brand</p><ul><li>Approved logo in dark and light versions, animated brand film</li><li>Ubuntu and Manrope, BD palette</li><li>Open Graph image and icons generated from the logo master</li></ul></div>
     </div>
   </section>
   <section>
@@ -182,8 +182,8 @@
       <div class="row"><b>Newsletter signup</b><p>The footer form calls the CRM's subscribe hook. Single-click by default: the address goes straight onto the mailing list and gets the welcome email. Double opt-in can be switched on with one setting.</p></div>
       <div class="row"><b>Booking a call</b><p>The /book page embeds Microsoft Bookings. Every booked call syncs into the CRM within 15 minutes as an activity and a task on the matching lead, or as a new lead. A booked call also stops any nurture sequence for that person.</p></div>
       <div class="row"><b>Automatic follow-up</b><p>New leads are scored by Claude within about five minutes and enrolled in the matching nurture sequence. Follow-ups go out in Melbourne business hours, each with a booking link, and stop the moment the lead replies, books, moves stage or opts out.</p></div>
-      <div class="row"><b>Public pages the CRM serves</b><p>Unsubscribe, subscription confirmation and nurture opt-out pages are served by the CRM without a login. Email templates load the approved logo from example.com, since the CRM itself sits behind Cloudflare Access.</p></div>
-      <div class="row"><b>Website traffic on the dashboard</b><p>The CRM dashboard shows example.com visits and page views from Cloudflare Web Analytics next to leads and pipeline value, so "website to pipeline" is one glance.</p></div>
+      <div class="row"><b>Public pages the CRM serves</b><p>Unsubscribe, subscription confirmation and nurture opt-out pages are served by the CRM without a login. Email templates load the approved logo from brightday.com.au, since the CRM itself sits behind Cloudflare Access.</p></div>
+      <div class="row"><b>Website traffic on the dashboard</b><p>The CRM dashboard shows brightday.com.au visits and page views from Cloudflare Web Analytics next to leads and pipeline value, so "website to pipeline" is one glance.</p></div>
     </div>
   </section>
 
@@ -234,14 +234,14 @@
     <table>
       <thead><tr><th>Service</th><th>Used for</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>Cloudflare Pages</td><td>Hosts example.com, runs the lead and benchmark functions, stores submissions in D1</td><td><span class="chip on">live</span></td></tr>
-        <tr><td>Cloudflare proxy and Zero Trust</td><td>Sits in front of crm.example.com; staff sign in with Microsoft before the CRM is even reached; public email links bypass</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Cloudflare Pages</td><td>Hosts brightday.com.au, runs the lead and benchmark functions, stores submissions in D1</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Cloudflare proxy and Zero Trust</td><td>Sits in front of portal.brightday.com.au; staff sign in with Microsoft before the CRM is even reached; public email links bypass</td><td><span class="chip on">live</span></td></tr>
         <tr><td>Cloudflare Web Analytics</td><td>Site traffic on the CRM dashboard</td><td><span class="chip opt">optional</span></td></tr>
         <tr><td>Microsoft Entra ID</td><td>Single sign-on to the CRM and to Cloudflare Access; MFA and conditional access apply</td><td><span class="chip on">live</span></td></tr>
         <tr><td>Microsoft 365 mail (Graph)</td><td>Per-user connected inboxes, sending as the user, calendar invites</td><td><span class="chip on">live</span></td></tr>
         <tr><td>SharePoint</td><td>Client file library, invoice PDFs, nightly database backup copy</td><td><span class="chip on">live</span></td></tr>
         <tr><td>Microsoft Bookings</td><td>Public booking page; booked calls sync to leads every 15 minutes</td><td><span class="chip on">live</span></td></tr>
-        <tr><td>Resend</td><td>Transactional mail from example.com and campaign mail from news.example.com; bounce and complaint webhook</td><td><span class="chip on">live</span></td></tr>
+        <tr><td>Resend</td><td>Transactional mail from brightday.com.au and campaign mail from news.brightday.com.au; bounce and complaint webhook</td><td><span class="chip on">live</span></td></tr>
         <tr><td>Softphone: JustCall (or Dialpad, Aircall)</td><td>Calls and texts posted by webhook: recording, transcript, AI summary, comments, link back to Aircall; matched to deals by phone number; click-to-call numbers</td><td><span class="chip opt">ready, needs an account</span></td></tr>
         <tr><td>Other email providers</td><td>None in the code. Postmark, SMTP and Graph send were removed in September 2026 to run lean; they sit in git history if Resend ever has to be replaced</td><td><span class="chip opt">removed</span></td></tr>
         <tr><td>Google Ads lead forms</td><td>Webhook straight into the pipeline</td><td><span class="chip opt">when campaigns run</span></td></tr>
@@ -369,9 +369,9 @@
     <table>
       <thead><tr><th>Item</th><th>Basis</th><th class="num">A$ / month</th></tr></thead>
       <tbody>
-        <tr><td>VPS (CRM container, Caddy, backups)</td><td>Shared with the other ACME services already on it; a 2 vCPU, 4 GB box is plenty</td><td class="num">15 to 40</td></tr>
+        <tr><td>VPS (CRM container, Caddy, backups)</td><td>Shared with the other BD services already on it; a 2 vCPU, 4 GB box is plenty</td><td class="num">15 to 40</td></tr>
         <tr><td>Cloudflare: DNS, Pages, Zero Trust, D1, Web Analytics</td><td>Free plan; Zero Trust free up to 50 users; D1 free tier far above current volume</td><td class="num">0</td></tr>
-        <tr><td>Domains: example.com, news.example.com</td><td>One registration, subdomain is free; about A$20 a year</td><td class="num">2</td></tr>
+        <tr><td>Domains: brightday.com.au, news.brightday.com.au</td><td>One registration, subdomain is free; about A$20 a year</td><td class="num">2</td></tr>
         <tr><td>Resend</td><td>Free up to 3,000 emails a month; the next tier is about US$20 (A$30) for 50,000</td><td class="num">0 to 30</td></tr>
         <tr><td>Microsoft 365 (Entra, Outlook, SharePoint, Bookings, Graph)</td><td>Included in the Business licences the team already holds; no add-on required</td><td class="num">0 extra</td></tr>
         <tr><td>Claude scoring and drafting</td><td>Runs through the Claude subscription helper on the VPS, so no separate API bill; on the API it would be a few dollars a month at current lead volume</td><td class="num">0 to 10</td></tr>
@@ -387,8 +387,8 @@
   </section>
 
   <footer>
-    <span>Acme CRM system map. Source: crm.example.com main 4d96aa9 and example.com main 480e2fb.</span>
-    <span>Confidential to Acme Advisory Pty Ltd</span>
+    <span>Brightday Portal system map. Source: portal.brightday.com.au main 4d96aa9 and brightday.com.au main 480e2fb.</span>
+    <span>Confidential to Brightday Pty Ltd</span>
   </footer>
 </div>
 

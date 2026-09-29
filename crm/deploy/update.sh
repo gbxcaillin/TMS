@@ -10,4 +10,4 @@ git pull --quiet --ff-only origin "$BRANCH"
 cd /root/familyoffice
 docker compose up -d --build crm
 docker compose ps crm
-echo "crm.example.com updated to $(git -C /root/crm rev-parse --short HEAD) ($BRANCH)"
+echo "portal.brightday.com.au updated to $(git -C /root/crm rev-parse --short HEAD) ($BRANCH)"

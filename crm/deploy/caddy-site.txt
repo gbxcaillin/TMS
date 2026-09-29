@@ -1,8 +1,8 @@
 # Paste this block into /root/familyoffice/deploy/Caddyfile on the VPS,
-# alongside the office.example.com and play.example.com blocks.
+# alongside the office.brightday.com.au and play.brightday.com.au blocks.
 # The app has its own login now, so no basic_auth is needed.
 
-crm.example.com {
+portal.brightday.com.au {
 	reverse_proxy crm:3000
 
 	# Large SharePoint uploads go through the API.
